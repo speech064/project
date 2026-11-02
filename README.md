@@ -23,7 +23,7 @@ Vite + React + Router + Zustand + three.js + Supabase, 서버 함수는 Vercel `
 | API | 용도 | 키 (환경변수) |
 |---|---|---|
 | sunrise-sunset.org v2 | 일출·일몰·골든아워·방위각 | 없음 |
-| Open-Meteo 예보 · 바다 · 지오코딩 | 구름양(저/중/고층)·풍속·파도 · 좌표 검색 | 없음 |
+| Open-Meteo 예보 · 바다 | 구름양(저/중/고층)·풍속·파도, 한라산 고도 지정 예보 | 없음 |
 | 기상청 단기예보조회서비스 (공공데이터포털) | 공식 하늘상태·강수확률 | `DATA_GO_KR_KEY_KMA` |
 | 한국관광공사 국문 관광정보 (공공데이터포털) | 명소 카드 사진·좌표 찾기 | `DATA_GO_KR_KEY_KTO` |
 | 제주관광공사 비짓제주 관광정보 | NEARBY 탭: 명소 주변 관광지·음식점·숙박 | `VISITJEJU_API_KEY` |

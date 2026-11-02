@@ -4,6 +4,7 @@
 Vite + React + Router + Zustand + three.js + Supabase, 서버 함수는 Vercel `api/`.
 
 ## 사이트 소개
+**배포 주소:** https://project-flame-omega-mk9u3aq62v.vercel.app/
 **기획 의도:** 제주의 바다와 빛을 사진으로 남기고 싶은 사람에게, 오늘 어디서 언제 찍으면 좋은지 실제 날씨 데이터로 알려 주는 일출·일몰 가이드입니다.
 
 | 탭 | 하는 일 |

@@ -1,0 +1,21 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# 비밀 키 — 절대 GitHub 에 올리지 마세요 (.env.example 만 올립니다)
+.env
+.env.*
+!.env.example
+
+node_modules
+dist
+dist-ssr
+*.local
+.vercel
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store

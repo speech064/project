@@ -344,3 +344,11 @@
 
 /* ── 6차 조정 ── */
 .side-col .live-head .slide-kicker { font-size: clamp(1.1rem, 1.5vw, 1.5rem); letter-spacing: .12em; }
+
+/* ── 7차 조정: 단계 카드 크기 축소 ── */
+.side-col .steps-col { grid-auto-rows: auto; align-content: start; gap: 10px; }
+.side-col .live-step { padding: 8px 12px; }
+.side-col .live-step b { font-size: 24px; }
+.side-col .live-step strong { font-size: 18px; }
+.side-col .live-step em { font-size: 14px; }
+.side-col .live-check { font-size: 13px; }

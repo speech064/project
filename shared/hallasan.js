@@ -57,8 +57,8 @@ export function judge({ goalRows, startRows = [], window: [h0, h1] = [6, 17] }) 
   if (sl && stats.snowMax > 0) add('snow', '눈', sl, sl === 'danger' ? `시간당 ${stats.snowMax}cm 눈이 예보돼요. 길이 묻히고 미끄러워요.` : `눈이 예보돼요 (시간당 ${stats.snowMax}cm). 아이젠이 필요해요.`)
 
   const vl = lv(stats.visMin, RULES.vis, true)
-  if (vl) add('vis', '가시거리', vl, vl === 'danger' ? `가시거리이 ${stats.visMin}m까지 떨어져요 (${stats.visHour}시). 길을 잃기 쉬워요.`
-    : vl === 'caution' ? `가시거리이 ${stats.visMin}m까지 떨어져요 (${stats.visHour}시). 안개 속에서는 코스 표식을 놓치지 마세요.` : `가시거리이 좋아요 (최소 ${(stats.visMin / 1000).toFixed(0)}km 이상).`)
+  if (vl) add('vis', '가시거리', vl, vl === 'danger' ? `가시거리가 ${stats.visMin}m까지 떨어져요 (${stats.visHour}시). 길을 잃기 쉬워요.`
+    : vl === 'caution' ? `가시거리가 ${stats.visMin}m까지 떨어져요 (${stats.visHour}시). 안개 속에서는 코스 표식을 놓치지 마세요.` : `가시거리가 좋아요 (최소 ${(stats.visMin / 1000).toFixed(0)}km 이상).`)
 
   if (stats.startFeelsMax != null && stats.startFeelsMax >= RULES.heat.caution)
     add('heat', '더위', 'caution', `출발지 체감온도가 ${stats.startFeelsMax}°C까지 올라요. 물을 넉넉히 챙기세요.`)

@@ -13,7 +13,7 @@ const BASE = { sunriseMin: 400, sunsetMin: 1080, solarNoon: 740, lat: 33.4, doy:
 // 슬라이드 1~6 의 하늘: 시간(분), 구름양, 날씨 종류 → 시간이 바뀌면 3D 장면이 lerp 로 부드럽게 전환됨
 const SCENES = [
   { minutes: 1090, total: 25, low: 10, mid: 15, high: 15, wave: 0.6, kind: 'clear' }, // 1 표지: 골든아워 노을
-  { minutes: 1090, total: 25, low: 10, mid: 15, high: 15, wave: 0.6, kind: 'clear' }, // 개요: 표지와 같은 노을
+  { minutes: 1090, total: 25, low: 10, mid: 15, high: 15, wave: 0.6, kind: 'fog' }, // 개요 (안개): 표지와 같은 노을 시간
   { minutes: 430, total: 55, low: 25, mid: 35, high: 30, wave: 0.8, kind: 'cloudy' }, // 2 기획 배경: 구름 낀 아침
   { minutes: 1050, total: 15, low: 5, mid: 10, high: 10, wave: 0.5, kind: 'rain' }, // 3 시연 (비)
   { minutes: 1230, total: 60, low: 40, mid: 40, high: 40, wave: 0.6, kind: 'fog' }, // 4 AI · 한라산 운해

@@ -86,10 +86,6 @@ function Slide3() {
   const pick = (i) => { setActive(i); setPath(LIVE_STEPS[i].path) }
   return (
     <div className="slide slide-live">
-      <div className="live-head s-item" style={{ '--i': 0 }}>
-        <p className="slide-kicker">라이브 시연</p>
-        <h2 className="slide-title" style={{ fontSize: 'clamp(28px, 3.6vw, 48px)' }}>이렇게 <i>동작합니다</i></h2>
-      </div>
       <div className="live-row s-item" style={{ '--i': 1 }}>
         <div className="live glass">
           <div className="live-bar">
@@ -100,13 +96,19 @@ function Slide3() {
             <iframe ref={frame} src={path} title="라이브 시연 화면" onLoad={() => { try { frame.current?.contentWindow?.scrollTo(0, 0) } catch { /* 같은 사이트가 아니면 건너뜀 */ } }} />
           </div>
         </div>
-        <div className="steps-col">
-          {LIVE_STEPS.map((st, i) => (
-            <button key={st.no} type="button" className={`live-step${active === i ? ' on' : ''}`} onClick={() => pick(i)}>
-              <b>{st.no}</b>
-              <span><strong>{st.title}</strong><em>{st.desc}</em></span>
-            </button>
-          ))}
+        <div className="side-col">
+          <div className="live-head">
+            <p className="slide-kicker">라이브 시연</p>
+            <h2 className="slide-title" style={{ fontSize: 'clamp(28px, 3.6vw, 48px)' }}>이렇게 <i>동작합니다</i></h2>
+          </div>
+          <div className="steps-col">
+            {LIVE_STEPS.map((st, i) => (
+              <button key={st.no} type="button" className={`live-step${active === i ? ' on' : ''}`} onClick={() => pick(i)}>
+                <b>{st.no}</b>
+                <span><strong>{st.title}</strong><em>{st.desc}</em></span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -22,6 +22,7 @@ export default function Nearby() {
   const selectSpot = useAppStore((s) => s.selectSpot)
   const spot = getSpot(spotId)
   const narrow = useMedia('(max-width: 640px)') // 좁은 화면: 지도는 위치만 보여주고 이름은 버튼으로 고름
+  const pageSize = narrow ? 4 : PAGE // 좁은 화면은 2열 2줄(4개)씩, 넓은 화면은 6개씩
 
   const radius = RADIUS
   const [category, setCategory] = useState('전체')
@@ -93,7 +94,7 @@ export default function Nearby() {
 
           {groups.map((g) => {
             const k = kind(g.label)
-            const n = shown[g.label] ?? PAGE
+            const n = shown[g.label] ?? pageSize
             const visible = g.items.slice(0, n)
             return (
               <section key={g.label} className="kind" style={{ '--c': k.c }}>
@@ -104,7 +105,7 @@ export default function Nearby() {
                 </header>
                 <div className="places">{visible.map((p) => <Place key={p.id} p={p} spotId={spotId} tagFreq={tagFreq} />)}</div>
                 {g.items.length > n && (
-                  <button className="more" onClick={() => setShown((s) => ({ ...s, [g.label]: n + PAGE }))}>{g.label} 더 보기</button>
+                  <button className="more" onClick={() => setShown((s) => ({ ...s, [g.label]: n + pageSize }))}>{g.label} 더 보기</button>
                 )}
               </section>
             )

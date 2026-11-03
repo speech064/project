@@ -810,3 +810,13 @@ body:has(.halla-hero) { background: #030407; }
   .timebar .presets button { padding: 5px 8px; font-size: 11px; }
   .timebar .ticks { font-size: 10px; }
 }
+
+/* 주변 탐색 모바일: 2열, 카드 간격과 글자 크기를 줄여 2줄(4개)이 한 화면에 들어오게 */
+@media (max-width: 640px) {
+  .places { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .place-img { aspect-ratio: 4 / 3; }
+  .place-body { padding: 10px 10px 12px; }
+  .place-body h3, .place-body .name { font-size: 15px; }
+  .place .intro, .place .addr { font-size: 12px; }
+  .place-act { gap: 6px; }
+}

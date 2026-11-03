@@ -74,10 +74,10 @@
 .deck .glass .num { color: #34D399; }
 
 /* 3번 슬라이드: 라이브 시연 (실제 웹앱 축소 표시) */
-.slide-live { width: 92vw; max-width: none; gap: 14px; }
+.slide-live { width: 94vw; max-width: none; gap: 12px; align-self: start; margin-top: 1vh; }
 .live-head { display: grid; gap: 4px; }
 .live-head .slide-kicker { margin: 0; }
-.live-row { display: grid; grid-template-columns: 72fr 28fr; gap: 16px; height: min(72vh, 620px); }
+.live-row { display: grid; grid-template-columns: 72fr 28fr; gap: 16px; height: 74vh; }
 .live { display: flex; flex-direction: column; padding: 0; overflow: hidden; min-height: 0; }
 .live.max { position: fixed; inset: 4vh 4vw; z-index: 60; height: auto; }
 .live-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(15, 23, 42, .6); border-bottom: 1px solid rgba(255, 255, 255, .12); }

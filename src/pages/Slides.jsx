@@ -105,7 +105,7 @@ function Slide3() {
             </div>
           </div>
           <div className="live-frame">
-            <iframe ref={frame} src={path} title="라이브 시연 화면" />
+            <iframe ref={frame} src={path} title="라이브 시연 화면" onLoad={() => { try { frame.current?.contentWindow?.scrollTo(0, 0) } catch { /* 같은 사이트가 아니면 건너뜀 */ } }} />
           </div>
         </div>
         <div className="steps-col">

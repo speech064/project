@@ -352,3 +352,15 @@
 .side-col .live-step strong { font-size: 18px; }
 .side-col .live-step em { font-size: 14px; }
 .side-col .live-check { font-size: 13px; }
+
+/* ── 8차 조정 (발표 스펙 반영) ── */
+/* 02 프로젝트 한눈에: 카드 보더 통일, 폭 확장 */
+.slide-overview { width: min(1480px, 92vw); }
+.ov-card { border: 1px solid rgba(255, 255, 255, .22); }
+/* 03 기획 배경: 문제 항목 가독성 (3D 오브젝트 위) */
+.s2n-prob { background: rgba(15, 20, 30, .55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 16px 20px; border-radius: 12px; border-left: 3px solid #34D399; }
+/* 05 AI: 배지 */
+.ai-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.ai-badges .pill { font-size: .78rem; padding: 4px 10px; }
+/* 04 라이브 시연: 활성 카드의 시연 가이드 */
+.side-col .live-step.on .live-check { color: #FBBF24; }

@@ -74,10 +74,10 @@ function Overview() {
 // 2. 기획 배경: 좌 PROBLEM 35% · 우 SOLUTION 65%
 function Slide2() {
   const SOLUTION = [
-    { no: '01', title: '제주의 빛과 바다 · HOME', tags: ['기상청 단기예보', 'sunrise-sunset', 'shared/score.js'],
-      body: '명소 9곳의 구름·풍속·강수확률을 분석해 100점 만점 촬영 점수를 내고, 3D 태양·달·별의 방위각과 궤적을 보여 줍니다.' },
-    { no: '02', title: '해녀와 테왁 · 제주 IP의 3D 재해석', tags: ['Three.js', '맑음·흐림·해무·비·눈'],
-      body: '해녀와 테왁, 오름, 바다 파도, 별똥별과 오징어배 불빛을 외부 이미지 없이 Three.js 프로시저럴 3D로 구현했습니다.' },
+    { no: '01', title: '3D 바다·하늘과 해녀 IP', tags: ['Three.js', '맑음·흐림·해무·비·눈', 'sunrise-sunset'],
+      body: '해녀와 테왁이 떠 있는 3D 바다와 하늘에 실제 날씨 효과를 얹고, 명소 9곳을 구름·풍속·강수로 100점 만점 점수로 보여 줍니다.' },
+    { no: '02', title: 'AI GUIDE & NEARBY · 기상부터 주변 관광까지', tags: ['Claude Tool Use', '비짓제주 5km', 'TourAPI'],
+      body: '기상청·천문 시각·비짓제주 API를 통합해, Claude 에이전트가 촬영지를 추천하고 명소 반경 5km 내 관광지·음식점·행사를 한 번에 보여 줍니다.' },
     { no: '03', title: '한라산 1947 · 등반 날씨 판정기', tags: ['고도별 기상 예보', 'shared/hallasan.js', '공식 입산통제 링크'],
       body: '성판악·관음사·어리목·영실 4개 코스의 고도별 기온·풍속·강수를 좋음·주의·위험 3단계로 판정하고, 코스별 출발·하산 시각을 계산합니다.' },
   ]
@@ -121,11 +121,11 @@ function Slide2() {
 
 // 3. 라이브 시연: 실제 웹앱이 축소되어 도는 창 + 단계 카드 (양방향 연동)
 const LIVE_STEPS = [
-  { no: '01', title: '회원가입 · 로그인', desc: '계정을 만들고 로그인합니다', check: '계정별 분리', path: '/' },
-  { no: '02', title: 'HOME · 골든아워 3D', desc: '날씨 효과, 명소 비교, 빛 리포트', check: '날씨 토글 · 며칠 뒤 예보', path: '/' },
-  { no: '03', title: 'HALLA 1947', desc: '코스 선택, 등반 날씨 판정, 공식 안내', check: '3D 회전 · 등반 판정', path: '/halla' },
-  { no: '04', title: 'AI GUIDE', desc: '질문하면 도구를 골라 호출하고 답합니다', check: '도구 연속 호출 · 환각 방지', path: '/agent' },
-  { no: '05', title: 'NEARBY · SAVED', desc: '저장 후 새로고침해도 남아 있는지 확인', check: '비짓제주 저장 · 새로고침 유지', path: '/nearby' },
+  { no: '01', title: '회원가입 · 로그인', desc: '계정을 만들고 로그인합니다', check: '계정별 분리', guide: '로그인 후 즐겨찾기가 계정에 저장되는지 확인', path: '/' },
+  { no: '02', title: 'HOME · 골든아워 3D', desc: '날씨 효과, 명소 비교, 빛 리포트', check: '날씨 토글 · 며칠 뒤 예보', guide: '우측 상단 날씨 미리보기 토글과 아래 시간 바 조작', path: '/' },
+  { no: '03', title: 'HALLA 1947', desc: '코스 선택, 등반 날씨 판정, 공식 안내', check: '3D 회전 · 등반 판정', guide: '코스를 고르고 시간별 표의 주의·위험 칸 확인', path: '/halla' },
+  { no: '04', title: 'AI GUIDE', desc: '질문하면 도구를 골라 호출하고 답합니다', check: '도구 연속 호출 · 환각 방지', guide: "답변 위 '에이전트가 호출한 도구 · N회' 배지 확인", path: '/agent' },
+  { no: '05', title: 'NEARBY · SAVED', desc: '저장 후 새로고침해도 남아 있는지 확인', check: '비짓제주 저장 · 새로고침 유지', guide: '명소 저장 뒤 새로고침해도 남아 있는지 확인', path: '/nearby' },
 ]
 
 function Slide3() {
@@ -158,7 +158,7 @@ function Slide3() {
                   <strong>{st.title}</strong>
                   <em>{st.desc}</em>
                   <span className="live-meta">
-                    <small className="live-check">확인 포인트 · {st.check}</small>
+                    <small className="live-check">{active === i ? `시연 · ${st.guide}` : `확인 포인트 · ${st.check}`}</small>
                   </span>
                 </span>
               </button>
@@ -230,6 +230,10 @@ function Slide4() {
             <p className="bubble">2027년 3월 1일 성산일출봉 구름 예보 알려줘</p>
             <p className="case-ans">일출·일몰 시각만 안내하고, 구름과 날씨는 <b>예보 범위를 벗어나 판단할 수 없습니다</b>라고 답합니다. <em>숫자 날조 0%</em></p>
           </div>
+          <div className="ai-badges">
+            <span className="pill cyan">답변 위 '에이전트가 호출한 도구 · N회' 목록 표시</span>
+            <span className="pill amber">답변이 길면 빈 화면 대신 날짜를 나눠 다시 질문 안내</span>
+          </div>
         </div>
       </div>
     </div>
@@ -239,7 +243,7 @@ function Slide4() {
 // 5. IP · 기술: 3열 × 2행 벤토
 function Slide5() {
   const CARDS = [
-    { tag: '공공데이터 API 3종', title: '기상청 · 관광공사 · 비짓제주', body: '기상청 단기예보(하늘·강수확률), 한국관광공사 TourAPI(명소 사진·좌표), 비짓제주(주변 3·5·10km 관광지·음식점·행사)를 실데이터로 연동합니다.', pills: ['기상청', 'TourAPI', '비짓제주'] },
+    { tag: '공공데이터 API 3종', title: '기상청 · 관광공사 · 비짓제주', body: '기상청 단기예보(하늘·강수확률), 한국관광공사 TourAPI(명소 사진·좌표), 비짓제주(명소 반경 5km 내 관광지·음식점·행사)를 실데이터로 연동합니다.', pills: ['기상청', 'TourAPI', '비짓제주'] },
     { tag: 'Three.js 프로시저럴 3D', title: '외부 이미지 없이 코드로', body: '해·달·별자리·구름·파도·해녀와 테왁·한라산을 셰이더로 그리고, 맑음·흐림·해무·비·눈 날씨를 애니메이션으로 보여 줍니다.', pills: ['Three.js', 'Shader'] },
     { tag: 'React + Zustand', title: 'pages · components · store · api · three', body: 'Zustand로 전역 상태를 나누고 ToolSteps, ReportModal, HallaReportModal 같은 공용 컴포넌트를 재사용합니다.', pills: ['React', 'Zustand'] },
     { tag: 'Supabase DB · 계정 분리', title: 'favorites · favorite_places · chat_logs', body: '명소 즐겨찾기, 주변 장소, AI 대화를 로그인 계정별로 저장합니다. 비로그인 시 닉네임으로 구분하고 새로고침 뒤에도 유지합니다.', pills: ['Supabase', 'RLS'] },

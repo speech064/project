@@ -4,6 +4,7 @@ import { buildSilhouette } from './silhouettes'
 import { createDipper } from './dipper'
 import { createMeteors } from './meteors'
 import { createSeaLife } from './seaLife'
+import { createWeatherFx } from './weatherEffects'
 
 const D2R = Math.PI / 180
 const SUN_MAX_EL = 34 * D2R // 한낮에 해가 오르는 높이(화면 위쪽 안에 머물게)
@@ -231,6 +232,7 @@ export function createScene(canvas, { mobile }) {
   scene.add(starGroup)
   const dipper = createDipper(starGroup) // 북두칠성이 한 별씩 반짝
   const meteors = createMeteors(starGroup, { mobile, reduced }) // 가끔 떨어지는 별똥별
+  const wx = createWeatherFx(scene, { mobile, fog: true }) // 실제 날씨: 비·눈·안개 (weatherEffects.js)
 
   // 바다: 카메라 근처는 촘촘하고 멀수록 성긴 격자
   const seg = mobile ? 72 : 140
@@ -391,6 +393,8 @@ export function createScene(canvas, { mobile }) {
     skyU.uSunVis.value = 1 - 0.85 * ov * ov * (0.4 + 0.6 * smoothstep(4, 24, el / D2R)) // 일출·일몰 때는 구름이 많아도 해빛이 번지게
     skyU.uGlow.value = 1 - 0.68 * smoothstep(6, 36, el / D2R) // 해가 높을수록 후광을 줄여 눈부시지 않게
     const day = 1 - pal.night
+    const wxs = wx.update(dt, time, target.wx, cur.yaw, pal.horizon) // 날씨 효과 세기 (목표값을 천천히 따라감)
+    skyU.uSunVis.value *= 1 - 0.3 * wxs.overcast // 흐린 날에는 해빛이 약해짐
     seaU.uDeep.value.set(
       0.03 * (0.3 + 0.7 * day) + pal.horizon[0] * 0.17,
       0.11 * (0.3 + 0.7 * day) + pal.horizon[1] * 0.15,
@@ -408,7 +412,7 @@ export function createScene(canvas, { mobile }) {
     seaU.uTime.value = time
     const glint = (1 - smoothstep(0.05, 0.62, sunDir.y)) * smoothstep(-0.07, 0.02, sunDir.y) * (1 - pal.night) // 윤슬이 보이는 정도
     seaLife.update({ time, night: pal.night, facing, span: arcSpan(), glintAz: Math.atan2(sunDir.x, -sunDir.z), glint })
-    seaU.uAmp.value = clamp(0.18 + cur.wave * 0.28, 0.22, 0.9) // 실제 파도 높이가 클수록 조금 더 출렁
+    seaU.uAmp.value = clamp(0.18 + cur.wave * 0.28 + wxs.rain * 0.2 + wxs.wind * 0.012, 0.22, 1.1) // 파고가 클수록, 비·바람이 셀수록 더 출렁
 
     // 별: 밤에만, 구름이 많으면 가려짐
     starMat.opacity = pal.night * (1 - 0.45 * ov)
@@ -437,7 +441,7 @@ export function createScene(canvas, { mobile }) {
     for (const L of cloudLayers) {
       const want = Math.max(Math.round(L.min * calm * (mobile ? 0.7 : 1)), Math.round(((cur[L.key] ?? 20) / 100) * L.sprites.length * (1 - 0.6 * pal.night)))
       L.sprites.forEach((c, i) => {
-        c.az += c.speed * dt * (reduced ? 0.2 : 1)
+        c.az += c.speed * dt * (reduced ? 0.2 : 1) * (1 + wxs.wind * 0.05) // 바람이 셀수록 구름이 빨리 흐름
         if (c.az > AZ1) c.az = AZ0
         const ca = cur.yaw + c.az
         c.s.position.set(Math.sin(ca) * Math.cos(c.el) * c.d, Math.sin(c.el) * c.d, -Math.cos(ca) * Math.cos(c.el) * c.d)
@@ -449,7 +453,7 @@ export function createScene(canvas, { mobile }) {
         const lit = Math.pow(Math.max(c.dir.dot(sunDir), 0), 3) * (1 - pal.night) // 해 쪽 구름은 노을빛
         const w = 0.6 + 0.3 * smoothstep(8, 30, el / D2R) // 해가 높을수록 더 하얗게
         const base = [lerp(pal.horizon[0], 1, w), lerp(pal.horizon[1], 1, w), lerp(pal.horizon[2], 1, w)]
-        const dim = 0.18 + 0.82 * day
+        const dim = (0.18 + 0.82 * day) * (1 - 0.22 * wxs.overcast) // 흐리면 구름이 젖은 회색빛으로
         c.s.material.color.setRGB(
           lerp(base[0], pal.sun[0], lit * 0.8) * dim, lerp(base[1], pal.sun[1], lit * 0.7) * dim, lerp(base[2], pal.sun[2], lit * 0.5) * dim,
           THREE.SRGBColorSpace,
@@ -498,7 +502,7 @@ export function createScene(canvas, { mobile }) {
       placeSilhouette()
     },
     dispose() {
-      seaLife.dispose(); dipper.dispose(); meteors.dispose()
+      seaLife.dispose(); dipper.dispose(); meteors.dispose(); wx.dispose()
       renderer.setAnimationLoop(null)
       scene.traverse((o) => { o.geometry?.dispose?.(); o.material?.dispose?.() })
       tex.dispose()

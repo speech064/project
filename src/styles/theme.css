@@ -757,3 +757,10 @@ body:has(.halla-hero) { background: #030407; }
 
 /* 답변 속 공식 누리집 링크: 본문과 같은 글씨색에 밑줄 */
 .msg .ln a { color: inherit; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+
+/* 날씨 미리보기 토글 (테스트용, 화면 오른쪽 아래) */
+.wx-preview { position: fixed; right: 14px; top: 66px; z-index: 40; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: calc(100vw - 28px); padding: 5px 6px; border-radius: 50px; background: rgba(12, 18, 30, .42); backdrop-filter: blur(10px); color: #fff; font: 500 11.5px var(--sans); }
+.wx-preview .wx-k { padding: 0 6px 0 8px; opacity: .85; }
+.wx-preview button { border: 0; background: transparent; color: #fff; font: inherit; padding: 4px 8px; border-radius: 50px; opacity: .72; }
+.wx-preview button:hover { opacity: 1; background: rgba(255, 255, 255, .14); }
+.wx-preview button.on { opacity: 1; background: #fff; color: #0b2a47; }

@@ -79,6 +79,10 @@ export const useAppStore = create(
         return user ? q.eq('user_id', user.id) : q.eq('nickname', nickname || '익명') // 로그인 전: 예전처럼 닉네임으로 (로그인 계정의 행은 RLS 가 숨김)
       },
 
+      // 날씨 미리보기(테스트용): null 이면 실제 날씨, 아니면 'clear' | 'cloudy' | 'fog' | 'rain' | 'snow'
+      wxPreview: null,
+      setWxPreview: (wxPreview) => set({ wxPreview }),
+
       nickname: '',
       setNickname: (nickname) => { set({ nickname: nickname.trim() }); get().loadFavorites(); get().loadPlaceFavs(); get().loadChatLogs() },
 

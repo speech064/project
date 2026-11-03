@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { createWeatherFx } from './weatherEffects'
 
 // HALLA 1947 — 어두운 배경 위의 3D 한라산. 코스를 고르면 카메라가 다가가고 등산로가 빛나는 선으로 그려짐.
 // 1 단위 = 1km (세로는 보기 좋게 VS 배 과장)
@@ -168,6 +169,10 @@ export function createHallaScene(host, trails) {
   }
   const ro = new ResizeObserver(resize); ro.observe(host); resize()
 
+  // 정상 쪽 실제 날씨(비·눈·안개·흐림)를 카메라와 산 사이에 보여 줌. 안개는 이 장면이 이미 쓰고 있어서 맡기지 않음
+  const wx = createWeatherFx(scene, { mobile: false, fog: false, zc: 20 })
+  let wxTarget = { kind: 'clear', wind: 2, wave: 0.6 }
+
   const clock = new THREE.Clock()
   let raf = 0, intro = 0, shift = 0
   const frame = () => {
@@ -195,6 +200,7 @@ export function createHallaScene(host, trails) {
       c.position.x += c.userData.speed * dt
       if (c.position.x > 24) c.position.x = -24
     }
+    wx.update(dt, t, wxTarget)
 
     if (active) {
       const l = lines[active]
@@ -213,8 +219,9 @@ export function createHallaScene(host, trails) {
 
   return {
     setTrail,
+    setWeather(w) { wxTarget = w ?? { kind: 'clear', wind: 2, wave: 0.6 } },
     dispose() {
-      cancelAnimationFrame(raf); ro.disconnect(); window.removeEventListener('pointermove', onMove)
+      cancelAnimationFrame(raf); ro.disconnect(); window.removeEventListener('pointermove', onMove); wx.dispose()
       scene.traverse((o) => { o.geometry?.dispose(); o.material?.dispose?.() })
       tex.dispose(); renderer.dispose(); renderer.domElement.remove()
     },

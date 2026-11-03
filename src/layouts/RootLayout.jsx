@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { NAV_ITEMS } from '../router'
 import SkyScene from '../components/SkyScene'
 import Footer from '../components/Footer'
+import WeatherPreview from '../components/WeatherPreview'
 import AuthModal from '../components/AuthModal'
 import { useReveal } from '../hooks/useReveal'
 import { useAppStore } from '../store/useAppStore'
@@ -88,6 +89,7 @@ export default function RootLayout() {
 
       {veil && <div key={veil.n} className={`route-veil${veil.dark ? ' dark' : ''}`} aria-hidden="true" />}
       {authOpen && !user && <AuthModal onClose={() => setAuthOpen(false)} />}
+      <WeatherPreview />
       <div className="toasts" role="status">
         {toasts.map((t) => <div key={t.id} className={`toast ${t.variant}`}>{t.message}</div>)}
       </div>

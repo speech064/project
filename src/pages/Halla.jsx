@@ -4,6 +4,8 @@ import { addDays, FORECAST_RANGE, isDateStr, todayKst } from '../../shared/date'
 import { TRAILS, trailById } from '../../shared/trails'
 import { fetchHallasan } from '../api/client'
 import { createHallaScene } from '../three/hallaScene'
+import { weatherKind } from '../three/weatherEffects'
+import { useAppStore } from '../store/useAppStore'
 import HallaRouteMap from '../components/HallaRouteMap'
 import Hallasan from './Hallasan'
 
@@ -20,6 +22,7 @@ export default function Halla() {
   const host = useRef(null)
   const scene = useRef(null)
   const [noGl, setNoGl] = useState(false) // WebGL 을 쓸 수 없는 브라우저
+  const wxPreview = useAppStore((s) => s.wxPreview)
   const [state, setState] = useState({ key: '', data: null, error: null })
   const key = trailId ? `${trailId}|${date}` : ''
   const loading = !!trailId && state.key !== key
@@ -53,6 +56,10 @@ export default function Halla() {
   const hour = date === today ? Math.min(20, Math.max(4, kstHour())) : 12
   const row = d?.goalHours.find((r) => r.hour === hour) ?? d?.goalHours[0]
   const level = d?.verdict.level
+
+  // 정상부 실제 날씨 → 3D 효과 (미리보기 토글이 켜져 있으면 그 값을 씀)
+  const kind = wxPreview ?? weatherKind({ cloud: row?.cloud, vis: row?.vis, precip: row?.precip, pop: row?.pop, temp: row?.temp })
+  useEffect(() => { scene.current?.setWeather({ kind, wind: row?.wind ?? 2, wave: 0.6 }) }, [kind, row?.wind])
 
   return (
     <>

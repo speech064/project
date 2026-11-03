@@ -73,10 +73,10 @@ export default function RootLayout() {
             {user ? (
               <>
                 <span className="auth-hi">Hi, {user.displayName}</span>
-                <button type="button" className="auth-btn" onClick={signOut}>Log out</button>
+                <button type="button" className="auth-btn" onClick={signOut}>LOG OUT</button>
               </>
             ) : (
-              <button type="button" className="auth-btn" onClick={() => setAuthOpen(true)}>Log in</button>
+              <button type="button" className="auth-btn" onClick={() => setAuthOpen(true)}>LOG IN</button>
             )}
           </div>
         </header>

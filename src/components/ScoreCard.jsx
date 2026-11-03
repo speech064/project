@@ -1,6 +1,7 @@
 import { CLOUD_TABLE, ADJUST, photoScore } from '../../shared/score'
 import { hm } from '../../shared/date'
 import { shootingTip } from '../lib/tips'
+import { weatherAt } from '../lib/solar'
 import Lines from './Lines'
 
 // 일출·일몰 시각의 구름·날씨로 계산한 자체 추천 점수 + 계산 기준 공개
@@ -21,7 +22,8 @@ export default function ScoreCard({ weather, sun, weatherErr, sunErr, loading, e
   const focusRow = focus && at(focus.min)
   const kma = focusRow?.kma
   const tip = focus?.result && shootingTip({
-    evKo: focus.kind, time: focus.time, cloud: Math.round(focusRow.cloud), wind: focusRow.wind,
+    // 구름양 카드와 같은 값(분 단위 보간)을 써서 팁과 카드가 어긋나지 않게 한다
+    evKo: focus.kind, time: focus.time, cloud: Math.round(weatherAt(weather, focus.min)?.total ?? focusRow.cloud), wind: focusRow.wind,
     rain: !!kma && ((kma.ptyLabel && kma.ptyLabel !== '없음') || (kma.pop ?? 0) >= 60),
   })
 

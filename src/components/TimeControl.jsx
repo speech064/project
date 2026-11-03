@@ -23,7 +23,7 @@ export default function TimeControl() {
   const sun = useAppStore((s) => s.sun)
   const spotId = useAppStore((s) => s.spotId)
   const date = useAppStore((s) => s.date)
-  const [playing, setPlaying] = useState(false)
+  const [playing, setPlaying] = useState(true) // 처음 들어오면 하루가 자동으로 재생됨
   const raf = useRef(0)
 
   useEffect(() => {

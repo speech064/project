@@ -5,7 +5,7 @@ import { todayKst, addDays, FORECAST_RANGE } from '../shared/date.js'
 import { RUN, TOOLS, summarize } from '../server/tools.js'
 import { trailById } from '../shared/trails.js'
 
-const MODEL = 'claude-haiku-5-5'
+const MODEL = 'claude-sonnet-5-5'
 const MAX_TURNS = 8
 
 // 주변 장소 도구를 불렀으면, 그 좌표가 어느 명소인지와 찾은 분류를 돌려줌 → 화면에서 "주변 탐색에서 더 찾아보기"로 연결

@@ -38,7 +38,7 @@ html { scroll-behavior: smooth; }
 html, body { margin: 0; }
 html { overflow-x: hidden; }
 body { overflow-x: hidden; overflow-x: clip; } /* clip 을 지원하면 body 가 스크롤 컨테이너가 되지 않아 휠이 막히지 않음 */
-body { background: #05060c; color: var(--t); font: 400 17px/1.7 var(--sans); word-break: keep-all; -webkit-font-smoothing: antialiased; }
+body { background: var(--bg); color: var(--t); font: 400 17px/1.7 var(--sans); word-break: keep-all; -webkit-font-smoothing: antialiased; }
 button, input { font: inherit; color: inherit; }
 button { cursor: pointer; }
 a { color: inherit; }
@@ -819,4 +819,27 @@ body:has(.halla-hero) { background: #030407; }
   .place-body h3, .place-body .name { font-size: 15px; }
   .place .intro, .place .addr { font-size: 12px; }
   .place-act { gap: 6px; }
+}
+
+/* 모바일 3차 정리: 시간 바 축소, 한라산 코스 버튼 2열, 검은 여백 제거, 주변 탐색 카드 간소화 */
+@media (max-width: 640px) {
+  .timebar { padding: 8px 10px 6px; bottom: 12px; }
+  .timebar-top { gap: 6px; margin-bottom: 6px; }
+  .timebar .play { width: 34px; height: 34px; }
+  .timebar .play svg, .timebar .play i { width: 12px; height: 12px; }
+  .timebar .clock { font-size: 22px; }
+  .timebar .clock small { font-size: 10px; }
+  .timebar .presets { gap: 4px; }
+  .timebar .presets button { padding: 4px 7px; font-size: 10px; }
+  .timebar .slider { height: 14px; }
+  .timebar .ticks { font-size: 9px; margin-top: 2px; }
+
+  .halla-courses { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: min(300px, calc(100% - 32px)); }
+  .halla-courses button { min-height: 40px; padding: 0 10px; font-size: 13px; }
+  .hz-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: min(300px, 100%); margin: 0 auto; }
+  .hz-chip { min-height: 40px; padding: 6px 10px; font-size: 13.5px; }
+
+  .place-img, .place .intro { display: none; }
+  .place-body { padding: 10px 12px 12px; }
+  .place-act button, .place-act a { height: 30px; padding: 0 10px; font-size: 11.5px; }
 }

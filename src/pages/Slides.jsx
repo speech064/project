@@ -121,7 +121,7 @@ function Slide2() {
 
 // 3. 라이브 시연: 실제 웹앱이 축소되어 도는 창 + 단계 카드 (양방향 연동)
 const LIVE_STEPS = [
-  { no: '01', title: '회원가입 · 로그인', desc: '계정을 만들고 로그인합니다', check: '계정별 분리', guide: '로그인 후 즐겨찾기가 계정에 저장되는지 확인', path: '/' },
+  { no: '01', title: '회원가입 · 로그인', desc: '계정을 만들고 로그인합니다', check: '계정별 분리', guide: '로그인 후 즐겨찾기가 계정에 저장되는지 확인', path: '/?login=1' },
   { no: '02', title: 'HOME · 골든아워 3D', desc: '날씨 효과, 명소 비교, 빛 리포트', check: '날씨 토글 · 며칠 뒤 예보', guide: '우측 상단 날씨 미리보기 토글과 아래 시간 바 조작', path: '/' },
   { no: '03', title: 'HALLA 1947', desc: '코스 선택, 등반 날씨 판정, 공식 안내', check: '3D 회전 · 등반 판정', guide: '코스를 고르고 시간별 표의 주의·위험 칸 확인', path: '/halla' },
   { no: '04', title: 'AI GUIDE', desc: '질문하면 도구를 골라 호출하고 답합니다', check: '도구 연속 호출 · 환각 방지', guide: "답변 위 '에이전트가 호출한 도구 · N회' 배지 확인", path: '/agent' },
@@ -130,7 +130,7 @@ const LIVE_STEPS = [
 
 function Slide3() {
   const [active, setActive] = useState(0)
-  const [path, setPath] = useState('/')
+  const [path, setPath] = useState(LIVE_STEPS[0].path)
   const frame = useRef(null)
   const pick = (i) => { setActive(i); setPath(LIVE_STEPS[i].path) }
   return (
@@ -139,7 +139,7 @@ function Slide3() {
         <div className="live glass">
           <div className="live-bar">
             <span className="dots"><i /><i /><i /></span>
-            <span className="live-url">GOLDEN HOUR{path === '/' ? '' : path}</span>
+            <span className="live-url">GOLDEN HOUR{path.split("?")[0] === "/" ? "" : path.split("?")[0]}</span>
           </div>
           <div className="live-frame">
             <iframe ref={frame} src={path} title="라이브 시연 화면" onLoad={() => { try { frame.current?.contentWindow?.scrollTo(0, 0) } catch { /* 같은 사이트가 아니면 건너뜀 */ } }} />

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useSearchParams } from 'react-router-dom'
 import { NAV_ITEMS } from '../router'
 import SkyScene from '../components/SkyScene'
 import Footer from '../components/Footer'
@@ -14,7 +14,12 @@ export default function RootLayout() {
   const signOut = useAppStore((s) => s.signOut)
   const [authOpen, setAuthOpen] = useState(false)
   const [glass, setGlass] = useState('') // '' | 'dark' | 'light'
+  const [params] = useSearchParams()
   const { pathname } = useLocation()
+  // 발표 3번 슬라이드의 01(로그인) 시연용: /?login=1 로 열면 로그인 창이 떠 있는 상태로 시작
+  useEffect(() => {
+    if (params.get('login') === '1') setAuthOpen(true)
+  }, [params])
   const plain = pathname === '/nearby' || pathname === '/saved' // 3D 장면 없이 보는 탭
   const halla = pathname === '/halla' // 자체 3D 장면(HALLA 1947)을 쓰는 탭
   useReveal()

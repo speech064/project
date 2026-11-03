@@ -82,6 +82,9 @@ export const useAppStore = create(
       // 날씨 미리보기(테스트용): null 이면 실제 날씨, 아니면 'clear' | 'cloudy' | 'fog' | 'rain' | 'snow'
       wxPreview: null,
       setWxPreview: (wxPreview) => set({ wxPreview }),
+      // AI 가이드에서 주변 탐색으로 넘어갈 때 전할 명소와 분류 (주변 탐색 화면이 한 번 읽고 지움)
+      nearbyHint: null,
+      setNearbyHint: (nearbyHint) => set({ nearbyHint }),
 
       nickname: '',
       setNickname: (nickname) => { set({ nickname: nickname.trim() }); get().loadFavorites(); get().loadPlaceFavs(); get().loadChatLogs() },
@@ -223,7 +226,7 @@ export const useAppStore = create(
         set({ messages: [...msgs, { role: 'user', text }], chatLoading: true })
         try {
           const r = await askAgent(text, history)
-          set({ messages: [...get().messages, { role: 'assistant', text: r.answer, steps: r.steps, focus: r.focus, hallasan: r.hallasan }] })
+          set({ messages: [...get().messages, { role: 'assistant', text: r.answer, steps: r.steps, focus: r.focus, hallasan: r.hallasan, nearby: r.nearby }] })
           if (r.focus) {
             await get().focus(r.focus)
             const name = getSpot(r.focus.spotId)?.name

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { trailById } from '../../shared/trails'
 import { hm } from '../../shared/date'
 import { getSpot } from '../../shared/spots'
@@ -18,6 +19,8 @@ export default function Agent() {
   const [reportOpen, setReportOpen] = useState(false)
   const [reportDates, setReportDates] = useState(null) // 사용자가 비교한 날짜들 (2개 이상일 때만)
   const [hallaReport, setHallaReport] = useState(null) // 한라산 리포트 창에 띄울 { trail, date }
+  const [pendingNearby, setPendingNearby] = useState(null) // 주변 탐색으로 넘어가기 전 확인 창에 쓸 { spotId, category }
+  const navigate = useNavigate()
   const hello = greeting({ spot: getSpot(spotId), date, w: eventWeather({ spot: getSpot(spotId), sun, weather }), name: user?.displayName })
   const examples = exampleQuestions({ sun }) // 한국 시간 기준 지금에 맞는 예시 질문
   const [input, setInput] = useState('')
@@ -32,6 +35,15 @@ export default function Agent() {
     const s = useAppStore.getState()
     const loaded = s.spotId === focus.spotId && s.date === focus.date && (s.sun || s.sunLoading) && (s.weather || s.weatherLoading)
     if (!loaded) focusScene(focus) // 이미 불러온 값(답변 직후)이 있으면 다시 요청하지 않음
+  }
+
+  // 확인 후 주변 탐색 탭으로 이동: 그 명소를 고르고, 물어본 분류로 맞춰 둠
+  const goNearby = () => {
+    const n = pendingNearby
+    setPendingNearby(null)
+    useAppStore.getState().setNearbyHint({ category: n.category })
+    useAppStore.getState().selectSpot(n.spotId)
+    navigate('/nearby')
   }
 
   const ask = (text) => {
@@ -65,6 +77,9 @@ export default function Agent() {
               {m.focus && getSpot(m.focus.spotId) && (
                 <button type="button" className="go" onClick={() => openReport(m.focus)}>{getSpot(m.focus.spotId).name} 빛 리포트 보기 ↗</button>
               )}
+              {m.nearby && getSpot(m.nearby.spotId) && (
+                <button type="button" className="go" onClick={() => setPendingNearby(m.nearby)}>{getSpot(m.nearby.spotId).name} 주변 {m.nearby.category || '장소'} 더 찾아보기 ↗</button>
+              )}
               {m.hallasan && trailById(m.hallasan.trail) && (
                 <button type="button" className="go" onClick={() => setHallaReport(m.hallasan)}>{trailById(m.hallasan.trail).name} 한라산 리포트 보기 ↗</button>
               )}
@@ -79,6 +94,17 @@ export default function Agent() {
         </form>
       </div>
       {reportOpen && <ReportModal dates={reportDates} onClose={() => setReportOpen(false)} />}
+      {pendingNearby && (
+        <div className="report-overlay" onMouseDown={(e) => e.target === e.currentTarget && setPendingNearby(null)}>
+          <div className="nearby-ask" role="dialog" aria-modal="true" aria-label="주변 탐색으로 이동">
+            <p>주변 탐색에서 더 찾아볼까요?</p>
+            <div className="nearby-ask-btns">
+              <button type="button" onClick={() => setPendingNearby(null)}>취소</button>
+              <button type="button" className="primary" onClick={goNearby}>이동</button>
+            </div>
+          </div>
+        </div>
+      )}
       {hallaReport && <HallaReportModal trail={hallaReport.trail} date={hallaReport.date} onClose={() => setHallaReport(null)} />}
     </section>
   )

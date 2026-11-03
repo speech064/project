@@ -41,6 +41,16 @@ export default function Nearby() {
 
   useEffect(() => { setCategory('전체'); setShown({}) }, [spotId])
 
+  // AI 가이드에서 넘어온 경우: 그 명소 주변 목록을 받은 뒤, 물어본 분류(음식점·관광지·행사 등)로 바로 맞춤
+  const nearbyHint = useAppStore((s) => s.nearbyHint)
+  const setNearbyHint = useAppStore((s) => s.setNearbyHint)
+  useEffect(() => {
+    if (!nearbyHint || !state.data) return
+    const hit = nearbyHint.category ? state.data.categories?.find((c) => c.label.includes(nearbyHint.category)) : null
+    setCategory(hit ? hit.label : '전체')
+    setNearbyHint(null)
+  }, [nearbyHint, state.data, setNearbyHint])
+
   const all = useMemo(() => state.data?.items ?? [], [state.data])
   const categories = useMemo(() => [...(state.data?.categories ?? [])].sort((a, b) => rank(a.label) - rank(b.label)), [state.data])
   // 태그는 지금 보이는 모든 장소에서 많이 쓰인 순서로 고름 (많이 쓰인 태그일수록 어느 장소에서나 비교하기 쉬워서)

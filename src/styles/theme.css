@@ -864,3 +864,10 @@ body:has(.halla-hero) { background: #030407; }
 html { scrollbar-width: none; }
 html::-webkit-scrollbar { display: none; }
 
+
+/* AI 가이드 → 주변 탐색 이동 전 확인 상자 */
+.nearby-ask { width: min(340px, calc(100vw - 40px)); padding: 22px 22px 18px; border-radius: 18px; background: #fff; color: var(--ink); box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .45); text-align: center; }
+.nearby-ask p { margin: 0 0 18px; font: 600 16px/1.5 var(--sans); }
+.nearby-ask-btns { display: flex; gap: 10px; justify-content: center; }
+.nearby-ask-btns button { min-width: 96px; height: 40px; padding: 0 16px; border-radius: 50px; border: 1px solid var(--line); background: #fff; color: var(--ink); font: 600 14px var(--sans); }
+.nearby-ask-btns button.primary { background: var(--acc); border-color: var(--acc); color: #fff; }

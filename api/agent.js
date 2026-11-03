@@ -8,6 +8,18 @@ import { trailById } from '../shared/trails.js'
 const MODEL = 'claude-haiku-5-5'
 const MAX_TURNS = 8
 
+// 주변 장소 도구를 불렀으면, 그 좌표가 어느 명소인지와 찾은 분류를 돌려줌 → 화면에서 "주변 탐색에서 더 찾아보기"로 연결
+import { readySpots as spotsForNearby } from '../shared/spots.js'
+export function nearbyFrom(steps) {
+  const calls = (steps ?? []).filter((s) => s.tool === 'list_nearby_places' && s.ok)
+  if (!calls.length) return null
+  const lat = Number(calls[0].args?.lat), lng = Number(calls[0].args?.lng)
+  const spot = spotsForNearby.find((s) => Math.abs(s.lat - lat) < 1e-4 && Math.abs(s.lng - lng) < 1e-4)
+  if (!spot) return null
+  const cats = [...new Set(calls.map((s) => String(s.args?.category ?? '').trim()))]
+  return { spotId: spot.id, category: cats.length === 1 ? cats[0] : '' } // 분류가 하나로 모이면 그 분류, 아니면 전체
+}
+
 // 답변 끝 태그: [[FOCUS spot=<id> date=YYYY-MM-DD event=sunrise|sunset dates=YYYY-MM-DD,YYYY-MM-DD]]  (dates 는 비교한 날짜들, 선택)
 const FOCUS_RE = /\[\[FOCUS\s+([^\]]*)\]\]/
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
@@ -93,6 +105,7 @@ ${CLOUD_TABLE.map((r, i) => `- ${i === 0 ? 0 : CLOUD_TABLE[i - 1].max}~${Math.mi
 2. list_nearby_places 를 그 좌표와 분류(음식점·카페·관광지·행사 등)로 호출한다.
 3. 답변은 도구 결과의 이름·분류·거리·주소만 말한다. 영업시간·평점·메뉴·가격은 데이터에 없으니 지어내지 않는다. 가게 이름으로 메뉴를 추측하지 않고, 목록에 없는 가게 이름은 쓰지 않는다.
 4. 결과가 없거나 정보가 없다고 나오면 그대로 알리고 NEARBY 탭을 안내한다.
+5. 주변 장소만 물었으면 [[FOCUS ...]] 태그를 붙이지 않는다. 일출·일몰 시각 추천도 함께 물었을 때만 붙인다.
 [한라산 등반 질문] (한라산·백록담·성판악·관음사·어리목·영실·등산·등반 이야기가 나오면 위 일출·일몰 명소 작업 순서 대신 이 순서를 쓴다)
 1. list_trails 로 코스를 얻는다. 코스를 말하지 않았으면 성판악 코스로 본다. 백록담 정상까지는 성판악·관음사만 갈 수 있고 어리목·영실은 윗세오름(1,700m)까지다.
 2. 도착 지점(goal)의 좌표·고도로 get_sun_times 와 get_mountain_weather 를 부른다. 날짜가 없으면 오늘로 본다.
@@ -154,7 +167,7 @@ export function createHandler(getClient) {
             console.error(`[agent] 빈 답변 (stop_reason: ${r.stop_reason})`)
             return res.status(200).json({ answer: '답변이 길어져서 끝까지 만들지 못했어요. 날짜를 하나씩 나눠서 다시 물어봐 주세요.', steps, focus: null, hallasan: null })
           }
-          return res.status(200).json({ answer: polish(answer), steps, focus, hallasan: hz.hallasan })
+          return res.status(200).json({ answer: polish(answer), steps, focus, hallasan: hz.hallasan, nearby: nearbyFrom(steps) })
         }
 
         messages.push({ role: 'assistant', content: r.content })

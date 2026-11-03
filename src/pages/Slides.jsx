@@ -76,15 +76,15 @@ function Slide2() {
   const SOLUTION = [
     { no: '01', title: '3D 바다·하늘과 해녀 IP', tags: ['Three.js', '맑음·흐림·해무·비·눈', 'sunrise-sunset'],
       body: '해녀와 테왁이 떠 있는 3D 바다와 하늘에 실제 날씨 효과를 얹고, 명소 9곳을 구름·풍속·강수로 100점 만점 점수로 보여 줍니다.' },
-    { no: '02', title: 'AI GUIDE & NEARBY · 기상부터 주변 관광까지', tags: ['Claude Tool Use', '비짓제주 5km', 'TourAPI'],
-      body: '기상청·천문 시각·비짓제주 API를 통합해, Claude 에이전트가 촬영지를 추천하고 명소 반경 5km 내 관광지·음식점·행사를 한 번에 보여 줍니다.' },
-    { no: '03', title: '한라산 1947 · 등반 날씨 판정기', tags: ['고도별 기상 예보', 'shared/hallasan.js', '공식 입산통제 링크'],
+    { no: '02', title: '한라산 1947 · 등반 날씨 판정기', tags: ['고도별 기상 예보', 'shared/hallasan.js', '공식 입산통제 링크'],
       body: '성판악·관음사·어리목·영실 4개 코스의 고도별 기온·풍속·강수를 좋음·주의·위험 3단계로 판정하고, 코스별 출발·하산 시각을 계산합니다.' },
+    { no: '03', title: 'AI GUIDE & NEARBY · 기상부터 주변 관광까지', tags: ['Claude Tool Use', '비짓제주 5km', 'TourAPI'],
+      body: '기상청·천문 시각·비짓제주 API를 통합해, Claude 에이전트가 촬영지를 추천하고 명소 반경 5km 내 관광지·음식점·행사를 한 번에 보여 줍니다.' },
   ]
   const PROBLEM = [
     { icon: '🌫️', title: '변덕스러운 제주의 구름과 해무', body: '일출·일몰 시각만 알고 갔다가 먹구름만 보고 돌아옵니다.' },
-    { icon: '🧭', title: '흩어진 기상·관광 정보', body: '기상청, 천문 시각, 주변 관광지를 각각 따로 검색해야 합니다.' },
     { icon: '⛰️', title: '한라산 고지대 기상 악화', body: '해안가 날씨만 믿고 올라갔다가 백록담 강풍·안개로 통제되기도 합니다.' },
+    { icon: '🧭', title: '흩어진 기상·관광 정보', body: '기상청, 천문 시각, 주변 관광지를 각각 따로 검색해야 합니다.' },
   ]
   return (
     <div className="slide slide-s2n">

@@ -860,6 +860,6 @@ body:has(.halla-hero) { background: #030407; }
   .foot-sources { grid-template-columns: 1fr; gap: 22px; }
 }
 
-/* 홈에서만 스크롤바를 숨김 (Home 화면이 켜고 끔). 휠·터치 스크롤은 그대로 동작 */
-html.no-scrollbar { scrollbar-width: none; }
-html.no-scrollbar::-webkit-scrollbar { display: none; }
+/* 모든 화면에서 스크롤바를 숨김 (휠·터치·키보드 스크롤은 그대로 동작) */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }

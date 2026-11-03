@@ -781,3 +781,32 @@ body:has(.halla-hero) { background: #030407; }
 /* 호출한 도구 목록 접기·펼치기 버튼 */
 .steps .steps-toggle { border: 0; background: none; padding: 0; margin: 0 0 6px; color: var(--peach); font: 600 12px var(--sans); letter-spacing: .04em; text-align: left; }
 .steps .steps-toggle:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── 모바일 2차 정리: 한라산 탭 가로 넘침, 글자 크기, 애니메이션 바, 루트맵 숨김 (데스크톱은 그대로) ── */
+@media (max-width: 820px) {
+  .rm-mobile, .rm-desk { display: none !important; } /* 모바일은 3D 와 코스 선택만 */
+}
+@media (max-width: 640px) {
+  .hz { grid-template-columns: minmax(0, 1fr); }
+  .hz > *, .hz-hours, .hz-plan, .hz-trail, .hz-verdict, .hz-controls { min-width: 0; max-width: 100%; }
+  .hz-trail h2 { font-size: 20px; }
+  .hz-meta, .hz-elev { font-size: 13.5px; }
+  .hz-elev b { font-size: 16px; }
+  .hz-trail .muted, .hz-vbody .muted { font-size: 14px; }
+  .hz-chip { font-size: 14px; min-height: 42px; padding: 6px 14px; }
+  .hz-date label { min-width: 150px; font-size: 14px; }
+  .hz-vbody h2 { font-size: 18px; }
+  .hz-checks li { font-size: 14px; }
+  .hz-plan h2, .hz-hours h2 { font-size: 19px; }
+  .hz-plan-grid b { font-size: 20px; }
+  .hz-tile b { font-size: 19px; }
+  .hz-hours table { font-size: 14px; }
+  .hz-note, .hz-foot { font-size: 13px; }
+  .hz-verdict, .hz-hours, .hz-plan, .hz-trail { padding: 16px; }
+  .timebar { width: calc(100% - 28px); padding: 10px 12px 8px; bottom: 16px; }
+  .timebar-top { gap: 8px; margin-bottom: 8px; }
+  .timebar .play { width: 40px; height: 40px; }
+  .timebar .clock { font-size: 26px; }
+  .timebar .presets button { padding: 5px 8px; font-size: 11px; }
+  .timebar .ticks { font-size: 10px; }
+}

@@ -106,3 +106,24 @@
 .live-step strong { display: block; font-size: 14px; }
 .live-step em { display: block; font-style: normal; font-size: 12px; color: rgba(255, 255, 255, .7); margin-top: 2px; }
 .live-step.on { border-color: #FBBF24; box-shadow: 0 0 24px -6px rgba(251, 191, 36, .7); }
+
+/* 기획 배경 신규안 (Slide2New): 좌 PROBLEM 35% · 우 SOLUTION 65%, 높이 맞춤 */
+.slide-s2n { width: min(1380px, 88vw); gap: 12px; }
+.s2n-grid { display: grid; grid-template-columns: 35fr 65fr; gap: 16px; align-items: stretch; }
+.s2n-problem, .s2n-card { display: flex; flex-direction: column; gap: 14px; }
+.s2n-problem h3, .s2n-card h3 { font-size: clamp(1.05rem, 1.3vw, 1.2rem); line-height: 1.35; margin-top: 4px; }
+.s2n-problem p, .s2n-card p { font-size: clamp(.9rem, .98vw, .98rem); line-height: 1.55; }
+.s2n-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; flex: 1; align-content: space-between; }
+.s2n-list li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; }
+.s2n-list b { font-size: 1.6rem; line-height: 1.2; }
+.s2n-list strong { display: block; font-size: 1.05rem; line-height: 1.4; }
+.s2n-list p { margin: 4px 0 0; font-size: .95rem; line-height: 1.55; color: rgba(255, 255, 255, .8); }
+.s2n-solution { display: grid; gap: 12px; }
+.s2n-card { padding: clamp(14px, 1.6vw, 20px) clamp(16px, 1.8vw, 24px); gap: 8px; }
+.s2n-card { justify-content: space-between; }
+.s2n-card .num { font-size: 18px; }
+.s2n-card .pills { margin-top: auto; }
+.s2n-card .pill { font-size: .8rem; padding: 5px 11px; }
+@media (max-width: 760px) {
+  .s2n-grid { grid-template-columns: 1fr; }
+}

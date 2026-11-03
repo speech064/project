@@ -14,13 +14,14 @@ const BASE = { sunriseMin: 400, sunsetMin: 1080, solarNoon: 740, lat: 33.4, doy:
 const SCENES = [
   { minutes: 1090, total: 25, low: 10, mid: 15, high: 15, wave: 0.6, kind: 'clear' }, // 1 표지: 골든아워 노을
   { minutes: 430, total: 55, low: 25, mid: 35, high: 30, wave: 0.8, kind: 'cloudy' }, // 2 기획 배경: 구름 낀 아침
+  { minutes: 430, total: 55, low: 25, mid: 35, high: 30, wave: 0.8, kind: 'cloudy' }, // 2b 기획 배경(신규안): 같은 아침 하늘
   { minutes: 1050, total: 15, low: 5, mid: 10, high: 10, wave: 0.5, kind: 'clear' }, // 3 시연
   { minutes: 1230, total: 60, low: 40, mid: 40, high: 40, wave: 0.6, kind: 'fog' }, // 4 AI · 한라산 운해
   { minutes: 1380, total: 10, low: 5, mid: 5, high: 5, wave: 0.5, kind: 'clear' }, // 5 밤하늘
   { minutes: 375, total: 20, low: 10, mid: 10, high: 10, wave: 0.6, kind: 'clear' }, // 6 여명
 ]
 
-const CHAPTERS = ['표지', '기획 배경', '시연', 'AI 에이전트', 'IP · 기술', '마무리']
+const CHAPTERS = ['표지', '기획 배경', '기획 배경 (신규안)', '시연', 'AI 에이전트', 'IP · 기술', '마무리']
 
 function Slide1() {
   return (
@@ -64,6 +65,57 @@ function Slide2() {
           <span className="num">03</span>
           <h3>한라산 1947 · 등반 판정</h3>
           <p>성판악·관음사·어리목·영실 4개 코스의 정상부 날씨를 좋음·주의·위험으로 판정하고, 일출 산행 출발 시각을 계산합니다.</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// 기획 배경 신규안: 기존 Slide2 는 그대로 두고, 비교용으로 바로 뒤에 둠 (결과 보고 기존안 삭제 여부 결정)
+function Slide2New() {
+  const SOLUTION = [
+    { no: '01', title: '제주의 빛과 바다 · HOME', tags: ['기상청 단기예보', 'sunrise-sunset', 'shared/score.js'],
+      body: '명소 9곳의 구름·풍속·강수확률을 분석해 100점 만점 촬영 점수를 내고, 3D 태양·달·별의 방위각과 궤적을 보여 줍니다.' },
+    { no: '02', title: '해녀와 테왁 · 제주 IP의 3D 재해석', tags: ['Three.js', '맑음·흐림·해무·비·눈'],
+      body: '해녀와 테왁, 오름, 바다 파도, 별똥별과 오징어배 불빛을 외부 이미지 없이 Three.js 프로시저럴 3D로 구현했습니다.' },
+    { no: '03', title: '한라산 1947 · 등반 날씨 판정기', tags: ['고도별 기상 예보', 'shared/hallasan.js', '공식 입산통제 링크'],
+      body: '성판악·관음사·어리목·영실 4개 코스의 고도별 기온·풍속·강수를 좋음·주의·위험 3단계로 판정하고, 코스별 출발·하산 시각을 계산합니다.' },
+  ]
+  const PROBLEM = [
+    { icon: '🌫️', title: '변덕스러운 제주의 구름과 해무', body: '일출·일몰 시각만 알고 갔다가 먹구름만 보고 돌아옵니다.' },
+    { icon: '🧭', title: '흩어진 기상·관광 정보', body: '기상청, 천문 시각, 주변 관광지를 각각 따로 검색해야 합니다.' },
+    { icon: '⛰️', title: '한라산 고지대 기상 악화', body: '해안가 날씨만 믿고 올라갔다가 백록담 강풍·안개로 통제되기도 합니다.' },
+  ]
+  return (
+    <div className="slide slide-s2n">
+      <p className="slide-kicker s-item" style={{ '--i': 0 }}>기획 배경 · 신규안</p>
+      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(2.2rem, 3.6vw, 3.4rem)' }}>구름만 가득하면 <i>어떡하죠?</i></h2>
+      <div className="s2n-grid">
+        <div className="glass s2n-problem s-item" style={{ '--i': 2 }}>
+          <span className="num">PROBLEM</span>
+          <h3>제주 출사와 산행, 왜 늘 허탕을 칠까요?</h3>
+          <ul className="s2n-list">
+            {PROBLEM.map((p) => (
+              <li key={p.title}>
+                <b aria-hidden="true">{p.icon}</b>
+                <div><strong>{p.title}</strong><p>{p.body}</p></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="s2n-solution">
+          {SOLUTION.map((s, i) => (
+            <div key={s.no} className="glass s2n-card s-item" style={{ '--i': 3 + i }}>
+              <div>
+                <span className="num">{s.no}</span>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+              </div>
+              <div className="pills">
+                {s.tags.map((t) => <span key={t} className="pill cyan">{t}</span>)}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -196,7 +248,7 @@ function Slide6() {
   )
 }
 
-const SLIDES = [Slide1, Slide2, Slide3, Slide4, Slide5, Slide6]
+const SLIDES = [Slide1, Slide2, Slide2New, Slide3, Slide4, Slide5, Slide6]
 
 export default function Slides() {
   const [index, setIndex] = useState(0)
@@ -257,13 +309,13 @@ export default function Slides() {
   return (
     <main className="deck" onClick={(e) => { if (!e.target.closest('a, button, .live, .steps-col')) step(1) }}>
       <div className="deck-sky" ref={skyHost} />
-      {index === 3 && <div className="deck-halla" ref={hallaHost} />}
+      {index === 4 && <div className="deck-halla" ref={hallaHost} />}
       <div className="deck-vignette" />
       <div className="deck-stage" key={index}>
         <Current />
       </div>
       <div className="deck-hud">
-        <span>{String(index + 1).padStart(2, '0')} / 06 · {CHAPTERS[index]}</span>
+        <span>{String(index + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')} · {CHAPTERS[index]}</span>
         <div className="deck-dots">
           {SLIDES.map((_, i) => (
             <button key={i} type="button" className={i === index ? 'on' : ''} aria-label={`${i + 1}번 슬라이드`} onClick={(e) => { e.stopPropagation(); goTo(i) }} />

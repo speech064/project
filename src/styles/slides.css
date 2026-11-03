@@ -259,3 +259,32 @@
 .slide-ai-fit { gap: 14px; }
 .ai-grid { margin-top: 0; }
 .ai-grid .glass { padding: 16px 18px; }
+
+/* ── 3차 조정 ── */
+/* 영문·숫자 글꼴 통일 (제목 기본 글꼴과 code 기본 monospace 덮어쓰기) */
+.deck, .deck * { font-family: 'Pretendard Variable', Pretendard, sans-serif; }
+/* 숫자가 아래로 처지지 않도록 (4대, 3D, 3+2 등) */
+.deck { font-variant-numeric: lining-nums; }
+
+/* 텍스트 박스가 글에 비해 커 보이지 않도록 여백·알약 축소 */
+.deck .glass:not(.live) { padding: clamp(12px, 1.4vw, 18px); border-radius: 18px; }
+.deck .pill { padding: 5px 11px; font-size: .8rem; }
+.s2n-card .pill, .bento-card .pill { font-size: .78rem; padding: 4px 10px; }
+
+/* 4번 라이브 시연: 화면 정중앙 배치 */
+.slide.slide-live { align-self: center; margin-top: 0; }
+.slide.slide-live .live-row { height: 76vh; grid-template-columns: 70fr 30fr; }
+.side-col .live-head { margin-bottom: 4px; }
+
+/* 5번 AI: 6 TOOLS 상자를 오른쪽 높이에 맞춰 채우고, 함수명은 왼쪽 정렬·크게 */
+.ai-grid > .glass { display: flex; flex-direction: column; }
+.ai-grid .tool-grid { flex: 1; grid-auto-rows: 1fr; }
+.tool-card { justify-content: center; }
+.tool-card code, .chain-row code { font-size: 1rem; font-weight: 800; }
+.tool-card p, .chain-row { font-size: 1rem; }
+.tool-card code { text-align: left; }
+
+/* 7번 마무리: Thank you 키움 (인용문보다 작게) */
+.slide:has(> .quote) > .slide-kicker { font-size: clamp(1.5rem, 2.6vw, 2.3rem); letter-spacing: .14em; text-transform: none; }
+.slide.slide-live .live-row { height: 80vh; }
+.side-col .steps-col { gap: 6px; }

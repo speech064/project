@@ -764,3 +764,16 @@ body:has(.halla-hero) { background: #030407; }
 .wx-preview button { border: 0; background: transparent; color: #fff; font: inherit; padding: 4px 8px; border-radius: 50px; opacity: .72; }
 .wx-preview button:hover { opacity: 1; background: rgba(255, 255, 255, .14); }
 .wx-preview button.on { opacity: 1; background: #fff; color: #0b2a47; }
+
+/* ── 모바일(640px 이하) 정리: 상단 탭 간격, 날씨 토글 위치, 한라산 제목 크기 ── */
+@media (max-width: 640px) {
+  .head nav { justify-content: space-between; gap: 4px; width: 100%; }
+  .head nav a { font-size: 11.5px; letter-spacing: .03em; padding: 6px 0; }
+  .auth-btn { padding: 6px 12px; font-size: 11.5px; }
+  .wx-preview { top: 100px; left: 12px; right: 12px; justify-content: center; padding: 4px; font-size: 10.5px; }
+  .wx-preview .wx-k { padding: 0 4px; }
+  .wx-preview button { padding: 4px 6px; }
+  .picked .halla-title { top: 96px; left: 0; right: 0; text-align: center; transform: none; opacity: 1; }
+  .picked .halla-title h1 { font-size: clamp(40px, 12vw, 56px); }
+  .picked .halla-title p { font-size: 15px; }
+}

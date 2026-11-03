@@ -73,6 +73,12 @@
 .deck .glass h3 { color: #fff; }
 .deck .glass .num { color: #34D399; }
 
+/* 6번 슬라이드: QR 유리 카드 (hover 시 살짝 확대) */
+.qr-wrap { display: grid; justify-items: center; }
+.qr-card { display: grid; justify-items: center; gap: 10px; padding: 14px; border-radius: 20px; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .25); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: transform .4s cubic-bezier(.2, .7, .2, 1); }
+.qr-card:hover { transform: scale(1.08); }
+.qr-caption { margin: 0; font-size: 13px; letter-spacing: .04em; color: rgba(255, 255, 255, .8); }
+
 /* 3번 슬라이드: 라이브 시연 (실제 웹앱 축소 표시) */
 .slide-live { width: 94vw; max-width: none; gap: 12px; align-self: start; margin-top: 1vh; }
 .live-head { display: grid; gap: 4px; }
@@ -91,7 +97,7 @@
 .live-btns button:hover, .live-btns a:hover { background: rgba(255, 255, 255, .18); }
 .live-frame { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #0F172A; }
 .live-frame iframe { position: absolute; left: 0; top: 0; width: calc(100% / .75); height: calc(100% / .75); border: 0; transform: scale(.75); transform-origin: 0 0; background: #0F172A; }
-.steps-col { display: grid; gap: 10px; align-content: start; overflow: auto; }
+.steps-col { display: grid; gap: 8px; align-content: end; padding-top: 8vh; overflow: auto; }
 .live-step { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: center; text-align: left; padding: 12px 14px; border-radius: 16px; background: rgba(15, 23, 42, .45); border: 1px solid rgba(255, 255, 255, .14); color: #fff; cursor: pointer; transition: background .2s, border-color .2s, box-shadow .2s; }
 .live-step:hover { background: rgba(255, 255, 255, .1); }
 .live-step b { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #FB7185; }

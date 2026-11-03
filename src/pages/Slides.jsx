@@ -82,11 +82,8 @@ const LIVE_STEPS = [
 function Slide3() {
   const [active, setActive] = useState(0)
   const [path, setPath] = useState('/')
-  const [max, setMax] = useState(false)
   const frame = useRef(null)
   const pick = (i) => { setActive(i); setPath(LIVE_STEPS[i].path) }
-  // 새로고침: 슬라이드가 아니라 iframe 안의 페이지만 다시 불러옴 (즐겨찾기·대화 기록이 남는지 확인용)
-  const reload = () => { try { frame.current?.contentWindow?.location.reload() } catch { if (frame.current) frame.current.src = path } }
   return (
     <div className="slide slide-live">
       <div className="live-head s-item" style={{ '--i': 0 }}>
@@ -94,15 +91,10 @@ function Slide3() {
         <h2 className="slide-title" style={{ fontSize: 'clamp(28px, 3.6vw, 48px)' }}>이렇게 <i>동작합니다</i></h2>
       </div>
       <div className="live-row s-item" style={{ '--i': 1 }}>
-        <div className={`live glass${max ? ' max' : ''}`}>
+        <div className="live glass">
           <div className="live-bar">
             <span className="dots"><i /><i /><i /></span>
             <span className="live-url">GOLDEN HOUR{path === '/' ? '' : path}</span>
-            <div className="live-btns">
-              <button type="button" onClick={reload} aria-label="이 화면 새로고침">⟳ 새로고침</button>
-              <button type="button" onClick={() => setMax((m) => !m)}>{max ? '⤡ 축소' : '⤢ 크게 보기'}</button>
-              <a href={path} target="_blank" rel="noreferrer">사이트 열기 ↗</a>
-            </div>
           </div>
           <div className="live-frame">
             <iframe ref={frame} src={path} title="라이브 시연 화면" onLoad={() => { try { frame.current?.contentWindow?.scrollTo(0, 0) } catch { /* 같은 사이트가 아니면 건너뜀 */ } }} />
@@ -184,7 +176,7 @@ function Slide5() {
 
 function Slide6() {
   return (
-    <div className="slide" style={{ justifyItems: 'center', textAlign: 'center' }}>
+    <div className="slide" style={{ justifyItems: 'center', textAlign: 'center', gap: 'clamp(10px, 1.6vw, 18px)' }}>
       <p className="slide-kicker s-item" style={{ '--i': 0 }}>Thank you</p>
       <p className="quote s-item" style={{ '--i': 1 }}>Beyond the clouds,<br />chasing the light in Jeju.</p>
       <div className="cta-row s-item" style={{ '--i': 2 }}>
@@ -192,7 +184,12 @@ function Slide6() {
         <a className="cta ghost" href="https://github.com/speech064/project" target="_blank" rel="noreferrer">GitHub ↗</a>
       </div>
       <p className="slide-ko s-item" style={{ '--i': 3 }}>Q&amp;A</p>
-      <img className="s-item" style={{ '--i': 4, width: 170, height: 170, borderRadius: 14, background: '#fff', padding: 6 }} src="/images/qr.png" alt="배포 주소 QR 코드" />
+      <div className="qr-wrap s-item" style={{ '--i': 4 }}>
+        <div className="qr-card glass">
+          <img style={{ width: 170, height: 170, borderRadius: 12, background: '#fff', padding: 6, display: 'block' }} src="/images/qr.png" alt="배포 주소 QR 코드" />
+          <p className="qr-caption">📱 모바일로 바로 체험하기</p>
+        </div>
+      </div>
     </div>
   )
 }

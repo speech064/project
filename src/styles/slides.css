@@ -291,3 +291,26 @@
 
 /* 마무리 인용문만 기존 세리프 이탤릭 유지 */
 .deck .quote { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+/* ── 4차 조정 ── */
+/* 첫 화면(표지): 원래 세리프 제목·부제 */
+.slide:has(> .pills) .slide-title, .slide:has(> .pills) .slide-sub { font-family: 'Cormorant Garamond', serif; }
+.slide:has(> .pills) .slide-title i, .slide:has(> .pills) .slide-sub { font-style: italic; }
+/* 마무리: Thank you 를 인용문 가까이 */
+.slide:has(> .quote) > .slide-kicker { margin-bottom: -12px; }
+/* 라이브 시연: 우측 단계 글자 키우고 세로로 채움 */
+.side-col .steps-col { grid-auto-rows: 1fr; align-content: stretch; gap: 10px; }
+.side-col .live-step { padding: 10px 14px; }
+.side-col .live-step b { font-size: 28px; }
+.side-col .live-step strong { font-size: 20px; }
+.side-col .live-step em { font-size: 16px; }
+.side-col .live-check, .side-col .live-hint { font-size: 14px; }
+.slide.slide-live .live-row { height: 84vh; }
+.side-col .steps-col { gap: 8px; }
+.side-col .live-step { padding: 8px 14px; }
+.side-col .live-step em { font-size: 15px; }
+.side-col .steps-col { gap: 6px; }
+.side-col .live-step { padding: 6px 12px; }
+.side-col .live-step em { font-size: 14px; }
+.side-col .live-check, .side-col .live-hint { font-size: 13px; }
+.side-col .live-step strong { font-size: 19px; }

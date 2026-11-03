@@ -151,7 +151,7 @@ function Slide3() {
         <div className="side-col">
           <div className="live-head">
             <p className="slide-kicker">라이브 시연</p>
-            <h2 className="slide-title" style={{ fontSize: 'clamp(32px, 4vw, 56px)' }}>이렇게 <i>동작합니다</i></h2>
+            <h2 className="slide-title" style={{ fontSize: 'clamp(28px, 3.4vw, 46px)' }}>이렇게 <i>동작합니다</i></h2>
           </div>
           <div className="steps-col">
             {LIVE_STEPS.map((st, i) => (

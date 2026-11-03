@@ -39,9 +39,38 @@ void main() {
   gl_FragColor = vec4(uColor, a);
 }`
 
+// 해무·운해: 노이즈(fbm)로 만든 반투명 안개 덩어리. 텍스처 없이 셰이더 수학만 씀
+const MIST_VERT = `
+varying vec2 vUv;
+void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`
+const MIST_FRAG = `
+varying vec2 vUv;
+uniform float uTime, uOpacity, uWind, uSeed;
+uniform vec3 uColor;
+float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float vnoise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(h(i), h(i + vec2(1.0, 0.0)), f.x), mix(h(i + vec2(0.0, 1.0)), h(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+float fbm(vec2 p) {
+  float v = 0.0, a = 0.5;
+  for (int i = 0; i < 4; i++) { v += a * vnoise(p); p *= 2.03; a *= 0.5; }
+  return v;
+}
+void main() {
+  vec2 p = vUv * vec2(4.0, 1.6) + vec2(uTime * uWind * 0.03 + uSeed, uSeed * 0.37);
+  float d = fbm(p + vec2(fbm(p * 1.7 + uTime * 0.05), 0.0));
+  float a = smoothstep(0.40, 0.78, d);
+  vec2 e = abs(vUv - 0.5) * 2.0;
+  float edge = (1.0 - smoothstep(0.5, 1.0, e.x)) * (1.0 - smoothstep(0.5, 1.0, e.y));
+  gl_FragColor = vec4(uColor, a * edge * uOpacity);
+}`
+
 // zc: 날씨가 내리는 구간의 가운데 z (음수 = 바라보는 쪽 앞). fog: 장면 안개를 이 효과가 맡을지
-export function createWeatherFx(scene, { mobile = false, fog = false, zc = -24 } = {}) {
-  const S = { rain: 0, snow: 0, fog: 0, overcast: 0, wind: 2, wave: 0.6 } // 0~1 세기 (목표값을 따라감)
+// mist: 해무 덩어리를 둘지, mistZ: 해무가 떠 있는 z 범위, mistY: 높이 범위
+export function createWeatherFx(scene, { mobile = false, fog = false, zc = -24, mist = false, mistZ = [-150, -60], mistY = [0.4, 3.5] } = {}) {
+  const S = { rain: 0, snow: 0, fog: 0, overcast: 0, cloudy: 0, gray: 0, wind: 2, wave: 0.6 } // 0~1 세기 (목표값을 따라감)
   const group = new THREE.Group() // 바라보는 방향(yaw)에 맞춰 돌림
   scene.add(group)
 
@@ -73,6 +102,21 @@ export function createWeatherFx(scene, { mobile = false, fog = false, zc = -24 }
   // ── 안개 (장면 안개를 이 효과가 맡을 때만) ──
   const fogObj = fog ? new THREE.FogExp2(0x9fb0c0, 0) : null
   if (fogObj) scene.fog = fogObj
+
+  // ── 해무·운해 덩어리 (안개 날에만 보임) ──
+  const MISTS = mist ? (mobile ? 4 : 7) : 0
+  const mists = Array.from({ length: MISTS }, (_, i) => {
+    const mat = new THREE.ShaderMaterial({
+      vertexShader: MIST_VERT, fragmentShader: MIST_FRAG, transparent: true, depthWrite: false, side: THREE.DoubleSide,
+      uniforms: { uTime: { value: 0 }, uOpacity: { value: 0 }, uWind: { value: 2 }, uSeed: { value: i * 7.31 }, uColor: { value: new THREE.Color(0.7, 0.75, 0.8) } },
+    })
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(70 + rnd(0, 50), 16 + rnd(0, 10)), mat)
+    m.position.set(rnd(-70, 70), rnd(mistY[0], mistY[1]), rnd(mistZ[0], mistZ[1]))
+    m.visible = false
+    m.frustumCulled = false
+    group.add(m)
+    return { m, mat, base: rnd(0.6, 1), dir: Math.random() < 0.5 ? -1 : 1 }
+  })
 
   return {
     // t: { kind, wind(m/s), wave(m) }, yaw: 바라보는 방향, horizon: 지평선 하늘색 [r,g,b] (안개 색에 씀)
@@ -124,13 +168,30 @@ export function createWeatherFx(scene, { mobile = false, fog = false, zc = -24 }
 
       if (fogObj) {
         if (horizon) fogObj.color.setRGB(horizon[0], horizon[1], horizon[2], THREE.SRGBColorSpace)
-        fogObj.density = 0.0024 * S.fog + 0.0006 * (S.rain + S.snow)
+        fogObj.density = 0.006 * S.fog + 0.0006 * (S.rain + S.snow) // 안개: 멀리 있는 섬·수평선이 안개 색에 묻힘
+      }
+
+      // 해무: 안개 날에만 보이고, 바람에 따라 천천히 옆으로 흐르며 일렁임
+      S.cloudy += ((kind === 'cloudy' ? 1 : 0) - S.cloudy) * k
+      S.gray = Math.max(S.cloudy, S.fog)
+      for (const p of mists) {
+        const on = S.fog > 0.01
+        p.m.visible = on
+        if (!on) continue
+        p.mat.uniforms.uTime.value = time
+        p.mat.uniforms.uWind.value = wind
+        p.mat.uniforms.uOpacity.value = S.fog * 0.8 * p.base
+        if (horizon) p.mat.uniforms.uColor.value.setRGB(horizon[0] * 1.05, horizon[1] * 1.05, horizon[2] * 1.05)
+        p.m.position.x += p.dir * (0.6 + wind * 0.15) * dt
+        if (p.m.position.x > 80) p.m.position.x = -80
+        if (p.m.position.x < -80) p.m.position.x = 80
       }
       return S
     },
     dispose() {
       scene.remove(group)
       rainGeo.dispose(); rainMat.dispose(); snowGeo.dispose(); snowMat.dispose()
+      for (const p of mists) { p.m.geometry.dispose(); p.mat.dispose() }
       if (fogObj && scene.fog === fogObj) scene.fog = null
     },
   }

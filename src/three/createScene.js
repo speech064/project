@@ -61,7 +61,7 @@ const SEA_FRAG = `
 uniform vec3 uTop, uHorizon, uSunColor, uSunDir, uDeep, uCam, uShallow, uMidSea;
 uniform vec4 uIsl; // 섬 중심(x,z)과 가로 방향(x,z)
 uniform vec4 uMoon; // 달 방향(xyz)과 보이는 정도(w)
-uniform float uNight, uSunVis, uTime;
+uniform float uNight, uSunVis, uTime, uFogK;
 varying vec3 vWorld; varying vec3 vN;
 void main(){
   vec3 toCam = uCam - vWorld;
@@ -107,7 +107,7 @@ void main(){
   col = mix(col, uShallow * 1.18, lagoon * .55 * (1. - uNight));  // 섬 앞은 하와이 라군처럼 맑은 청록
   float surf = smoothstep(0., 2.5, front) * (1. - smoothstep(5., 13., front)) * inside * (.55 + .45 * sin(along * .9 + uTime * 1.3));
   col = mix(col, vec3(1.), surf * .6 * (1. - uNight * .8));      // 해안에 부서지는 하얀 파도
-  col = mix(col, uHorizon, 1. - exp(-dist * .0018));      // 먼 바다는 수평선 색으로
+  col = mix(col, uHorizon, 1. - exp(-dist * (.0018 + .02 * uFogK)));      // 먼 바다는 수평선 색으로 (안개 날에는 더 빨리 흐려져 수평선이 사라짐)
   gl_FragColor = vec4(col, 1.);
 }`
 
@@ -232,7 +232,7 @@ export function createScene(canvas, { mobile }) {
   scene.add(starGroup)
   const dipper = createDipper(starGroup) // 북두칠성이 한 별씩 반짝
   const meteors = createMeteors(starGroup, { mobile, reduced }) // 가끔 떨어지는 별똥별
-  const wx = createWeatherFx(scene, { mobile, fog: true }) // 실제 날씨: 비·눈·안개 (weatherEffects.js)
+  const wx = createWeatherFx(scene, { mobile, fog: true, mist: true }) // 실제 날씨: 비·눈·안개·해무 (weatherEffects.js)
 
   // 바다: 카메라 근처는 촘촘하고 멀수록 성긴 격자
   const seg = mobile ? 72 : 140
@@ -244,7 +244,7 @@ export function createScene(canvas, { mobile }) {
   }
   seaGeo.rotateX(-Math.PI / 2)
   const seaU = {
-    ...skyU, uTime: { value: 0 }, uAmp: { value: 0.7 }, uFreq: { value: 1 }, uDeep: { value: new THREE.Vector3() }, uCam: { value: new THREE.Vector3() },
+    ...skyU, uTime: { value: 0 }, uAmp: { value: 0.7 }, uFreq: { value: 1 }, uFogK: { value: 0 }, uDeep: { value: new THREE.Vector3() }, uCam: { value: new THREE.Vector3() },
     uShallow: { value: new THREE.Vector3() }, uMidSea: { value: new THREE.Vector3() }, uIsl: { value: new THREE.Vector4(0, -420, 1, 0) }, uMoon: { value: new THREE.Vector4(0, 0, -1, 0) },
   }
   const sea = new THREE.Mesh(seaGeo, new THREE.ShaderMaterial({ vertexShader: SEA_VERT, fragmentShader: SEA_FRAG, uniforms: seaU }))
@@ -395,6 +395,12 @@ export function createScene(canvas, { mobile }) {
     const day = 1 - pal.night
     const wxs = wx.update(dt, time, target.wx, cur.yaw, pal.horizon) // 날씨 효과 세기 (목표값을 천천히 따라감)
     skyU.uSunVis.value *= 1 - 0.3 * wxs.overcast // 흐린 날에는 해빛이 약해짐
+    // 흐림·안개: 하늘을 묵직한 잿빛으로 빼고, 해를 흐릿하게 가림 (바다의 햇빛 반사도 함께 줄어듦)
+    const G = wxs.gray, grey = new THREE.Vector3(lerp(0.55, 0.05, pal.night), lerp(0.6, 0.06, pal.night), lerp(0.64, 0.08, pal.night))
+    skyU.uTop.value.lerp(grey, G * 0.85)
+    skyU.uHorizon.value.lerp(grey, G * 0.85)
+    skyU.uSunVis.value *= 1 - 0.9 * G
+    seaU.uFogK.value = wxs.fog
     seaU.uDeep.value.set(
       0.03 * (0.3 + 0.7 * day) + pal.horizon[0] * 0.17,
       0.11 * (0.3 + 0.7 * day) + pal.horizon[1] * 0.15,
@@ -409,6 +415,7 @@ export function createScene(canvas, { mobile }) {
     })
     seaU.uShallow.value.set(...mixSea([0.10, 0.80, 0.68], [0.02, 0.07, 0.09]))
     seaU.uMidSea.value.set(...mixSea([0.04, 0.50, 0.62], [0.02, 0.06, 0.10]))
+    for (const key of ['uDeep', 'uShallow', 'uMidSea']) seaU[key].value.lerp(grey, G * 0.85) // 흐리면 바다도 납빛으로
     seaU.uTime.value = time
     const glint = (1 - smoothstep(0.05, 0.62, sunDir.y)) * smoothstep(-0.07, 0.02, sunDir.y) * (1 - pal.night) // 윤슬이 보이는 정도
     seaLife.update({ time, night: pal.night, facing, span: arcSpan(), glintAz: Math.atan2(sunDir.x, -sunDir.z), glint })
@@ -434,13 +441,13 @@ export function createScene(canvas, { mobile }) {
     // 실루엣 색: 노을빛이 번진 어두운 윤곽
     const haze = 0.18 + 0.5 * smoothstep(5, 30, el / D2R) // 낮엔 푸른 안개 속에 흐릿
     const dimI = 0.52 + 0.48 * smoothstep(3, 26, el / D2R)
-    paintIsland(pal.horizon, haze, day, dimI)
+    paintIsland(pal.horizon, Math.max(haze, 0.92 * wxs.fog), day, dimI) // 안개 날에는 섬이 안개 색에 묻힘
 
     // 구름: 맑은 날에도 평화로운 기본 구름이 천천히 흐르고, 구름양이 많으면 더 늘어남
     const calm = 1 - smoothstep(0.2, 0.6, pal.night) // 해가 지면 기본 구름을 서서히 치워 별이 잘 보이게
     const AZ0 = -60 * D2R, AZ1 = 60 * D2R // 시선 기준 좌우 60°
     for (const L of cloudLayers) {
-      const want = Math.max(Math.round(L.min * calm * (mobile ? 0.7 : 1)), Math.round(((cur[L.key] ?? 20) / 100) * L.sprites.length * (1 - 0.6 * pal.night)))
+      const want = Math.max(Math.round(L.min * calm * (mobile ? 0.7 : 1)), Math.round(((cur[L.key] ?? 20) / 100) * L.sprites.length * (1 - 0.6 * pal.night)), Math.round(L.sprites.length * 0.85 * wxs.gray)) // 흐리면 구름층이 하늘을 덮음
       L.sprites.forEach((c, i) => {
         c.az += c.speed * dt * (reduced ? 0.2 : 1) * (1 + wxs.wind * 0.05) // 바람이 셀수록 구름이 빨리 흐름
         if (c.az > AZ1) c.az = AZ0
@@ -449,20 +456,20 @@ export function createScene(canvas, { mobile }) {
         c.dir.copy(c.s.position).normalize()
         const edge = smoothstep(AZ0, AZ0 + 0.25, c.az) * smoothstep(AZ1, AZ1 - 0.25, c.az) // 양끝에서 서서히 나타나고 사라짐
         const grow = 0.9 + 0.25 * ov // 구름양이 많을수록 구름 덩어리가 조금 커짐
-        c.s.scale.set(c.sx * grow, c.sy * grow, 1)
+        c.s.scale.set(c.sx * grow * (1 + 0.7 * wxs.gray), c.sy * grow * (1 + 0.25 * wxs.gray), 1) // 흐리면 구름층이 넓고 납작하게 펼쳐짐
         c.a += ((i < want ? 1 : 0) - c.a) * (1 - Math.exp(-dt * 1.8))
         c.s.visible = c.a * edge > 0.01
         if (!c.s.visible) return
         const lit = Math.pow(Math.max(c.dir.dot(sunDir), 0), 3) * (1 - pal.night) // 해 쪽 구름은 노을빛
         const w = 0.6 + 0.3 * smoothstep(8, 30, el / D2R) // 해가 높을수록 더 하얗게
         const base = [lerp(pal.horizon[0], 1, w), lerp(pal.horizon[1], 1, w), lerp(pal.horizon[2], 1, w)]
-        const dim = (0.18 + 0.82 * day) * (1 - 0.22 * wxs.overcast) // 흐리면 구름이 젖은 회색빛으로
+        const dim = (0.18 + 0.82 * day) * (1 - 0.22 * wxs.overcast) * (1 - 0.4 * wxs.gray) // 흐리면 구름이 젖은 회색빛으로, 아랫면은 더 어둡게
         c.s.material.color.setRGB(
           lerp(base[0], pal.sun[0], lit * 0.8) * dim, lerp(base[1], pal.sun[1], lit * 0.7) * dim, lerp(base[2], pal.sun[2], lit * 0.5) * dim,
           THREE.SRGBColorSpace,
         )
         const title = Math.exp(-((c.az / 0.34) ** 2)) * Math.exp(-(((c.el / D2R - 15) / 11) ** 2)) // 제목·설명이 있는 화면 가운데
-        c.s.material.opacity = L.opacity * c.a * edge * (1 - 0.55 * pal.night) * (1 - 0.6 * title)
+        c.s.material.opacity = Math.min(1, L.opacity * c.a * edge * (1 - 0.55 * pal.night) * (1 - 0.6 * title) * (1 + 0.6 * wxs.gray))
       })
     }
 

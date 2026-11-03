@@ -170,7 +170,7 @@ export function createHallaScene(host, trails) {
   const ro = new ResizeObserver(resize); ro.observe(host); resize()
 
   // 정상 쪽 실제 날씨(비·눈·안개·흐림)를 카메라와 산 사이에 보여 줌. 안개는 이 장면이 이미 쓰고 있어서 맡기지 않음
-  const wx = createWeatherFx(scene, { mobile: false, fog: false, zc: 20 })
+  const wx = createWeatherFx(scene, { mobile: false, fog: false, zc: 20, mist: true, mistZ: [-20, 5], mistY: [1, 7] }) // 산 중턱 운해
   let wxTarget = { kind: 'clear', wind: 2, wave: 0.6 }
 
   const clock = new THREE.Clock()

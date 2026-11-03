@@ -108,7 +108,7 @@ export function createWeatherFx(scene, { mobile = false, fog = false, zc = -24, 
   const mists = Array.from({ length: MISTS }, (_, i) => {
     const mat = new THREE.ShaderMaterial({
       vertexShader: MIST_VERT, fragmentShader: MIST_FRAG, transparent: true, depthWrite: false, side: THREE.DoubleSide,
-      uniforms: { uTime: { value: 0 }, uOpacity: { value: 0 }, uWind: { value: 2 }, uSeed: { value: i * 7.31 }, uColor: { value: new THREE.Color(0.7, 0.75, 0.8) } },
+      uniforms: { uTime: { value: 0 }, uOpacity: { value: 0 }, uWind: { value: 0 }, uSeed: { value: i * 7.31 }, uColor: { value: new THREE.Color(0.7, 0.75, 0.8) } },
     })
     const m = new THREE.Mesh(new THREE.PlaneGeometry(70 + rnd(0, 50), 16 + rnd(0, 10)), mat)
     m.position.set(rnd(-70, 70), rnd(mistY[0], mistY[1]), rnd(mistZ[0], mistZ[1]))
@@ -168,7 +168,7 @@ export function createWeatherFx(scene, { mobile = false, fog = false, zc = -24, 
 
       if (fogObj) {
         if (horizon) fogObj.color.setRGB(horizon[0], horizon[1], horizon[2], THREE.SRGBColorSpace)
-        fogObj.density = 0.006 * S.fog + 0.0006 * (S.rain + S.snow) // 안개: 멀리 있는 섬·수평선이 안개 색에 묻힘
+        fogObj.density = 0.0042 * S.fog + 0.0006 * (S.rain + S.snow) // 안개: 멀리 있는 섬·수평선이 안개 색에 묻힘
       }
 
       // 해무: 안개 날에만 보이고, 바람에 따라 천천히 옆으로 흐르며 일렁임
@@ -178,13 +178,8 @@ export function createWeatherFx(scene, { mobile = false, fog = false, zc = -24, 
         const on = S.fog > 0.01
         p.m.visible = on
         if (!on) continue
-        p.mat.uniforms.uTime.value = time
-        p.mat.uniforms.uWind.value = wind
-        p.mat.uniforms.uOpacity.value = S.fog * 0.8 * p.base
+        p.mat.uniforms.uOpacity.value = S.fog * 0.45 * p.base
         if (horizon) p.mat.uniforms.uColor.value.setRGB(horizon[0] * 1.05, horizon[1] * 1.05, horizon[2] * 1.05)
-        p.m.position.x += p.dir * (0.6 + wind * 0.15) * dt
-        if (p.m.position.x > 80) p.m.position.x = -80
-        if (p.m.position.x < -80) p.m.position.x = 80
       }
       return S
     },

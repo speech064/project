@@ -14,65 +14,43 @@ const BASE = { sunriseMin: 400, sunsetMin: 1080, solarNoon: 740, lat: 33.4, doy:
 const SCENES = [
   { minutes: 1090, total: 25, low: 10, mid: 15, high: 15, wave: 0.6, kind: 'clear' }, // 1 표지: 골든아워 노을
   { minutes: 430, total: 55, low: 25, mid: 35, high: 30, wave: 0.8, kind: 'cloudy' }, // 2 기획 배경: 구름 낀 아침
-  { minutes: 430, total: 55, low: 25, mid: 35, high: 30, wave: 0.8, kind: 'cloudy' }, // 2b 기획 배경(신규안): 같은 아침 하늘
   { minutes: 1050, total: 15, low: 5, mid: 10, high: 10, wave: 0.5, kind: 'clear' }, // 3 시연
   { minutes: 1230, total: 60, low: 40, mid: 40, high: 40, wave: 0.6, kind: 'fog' }, // 4 AI · 한라산 운해
   { minutes: 1380, total: 10, low: 5, mid: 5, high: 5, wave: 0.5, kind: 'clear' }, // 5 밤하늘
   { minutes: 375, total: 20, low: 10, mid: 10, high: 10, wave: 0.6, kind: 'clear' }, // 6 여명
 ]
 
-const CHAPTERS = ['표지', '기획 배경', '기획 배경 (신규안)', '시연', 'AI 에이전트', 'IP · 기술', '마무리']
+const CHAPTERS = ['표지', '기획 배경', '시연', 'AI 에이전트', 'IP · 기술', '마무리']
+const KPI = [
+  { big: '9 SPOTS', title: '제주 일출·일몰 명소', body: '구름·풍속·강수 기반 100점 촬영 점수 비교' },
+  { big: '1947m', title: '한라산 4대 등반 코스', body: '고도별 기상 판정(좋음·주의·위험)과 출발 시각 계산' },
+  { big: '6 TOOLS', title: 'Claude AI 에이전트', body: '스스로 도구를 연속 호출하는 무환각(Zero-Hallucination) 설계' },
+  { big: '3+2 APIs', title: '공공데이터 · 실시간 3D', body: '기상청·관광공사·비짓제주 + Three.js 날씨 시뮬레이션' },
+]
 
+// 1. 표지
 function Slide1() {
   return (
-    <div className="slide">
+    <div className="slide slide-cover">
       <p className="slide-kicker s-item" style={{ '--i': 0 }}>제주 IP × 공공데이터 × AI 에이전트</p>
-      <h1 className="slide-title s-item" style={{ '--i': 1 }}>GOLDEN <i>HOUR</i></h1>
+      <h1 className="slide-title cover-title s-item" style={{ '--i': 1 }}>GOLDEN <i>HOUR</i></h1>
       <p className="slide-sub s-item" style={{ '--i': 2 }}>Beyond the clouds, chasing the light in Jeju.</p>
-      <p className="slide-ko s-item" style={{ '--i': 3 }}>오늘 어디서, 언제 찍을지 실제 날씨 데이터로 골라 주는 제주 일출·일몰 3D 사진 가이드</p>
-      <div className="pills s-item" style={{ '--i': 4 }}>
-        <span className="pill amber">🌊 3D 날씨 · 해녀 · 한라산</span>
-        <span className="pill coral">🤖 Claude 6-도구 에이전트</span>
-        <span className="pill cyan">📊 공공데이터 3종 · 실시간 판정</span>
+      <p className="slide-ko cover-ko s-item" style={{ '--i': 3 }}>오늘 어디서, 언제 찍을지 실제 날씨 데이터로 골라 주는 제주 일출·일몰 3D 사진 가이드</p>
+      <div className="kpi-bar s-item" style={{ '--i': 4 }}>
+        {KPI.map((k) => (
+          <div key={k.big} className="glass kpi-card">
+            <b>{k.big}</b>
+            <h3>{k.title}</h3>
+            <p>{k.body}</p>
+          </div>
+        ))}
       </div>
     </div>
   )
 }
 
+// 2. 기획 배경: 좌 PROBLEM 35% · 우 SOLUTION 65%
 function Slide2() {
-  return (
-    <div className="slide">
-      <p className="slide-kicker s-item" style={{ '--i': 0 }}>기획 배경</p>
-      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(32px, 4.6vw, 64px)' }}>구름만 가득하면 <i>어떡하죠?</i></h2>
-      <div className="bento">
-        <div className="glass s-item tall" style={{ '--i': 2 }}>
-          <span className="num">PROBLEM</span>
-          <h3>제주까지 사진 찍으러 갔는데</h3>
-          <p>일출·일몰을 기다리다 허탕 치는 일이 많고, 한라산은 정상 날씨가 나빠서 올라가지 못하기도 합니다.</p>
-          <div className="big">✕</div>
-        </div>
-        <div className="glass s-item" style={{ '--i': 3 }}>
-          <span className="num">01</span>
-          <h3>제주의 빛과 바다 · HOME</h3>
-          <p>명소 9곳의 구름·풍속·강수확률로 100점 만점 촬영 점수를 내고, 3D 태양·달·별 궤적으로 보여 줍니다.</p>
-        </div>
-        <div className="glass s-item" style={{ '--i': 4 }}>
-          <span className="num">02</span>
-          <h3>해녀와 테왁 IP</h3>
-          <p>제주 바다 문화를 상징하는 해녀와 테왁을 3D 바다 위에 올렸습니다.</p>
-        </div>
-        <div className="glass wide s-item" style={{ '--i': 5 }}>
-          <span className="num">03</span>
-          <h3>한라산 1947 · 등반 판정</h3>
-          <p>성판악·관음사·어리목·영실 4개 코스의 정상부 날씨를 좋음·주의·위험으로 판정하고, 일출 산행 출발 시각을 계산합니다.</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// 기획 배경 신규안: 기존 Slide2 는 그대로 두고, 비교용으로 바로 뒤에 둠 (결과 보고 기존안 삭제 여부 결정)
-function Slide2New() {
   const SOLUTION = [
     { no: '01', title: '제주의 빛과 바다 · HOME', tags: ['기상청 단기예보', 'sunrise-sunset', 'shared/score.js'],
       body: '명소 9곳의 구름·풍속·강수확률을 분석해 100점 만점 촬영 점수를 내고, 3D 태양·달·별의 방위각과 궤적을 보여 줍니다.' },
@@ -88,7 +66,7 @@ function Slide2New() {
   ]
   return (
     <div className="slide slide-s2n">
-      <p className="slide-kicker s-item" style={{ '--i': 0 }}>기획 배경 · 신규안</p>
+      <p className="slide-kicker s-item" style={{ '--i': 0 }}>기획 배경</p>
       <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(2.2rem, 3.6vw, 3.4rem)' }}>구름만 가득하면 <i>어떡하죠?</i></h2>
       <div className="s2n-grid">
         <div className="glass s2n-problem s-item" style={{ '--i': 2 }}>
@@ -122,15 +100,15 @@ function Slide2New() {
   )
 }
 
+// 3. 라이브 시연: 실제 웹앱이 축소되어 도는 창 + 단계 카드 (양방향 연동)
 const LIVE_STEPS = [
-  { no: '01', title: '회원가입 · 로그인', desc: '계정을 만들고 로그인합니다', path: '/' },
-  { no: '02', title: 'HOME · 골든아워 3D', desc: '날씨 효과, 명소 비교, 빛 리포트', path: '/' },
-  { no: '03', title: 'HALLA 1947', desc: '코스 선택, 등반 날씨 판정, 공식 안내', path: '/halla' },
-  { no: '04', title: 'AI GUIDE', desc: '질문하면 도구를 골라 호출하고 답합니다', path: '/agent' },
-  { no: '05', title: 'NEARBY · SAVED', desc: '저장 후 새로고침해도 남아 있는지 확인', path: '/nearby' },
+  { no: '01', title: '회원가입 · 로그인', desc: '계정을 만들고 로그인합니다', check: '계정별 분리', path: '/' },
+  { no: '02', title: 'HOME · 골든아워 3D', desc: '날씨 효과, 명소 비교, 빛 리포트', check: '날씨 토글 · 며칠 뒤 예보', path: '/' },
+  { no: '03', title: 'HALLA 1947', desc: '코스 선택, 등반 날씨 판정, 공식 안내', check: '3D 회전 · 등반 판정', path: '/halla' },
+  { no: '04', title: 'AI GUIDE', desc: '질문하면 도구를 골라 호출하고 답합니다', check: '도구 연속 호출 · 환각 방지', path: '/agent' },
+  { no: '05', title: 'NEARBY · SAVED', desc: '저장 후 새로고침해도 남아 있는지 확인', check: '비짓제주 저장 · 새로고침 유지', path: '/nearby' },
 ]
 
-// 3번 슬라이드: 실제 웹앱이 축소되어 도는 라이브 시연 창 + 단계 체크리스트 (양방향 연동)
 function Slide3() {
   const [active, setActive] = useState(0)
   const [path, setPath] = useState('/')
@@ -157,7 +135,14 @@ function Slide3() {
             {LIVE_STEPS.map((st, i) => (
               <button key={st.no} type="button" className={`live-step${active === i ? ' on' : ''}`} onClick={() => pick(i)}>
                 <b>{st.no}</b>
-                <span><strong>{st.title}</strong><em>{st.desc}</em></span>
+                <span>
+                  <strong>{st.title}</strong>
+                  <em>{st.desc}</em>
+                  <span className="live-meta">
+                    <small className="live-check">확인 포인트 · {st.check}</small>
+                    <i className="live-hint">Click to jump ↗</i>
+                  </span>
+                </span>
               </button>
             ))}
           </div>
@@ -167,88 +152,131 @@ function Slide3() {
   )
 }
 
+// 4. AI 에이전트: 흐름 · 도구 6종 · 환각 방지 시나리오 2가지
 function Slide4() {
+  const FLOW = [
+    { t: '사용자 질문', d: '자연어로 묻습니다' },
+    { t: 'Vercel API', d: 'api/agent.js 가 요청을 받습니다' },
+    { t: 'Claude 도구 선택', d: '필요한 도구를 골라 연속 호출합니다' },
+    { t: '실측 데이터 답변', d: '수치로 답하고 리포트 버튼을 만듭니다' },
+  ]
+  const TOOLS = [
+    { n: 'list_photo_spots', d: '제주 일출·일몰 명소 9곳 목록과 좌표 조회' },
+    { n: 'get_sun_times', d: '명소별 일출·일몰·골든아워 시각과 방위각' },
+    { n: 'get_cloud_cover', d: '기상청·Open-Meteo 시간별 구름양·풍속·강수' },
+    { n: 'list_trails', d: '한라산 4대 등반 코스 정보와 정상 고도' },
+    { n: 'get_elevation', d: '특정 위경도 좌표의 해발고도 조회' },
+    { n: 'get_mountain_weather', d: '고도 지정 한라산 기상과 등반 판정(RULES)' },
+  ]
   return (
     <div className="slide">
       <p className="slide-kicker s-item" style={{ '--i': 0 }}>AI 에이전트</p>
-      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(32px, 4.8vw, 64px)' }}>지어내지 <i>않습니다</i></h2>
+      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(2.2rem, 3.6vw, 3.4rem)' }}>지어내지 <i>않습니다</i></h2>
       <div className="flow s-item" style={{ '--i': 2 }}>
-        <div className="glass"><b>사용자 질문</b></div><span className="arrow">➔</span>
-        <div className="glass"><b>Vercel API</b><br />api/agent.js</div><span className="arrow">➔</span>
-        <div className="glass"><b>Claude가 도구 선택 · 연속 호출</b></div><span className="arrow">➔</span>
-        <div className="glass"><b>실측 데이터로 답변 · 버튼 생성</b></div>
+        {FLOW.map((f, i) => (
+          <div key={f.t} className="flow-item">
+            <div className="glass flow-step"><b>{f.t}</b><small>{f.d}</small></div>
+            {i < FLOW.length - 1 && <span className="arrow">➔</span>}
+          </div>
+        ))}
       </div>
-      <div className="bento">
+      <div className="ai-grid">
         <div className="glass s-item" style={{ '--i': 3 }}>
           <span className="num">6 TOOLS</span>
-          <div className="pills">
-            {['list_photo_spots', 'get_sun_times', 'get_cloud_cover', 'list_trails', 'get_elevation', 'get_mountain_weather'].map((t) => (
-              <span key={t} className="pill" style={{ fontSize: 12 }}>{t}</span>
+          <div className="tool-grid">
+            {TOOLS.map((t) => (
+              <div key={t.n} className="tool-card">
+                <code>{t.n}</code>
+                <p>{t.d}</p>
+              </div>
             ))}
           </div>
         </div>
-        <div className="glass wide s-item" style={{ '--i': 4 }}>
-          <span className="num">HALLUCINATION ZERO</span>
-          <h3>예보 범위를 벗어난 날짜는 숫자를 만들지 않습니다</h3>
-          <p>"2027년 3월 1일 성산일출봉 구름 예보"를 물으면 일출·일몰 시각만 알려 주고, 구름은 판단할 수 없다고 답합니다.</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Slide5() {
-  return (
-    <div className="slide">
-      <p className="slide-kicker s-item" style={{ '--i': 0 }}>IP · 기술</p>
-      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(32px, 4.8vw, 64px)' }}>이렇게 <i>만들었습니다</i></h2>
-      <div className="bento">
-        <div className="glass s-item" style={{ '--i': 2 }}>
-          <span className="num">공공데이터 3종</span>
-          <h3>기상청 · 한국관광공사 · 비짓제주</h3>
-          <p>보조로 Open-Meteo, sunrise-sunset.org를 씁니다. 키가 없거나 장애가 나도 나머지 기능은 계속 동작합니다.</p>
-        </div>
-        <div className="glass s-item" style={{ '--i': 3 }}>
-          <span className="num">React 구조</span>
-          <h3>pages · components · store · api · three</h3>
-          <p>Zustand로 전역 상태를 나누고, 모달과 카드 같은 공용 컴포넌트를 재사용합니다.</p>
-        </div>
         <div className="glass s-item" style={{ '--i': 4 }}>
-          <span className="num">Supabase</span>
-          <h3>favorites · favorite_places · chat_logs</h3>
-          <p>즐겨찾기, 주변 장소, AI 대화를 계정별로 저장하고 새로고침 뒤에도 유지합니다.</p>
-        </div>
-        <div className="glass s-item" style={{ '--i': 5 }}>
-          <span className="num">보안</span>
-          <h3>비밀 키는 서버에만</h3>
-          <p>API 키는 Vercel 서버 함수 안에만 있고, 브라우저와 GitHub에는 없습니다.</p>
+          <span className="num">HALLUCINATION ZERO</span>
+          <div className="case">
+            <p className="case-tag">Case A · 복합 질문 (도구 연속 호출)</p>
+            <p className="bubble">내일 일출 찍기 좋은 곳 추천해주고 성판악 날씨도 알려줘</p>
+            <div className="chain">
+              <span className="pill">list_photo_spots</span><span>→</span>
+              <span className="pill">get_sun_times</span><span>→</span>
+              <span className="pill">get_cloud_cover</span><span>→</span>
+              <span className="pill">get_mountain_weather</span>
+            </div>
+            <p className="case-ans">수치 기반으로 추천하고 <b>[빛 리포트]</b> · <b>[한라산 리포트]</b> 버튼을 만듭니다.</p>
+          </div>
+          <div className="case">
+            <p className="case-tag">Case B · 예보 범위 밖 (지어내지 않음)</p>
+            <p className="bubble">2027년 3월 1일 성산일출봉 구름 예보 알려줘</p>
+            <p className="case-ans">일출·일몰 시각만 안내하고, 구름과 날씨는 <b>예보 범위를 벗어나 판단할 수 없습니다</b>라고 답합니다. <em>숫자 날조 0%</em></p>
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
+// 5. IP · 기술: 3열 × 2행 벤토
+function Slide5() {
+  const CARDS = [
+    { tag: '공공데이터 API 3종', title: '기상청 · 관광공사 · 비짓제주', body: '기상청 단기예보(하늘·강수확률), 한국관광공사 TourAPI(명소 사진·좌표), 비짓제주(주변 3·5·10km 관광지·음식점·행사)를 실데이터로 연동합니다.', pills: ['기상청', 'TourAPI', '비짓제주'] },
+    { tag: 'Three.js 프로시저럴 3D', title: '외부 이미지 없이 코드로', body: '해·달·별자리·구름·파도·해녀와 테왁·한라산을 셰이더로 그리고, 맑음·흐림·해무·비·눈 날씨를 애니메이션으로 보여 줍니다.', pills: ['Three.js', 'Shader'] },
+    { tag: 'React + Zustand', title: 'pages · components · store · api · three', body: 'Zustand로 전역 상태를 나누고 ToolSteps, ReportModal, HallaReportModal 같은 공용 컴포넌트를 재사용합니다.', pills: ['React', 'Zustand'] },
+    { tag: 'Supabase DB · 계정 분리', title: 'favorites · favorite_places · chat_logs', body: '명소 즐겨찾기, 주변 장소, AI 대화를 로그인 계정별로 저장합니다. 비로그인 시 닉네임으로 구분하고 새로고침 뒤에도 유지합니다.', pills: ['Supabase', 'RLS'] },
+    { tag: '무중단 폴백', title: 'Open-Meteo · sunrise-sunset 보조', body: '보조 API를 결합하고 서버에서 5분 캐시를 씁니다. 키가 없거나 장애가 나도 대체 데이터로 계속 동작합니다.', pills: ['5분 캐시', 'Fallback'] },
+    { tag: '서버리스 보안 · 로컬 DX', title: '비밀 키는 서버 함수에만', body: 'ANTHROPIC 키와 공공데이터 키는 Vercel api/*.js 안에만 있고 브라우저와 GitHub에는 없습니다. vite.config.js의 localApi 플러그인으로 로컬에서도 같은 구조로 돌립니다.', pills: ['Vercel', 'localApi'] },
+  ]
+  return (
+    <div className="slide slide-s5">
+      <p className="slide-kicker s-item" style={{ '--i': 0 }}>IP · 기술</p>
+      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(2.2rem, 3.6vw, 3.4rem)' }}>이렇게 <i>만들었습니다</i></h2>
+      <div className="bento bento3">
+        {CARDS.map((c, i) => (
+          <div key={c.tag} className="glass bento-card s-item" style={{ '--i': 2 + i }}>
+            <div>
+              <span className="num">{c.tag}</span>
+              <h3>{c.title}</h3>
+              <p>{c.body}</p>
+            </div>
+            <div className="pills">
+              {c.pills.map((p) => <span key={p} className="pill cyan">{p}</span>)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// 6. 마무리: 좌 메시지 · 우 Q&A QR 카드
 function Slide6() {
   return (
-    <div className="slide" style={{ justifyItems: 'center', textAlign: 'center', gap: 'clamp(10px, 1.6vw, 18px)' }}>
-      <p className="slide-kicker s-item" style={{ '--i': 0 }}>Thank you</p>
-      <p className="quote s-item" style={{ '--i': 1 }}>Beyond the clouds,<br />chasing the light in Jeju.</p>
-      <div className="cta-row s-item" style={{ '--i': 2 }}>
-        <a className="cta" href="https://jeju-golden-hour.vercel.app/" target="_blank" rel="noreferrer">배포 주소 ↗</a>
-        <a className="cta ghost" href="https://github.com/speech064/project" target="_blank" rel="noreferrer">GitHub ↗</a>
-      </div>
-      <p className="slide-ko s-item" style={{ '--i': 3 }}>Q&amp;A</p>
-      <div className="qr-wrap s-item" style={{ '--i': 4 }}>
-        <div className="qr-card glass">
-          <img style={{ width: 170, height: 170, borderRadius: 12, background: '#fff', padding: 6, display: 'block' }} src="/images/qr.png" alt="배포 주소 QR 코드" />
-          <p className="qr-caption">📱 모바일로 바로 체험하기</p>
+    <div className="slide slide-end">
+      <div className="end-grid">
+        <div className="end-left">
+          <p className="slide-kicker s-item" style={{ '--i': 0 }}>Thank you</p>
+          <p className="quote quote-left s-item" style={{ '--i': 1 }}>Beyond the clouds,<br />chasing the light in Jeju.</p>
+          <p className="slide-ko s-item" style={{ '--i': 2 }}>수평선의 노을부터 구름 너머 한라산까지, 데이터와 AI로 제주의 빛을 읽다</p>
+          <div className="cta-row cta-left s-item" style={{ '--i': 3 }}>
+            <a className="cta" href="https://jeju-golden-hour.vercel.app/" target="_blank" rel="noreferrer">배포 사이트 열기 ↗</a>
+            <a className="cta ghost" href="https://github.com/speech064/project" target="_blank" rel="noreferrer">GitHub 저장소 ↗</a>
+          </div>
+        </div>
+        <div className="end-right s-item" style={{ '--i': 4 }}>
+          <div className="qr-wrap">
+            <div className="qr-card glass">
+              <p className="slide-ko qr-title">Q&amp;A</p>
+              <img style={{ width: 170, height: 170, borderRadius: 12, background: '#fff', padding: 6, display: 'block' }} src="/images/qr.png" alt="배포 주소 QR 코드" />
+              <p className="qr-caption">📱 스마트폰 카메라로 스캔해 바로 체험해 보세요</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-const SLIDES = [Slide1, Slide2, Slide2New, Slide3, Slide4, Slide5, Slide6]
+const SLIDES = [Slide1, Slide2, Slide3, Slide4, Slide5, Slide6]
 
 export default function Slides() {
   const [index, setIndex] = useState(0)
@@ -309,7 +337,7 @@ export default function Slides() {
   return (
     <main className="deck" onClick={(e) => { if (!e.target.closest('a, button, .live, .steps-col')) step(1) }}>
       <div className="deck-sky" ref={skyHost} />
-      {index === 4 && <div className="deck-halla" ref={hallaHost} />}
+      {index === 3 && <div className="deck-halla" ref={hallaHost} />}
       <div className="deck-vignette" />
       <div className="deck-stage" key={index}>
         <Current />

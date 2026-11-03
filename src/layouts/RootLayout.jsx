@@ -89,7 +89,7 @@ export default function RootLayout() {
 
       {veil && <div key={veil.n} className={`route-veil${veil.dark ? ' dark' : ''}`} aria-hidden="true" />}
       {authOpen && !user && <AuthModal onClose={() => setAuthOpen(false)} />}
-      <WeatherPreview />
+      {pathname === '/' && <WeatherPreview />}
       <div className="toasts" role="status">
         {toasts.map((t) => <div key={t.id} className={`toast ${t.variant}`}>{t.message}</div>)}
       </div>

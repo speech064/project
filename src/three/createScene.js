@@ -36,12 +36,12 @@ void main(){
 }`
 
 const SEA_VERT = `
-uniform float uTime, uAmp;
+uniform float uTime, uAmp, uFreq;
 varying vec3 vWorld; varying vec3 vN;
 void addWave(vec2 p, vec2 d, float k, float w, float a, inout float h, inout vec2 g){
-  float ph = dot(normalize(d), p) * k + uTime * w;
+  float ph = dot(normalize(d), p) * k * uFreq + uTime * w;
   h += a * sin(ph);
-  g += a * k * cos(ph) * normalize(d);
+  g += a * k * uFreq * cos(ph) * normalize(d);
 }
 void main(){
   vec3 p = position;
@@ -244,7 +244,7 @@ export function createScene(canvas, { mobile }) {
   }
   seaGeo.rotateX(-Math.PI / 2)
   const seaU = {
-    ...skyU, uTime: { value: 0 }, uAmp: { value: 0.7 }, uDeep: { value: new THREE.Vector3() }, uCam: { value: new THREE.Vector3() },
+    ...skyU, uTime: { value: 0 }, uAmp: { value: 0.7 }, uFreq: { value: 1 }, uDeep: { value: new THREE.Vector3() }, uCam: { value: new THREE.Vector3() },
     uShallow: { value: new THREE.Vector3() }, uMidSea: { value: new THREE.Vector3() }, uIsl: { value: new THREE.Vector4(0, -420, 1, 0) }, uMoon: { value: new THREE.Vector4(0, 0, -1, 0) },
   }
   const sea = new THREE.Mesh(seaGeo, new THREE.ShaderMaterial({ vertexShader: SEA_VERT, fragmentShader: SEA_FRAG, uniforms: seaU }))
@@ -295,7 +295,7 @@ export function createScene(canvas, { mobile }) {
       s.renderOrder = -5
       s.visible = false
       scene.add(s)
-      return { s, a: 0, az, el, d, speed: (0.007 + r() * 0.009) * (li === 2 ? 0.7 : 1) * (L.speed ?? 1), dir: new THREE.Vector3() }
+      return { s, a: 0, az, el, d, sx: sc, sy: sc * (L.ratio ?? 0.5), speed: (0.007 + r() * 0.009) * (li === 2 ? 0.7 : 1) * (L.speed ?? 1), dir: new THREE.Vector3() }
     })
     return { ...L, sprites }
   })
@@ -413,6 +413,7 @@ export function createScene(canvas, { mobile }) {
     const glint = (1 - smoothstep(0.05, 0.62, sunDir.y)) * smoothstep(-0.07, 0.02, sunDir.y) * (1 - pal.night) // 윤슬이 보이는 정도
     seaLife.update({ time, night: pal.night, facing, span: arcSpan(), glintAz: Math.atan2(sunDir.x, -sunDir.z), glint })
     seaU.uAmp.value = clamp(0.18 + cur.wave * 0.28 + wxs.rain * 0.2 + wxs.wind * 0.012, 0.22, 1.1) // 파고가 클수록, 비·바람이 셀수록 더 출렁
+    seaU.uFreq.value = 1 + wxs.wind * 0.03 + wxs.rain * 0.2 // 바람이 세고 비가 오면 물결 간격이 촘촘해짐
 
     // 별: 밤에만, 구름이 많으면 가려짐
     starMat.opacity = pal.night * (1 - 0.45 * ov)
@@ -447,6 +448,8 @@ export function createScene(canvas, { mobile }) {
         c.s.position.set(Math.sin(ca) * Math.cos(c.el) * c.d, Math.sin(c.el) * c.d, -Math.cos(ca) * Math.cos(c.el) * c.d)
         c.dir.copy(c.s.position).normalize()
         const edge = smoothstep(AZ0, AZ0 + 0.25, c.az) * smoothstep(AZ1, AZ1 - 0.25, c.az) // 양끝에서 서서히 나타나고 사라짐
+        const grow = 0.9 + 0.25 * ov // 구름양이 많을수록 구름 덩어리가 조금 커짐
+        c.s.scale.set(c.sx * grow, c.sy * grow, 1)
         c.a += ((i < want ? 1 : 0) - c.a) * (1 - Math.exp(-dt * 1.8))
         c.s.visible = c.a * edge > 0.01
         if (!c.s.visible) return

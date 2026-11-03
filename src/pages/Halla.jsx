@@ -60,12 +60,6 @@ export default function Halla() {
   // 정상부 실제 날씨 → 3D 효과 (미리보기 토글이 켜져 있으면 그 값을 씀)
   const kind = wxPreview ?? weatherKind({ cloud: row?.cloud, vis: row?.vis, precip: row?.precip, pop: row?.pop, temp: row?.temp })
   useEffect(() => { scene.current?.setWeather({ kind, wind: row?.wind ?? 2, wave: 0.6 }) }, [kind, row?.wind])
-  // 산 위 라벨: 고른 코스의 정상 높이, 풍속, 판정 결과 (데이터가 없으면 라벨을 숨김)
-  const LEVEL_KO = { good: '좋음', caution: '주의', danger: '위험' }
-  useEffect(() => {
-    if (!d || !row || !trail) { scene.current?.setLabel(''); return }
-    scene.current?.setLabel(`${trail.goal.name} ${trail.goal.elev}m · 풍속 ${Math.round(row.wind ?? 0)}m/s · ${LEVEL_KO[level] ?? '판정 불가'}`)
-  }, [d, row?.wind, level, trail])
 
   return (
     <>

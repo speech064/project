@@ -192,7 +192,7 @@ const LAYERS = [ // 저층·중층·고층 구름: 높이(고도각)·크기·�
   { key: 'high', max: 14, min: 4, el: [28, 50], scale: [210, 340], opacity: 0.6 },
 ]
 
-export function createScene(canvas, { mobile, labelHost = null }) {
+export function createScene(canvas, { mobile }) {
   const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches // 움직임 줄이기 설정
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, powerPreference: 'high-performance' })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.25 : 1.75))
@@ -323,36 +323,6 @@ export function createScene(canvas, { mobile, labelHost = null }) {
 
   let facing = Math.PI, placed = false // 카메라가 고정해서 바라보는 방위(라디안)
 
-  // ── 마우스 드래그로 둘러보기 (데스크톱·첫 화면에서만). 회전 범위를 좁게 막아 바다 밑과 배경 밖이 보이지 않게 함
-  const DRAG_YAW = 1.2, DRAG_PITCH = [-0.12, 0.25]
-  const drag = { yaw: 0, pitch: 0, tYaw: 0, tPitch: 0, down: false, moved: false, sx: 0, sy: 0 }
-  const NO_DRAG = 'button, a, input, select, textarea, label, [role="button"], [role="slider"]'
-  const onDown = (e) => {
-    if (mobile || e.button !== 0 || window.scrollY > window.innerHeight * 0.5 || e.target.closest?.(NO_DRAG)) return
-    drag.down = true; drag.moved = false; drag.sx = e.clientX; drag.sy = e.clientY
-  }
-  const onDrag = (e) => {
-    if (!drag.down) return
-    const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy
-    if (!drag.moved) { if (Math.hypot(dx, dy) < 4) return; drag.moved = true; window.dispatchEvent(new Event('sky-drag')) }
-    drag.sx = e.clientX; drag.sy = e.clientY
-    window.getSelection()?.removeAllRanges() // 드래그하며 글씨가 파랗게 선택되지 않게
-    drag.tYaw = clamp(drag.tYaw - dx * 0.0035, -DRAG_YAW, DRAG_YAW)
-    drag.tPitch = clamp(drag.tPitch + dy * 0.0025, DRAG_PITCH[0], DRAG_PITCH[1])
-  }
-  const onUp = () => { drag.down = false }
-  if (!mobile) {
-    window.addEventListener('pointerdown', onDown)
-    window.addEventListener('pointermove', onDrag)
-    window.addEventListener('pointerup', onUp)
-  }
-
-  // ── 명소 라벨: 일출·일몰 방향의 수평선 위에 3D 위치를 따라다니는 작은 글씨 ──
-  const tag = labelHost ? document.createElement('div') : null
-  if (tag) { tag.className = 'sky-tag'; tag.style.opacity = '0'; labelHost.appendChild(tag) }
-  let tagText = ''
-  const tagPos = new THREE.Vector3()
-
   function placeSilhouette() {
     // 카메라는 명소를 바꿔도 돌아가지 않고 항상 같은 방향(남쪽)을 봄 — 일출↔일몰 명소를 오가도 화면이 좌우로 틀어지지 않음
     if (!placed) { cur.yaw = facing; placed = true }
@@ -423,7 +393,7 @@ export function createScene(canvas, { mobile, labelHost = null }) {
     skyU.uSunVis.value = 1 - 0.85 * ov * ov * (0.4 + 0.6 * smoothstep(4, 24, el / D2R)) // 일출·일몰 때는 구름이 많아도 해빛이 번지게
     skyU.uGlow.value = 1 - 0.68 * smoothstep(6, 36, el / D2R) // 해가 높을수록 후광을 줄여 눈부시지 않게
     const day = 1 - pal.night
-    const wxs = wx.update(dt, time, target.wx, cur.yaw + drag.yaw, pal.horizon) // 날씨 효과 세기 (목표값을 천천히 따라감)
+    const wxs = wx.update(dt, time, target.wx, cur.yaw, pal.horizon) // 날씨 효과 세기 (목표값을 천천히 따라감)
     skyU.uSunVis.value *= 1 - 0.3 * wxs.overcast // 흐린 날에는 해빛이 약해짐
     // 흐림·안개: 하늘을 묵직한 잿빛으로 빼고, 해를 흐릿하게 가림 (바다의 햇빛 반사도 함께 줄어듦)
     const G = wxs.gray, grey = new THREE.Vector3(lerp(0.55, 0.05, pal.night), lerp(0.6, 0.06, pal.night), lerp(0.64, 0.08, pal.night))
@@ -507,32 +477,16 @@ export function createScene(canvas, { mobile, labelHost = null }) {
     // 방향은 명소를 바꿀 때만 천천히 돌아가고, 마우스에는 아주 미세하게만 반응
     cur.yaw += (facing - cur.yaw) * (1 - Math.exp(-dt * 2.5))
     cur.pitch += (PITCH - cur.pitch) * (1 - Math.exp(-dt * 2.5))
-    drag.yaw += (drag.tYaw - drag.yaw) * (1 - Math.exp(-dt * 6))
-    drag.pitch += (drag.tPitch - drag.pitch) * (1 - Math.exp(-dt * 6))
-    starGroup.rotation.y = -(cur.yaw + drag.yaw)
+    starGroup.rotation.y = -cur.yaw
     pointer.sx += (pointer.x - pointer.sx) * (1 - Math.exp(-dt * 3))
     pointer.sy += (pointer.y - pointer.sy) * (1 - Math.exp(-dt * 3))
     const sway = reduced ? 0 : Math.sin(time * 0.55) * 0.07 + Math.sin(time * 0.93 + 1.3) * 0.03   // 잔잔한 물결에 떠 있는 듯한 위아래 흔들림
     camera.position.set(pointer.sx * 0.5, CAM_H + pointer.sy * 0.2 + sway, 0)
     camera.rotation.z = reduced ? 0 : 0.0035 * Math.sin(time * 0.42) // 3D 카메라만 흔들림 (글자·UI는 그대로)
-    camera.rotation.y = -(cur.yaw + pointer.sx * 0.012 + drag.yaw)
-    camera.rotation.x = cur.pitch + pointer.sy * 0.008 + drag.pitch
+    camera.rotation.y = -(cur.yaw + pointer.sx * 0.012)
+    camera.rotation.x = cur.pitch + pointer.sy * 0.008
     sky.position.copy(camera.position)
     seaU.uCam.value.copy(camera.position)
-
-    if (tag) {
-      if (!tagText) tag.style.opacity = '0'
-      else { // 일출·일몰 방향 수평선 위 (약간 위쪽) 에 라벨을 붙임
-        const ev = target.best === 'sunset' ? target.sunsetMin : target.sunriseMin
-        const { el, az } = sunAt(ev)
-        camera.updateMatrixWorld()
-        tagPos.copy(sunDirOf(az, Math.max(el, 0.06))).multiplyScalar(600).project(camera)
-        const on = tagPos.z < 1 && Math.abs(tagPos.y) < 1.05 && window.scrollY < window.innerHeight * 0.5
-        const sx = clamp(tagPos.x, -0.72, 0.72) // 라벨이 화면 가장자리에서 잘리지 않게 안쪽으로 붙임
-        tag.style.opacity = on ? '1' : '0'
-        tag.style.transform = `translate(${((sx * 0.5 + 0.5) * innerWidth).toFixed(1)}px, ${((-tagPos.y * 0.5 + 0.5) * innerHeight).toFixed(1)}px) translate(-50%, -120%)`
-      }
-    }
 
     renderer.render(scene, camera)
   }
@@ -549,7 +503,6 @@ export function createScene(canvas, { mobile, labelHost = null }) {
     debug() { return { ...dbg } },
     snap() { cur.minutes = target.minutes }, // 개발 중 점검용: 부드러운 따라가기 없이 시간을 바로 맞춤
     setPointer(nx, ny) { pointer.x = nx; pointer.y = ny },
-    setLabel(text) { tagText = text || ''; if (tag) tag.textContent = tagText },
     setPaused(p) { paused = p; last = performance.now() },
     resize(w, h) {
       renderer.setSize(w, h, false)
@@ -560,8 +513,6 @@ export function createScene(canvas, { mobile, labelHost = null }) {
     },
     dispose() {
       seaLife.dispose(); dipper.dispose(); meteors.dispose(); wx.dispose()
-      window.removeEventListener('pointerdown', onDown); window.removeEventListener('pointermove', onDrag); window.removeEventListener('pointerup', onUp)
-      tag?.remove()
       renderer.setAnimationLoop(null)
       scene.traverse((o) => { o.geometry?.dispose?.(); o.material?.dispose?.() })
       tex.dispose()

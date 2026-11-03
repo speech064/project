@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createScene } from '../three/createScene'
-import { dayOfYear, hm } from '../../shared/date'
+import { dayOfYear } from '../../shared/date'
 import { getSpot } from '../../shared/spots'
 import { weatherAt } from '../lib/solar'
 import { weatherKind } from '../three/weatherEffects'
@@ -18,12 +18,8 @@ export default function SkyScene() {
     canvas.setAttribute('aria-hidden', 'true')
     ref.current.appendChild(canvas)
     const mobile = matchMedia('(max-width: 767px), (pointer: coarse)').matches
-    // 명소 라벨(일출·일몰 방향에 따라다니는 글씨)을 담을 칸. 3D 가 그리는 라벨이라 DOM 버튼과 겹치지 않게 클릭은 통과시킴
-    const labelHost = document.createElement('div')
-    labelHost.className = 'sky-labels'
-    ref.current.appendChild(labelHost)
     let scene
-    try { scene = createScene(canvas, { mobile, labelHost }) }
+    try { scene = createScene(canvas, { mobile }) }
     catch (e) { console.error('3D 장면을 만들지 못했어요:', e); canvas.remove(); setFailed(true); return } // WebGL 이 안 되면 CSS 그라데이션으로 대체
 
     const apply = (s) => {
@@ -41,11 +37,6 @@ export default function SkyScene() {
         // 실제 날씨(예보 코드·구름양)로 날씨 종류를 정하고, 테스트용 미리보기 토글이 켜져 있으면 그 값을 씀
         wx: { kind: s.wxPreview ?? weatherKind({ code: w?.code, cloud: w?.total }), wind: w?.wind ?? 2, wave: w?.wave ?? 0.6 },
       })
-      // 라벨: 선택한 명소의 일출·일몰 시각과 구름양 (값이 없으면 그 부분은 빼고 보여 줌)
-      const evMin = spot.best === 'sunset' ? s.sun?.sunsetMin : s.sun?.sunriseMin
-      const evName = spot.best === 'sunset' ? '일몰' : '일출'
-      const parts = [spot.name, evMin != null ? `${evName} ${hm(evMin)}` : null, w?.total != null ? `구름 ${Math.round(w.total)}%` : null]
-      scene.setLabel(parts.filter(Boolean).join(' · '))
     }
     if (import.meta.env.DEV) window.__sky = scene // 개발 중 점검용
     apply(useAppStore.getState())
@@ -71,7 +62,6 @@ export default function SkyScene() {
       document.removeEventListener('visibilitychange', sync)
       scene.dispose()
       canvas.remove()
-      labelHost.remove()
     }
   }, [])
 

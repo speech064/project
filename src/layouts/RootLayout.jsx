@@ -4,7 +4,6 @@ import { NAV_ITEMS } from '../router'
 import SkyScene from '../components/SkyScene'
 import Footer from '../components/Footer'
 import WeatherPreview from '../components/WeatherPreview'
-import DragHint from '../components/DragHint'
 import AuthModal from '../components/AuthModal'
 import { useReveal } from '../hooks/useReveal'
 import { useAppStore } from '../store/useAppStore'
@@ -91,8 +90,6 @@ export default function RootLayout() {
       {veil && <div key={veil.n} className={`route-veil${veil.dark ? ' dark' : ''}`} aria-hidden="true" />}
       {authOpen && !user && <AuthModal onClose={() => setAuthOpen(false)} />}
       {pathname === '/' && <WeatherPreview />}
-      {pathname === '/' && <DragHint corner="left" hideOnScroll />}
-      {pathname === '/halla' && <DragHint corner="right" />}
       <div className="toasts" role="status">
         {toasts.map((t) => <div key={t.id} className={`toast ${t.variant}`}>{t.message}</div>)}
       </div>

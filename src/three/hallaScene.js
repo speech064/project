@@ -169,32 +169,6 @@ export function createHallaScene(host, trails) {
   }
   const ro = new ResizeObserver(resize); ro.observe(host); resize()
 
-  // ── 마우스 드래그로 산을 360도 돌려보기. 위아래는 산 밑이 보이지 않게 좁게 제한 ──
-  const drag = { yaw: 0, pitch: 0, tYaw: 0, tPitch: 0, down: false, moved: false, sx: 0, sy: 0 }
-  const onDown = (e) => {
-    if (e.button !== 0) return
-    drag.down = true; drag.moved = false; drag.sx = e.clientX; drag.sy = e.clientY
-  }
-  const onDrag = (e) => {
-    if (!drag.down) return
-    const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy
-    if (!drag.moved) { if (Math.hypot(dx, dy) < 4) return; drag.moved = true; window.dispatchEvent(new Event('sky-drag')) }
-    drag.sx = e.clientX; drag.sy = e.clientY
-    drag.tYaw -= dx * 0.008
-    drag.tPitch = Math.min(0.5, Math.max(-0.2, drag.tPitch + dy * 0.004))
-  }
-  const onUp = () => { drag.down = false }
-  host.addEventListener('pointerdown', onDown)
-  window.addEventListener('pointermove', onDrag)
-  window.addEventListener('pointerup', onUp)
-
-  // ── 백록담 라벨: 산 위에 따라다니는 작은 글씨 ──
-  const tag = document.createElement('div')
-  tag.className = 'halla-tag'; tag.style.opacity = '0'
-  host.appendChild(tag)
-  let tagText = ''
-  const tagPos = new THREE.Vector3()
-
   // 정상 쪽 실제 날씨(비·눈·안개·흐림)를 카메라와 산 사이에 보여 줌. 안개는 이 장면이 이미 쓰고 있어서 맡기지 않음
   const wx = createWeatherFx(scene, { mobile: false, fog: false, zc: 20, mist: true, mistZ: [-20, 5], mistY: [1, 7] }) // 산 중턱 운해
   let wxTarget = { kind: 'clear', wind: 2, wave: 0.6 }
@@ -211,17 +185,8 @@ export function createHallaScene(host, trails) {
 
     rot.y += ((reduce ? 0 : mouse.x * 0.28) - rot.y) * Math.min(1, dt * 2.2)
     rot.x += ((reduce ? 0 : mouse.y * 0.05) - rot.x) * Math.min(1, dt * 2.2)
-    drag.yaw += (drag.tYaw - drag.yaw) * (1 - Math.exp(-dt * 6)) // 드래그로 돌려본 만큼 부드럽게 따라감
-    drag.pitch += (drag.tPitch - drag.pitch) * (1 - Math.exp(-dt * 6))
-    group.rotation.y = rot.y + Math.sin(t * 0.1) * 0.02 + drag.yaw
-    group.rotation.x = rot.x + drag.pitch
-    if (tag && tagText) { // 백록담 위에 라벨을 따라다니게 함
-      group.updateMatrixWorld(true); camera.updateMatrixWorld()
-      tagPos.set(0.7, heightY(0.7, 0) + 0.3, 0).applyMatrix4(group.matrixWorld).project(camera)
-      const on = tagPos.z < 1 && Math.abs(tagPos.x) < 1.05 && Math.abs(tagPos.y) < 1.05
-      tag.style.opacity = on ? '1' : '0'
-      tag.style.transform = `translate(${((tagPos.x * 0.5 + 0.5) * host.clientWidth).toFixed(1)}px, ${((-tagPos.y * 0.5 + 0.5) * host.clientHeight).toFixed(1)}px) translate(-50%, -120%)`
-    }
+    group.rotation.y = rot.y + Math.sin(t * 0.1) * 0.02
+    group.rotation.x = rot.x
 
     const k = 1 - Math.exp(-dt * 1.6)
     camPos.lerp(target.pos, k); camLook.lerp(target.look, k)
@@ -255,11 +220,8 @@ export function createHallaScene(host, trails) {
   return {
     setTrail,
     setWeather(w) { wxTarget = w ?? { kind: 'clear', wind: 2, wave: 0.6 } },
-    setLabel(text) { tagText = text || ''; tag.textContent = tagText; if (!tagText) tag.style.opacity = '0' },
     dispose() {
       cancelAnimationFrame(raf); ro.disconnect(); window.removeEventListener('pointermove', onMove); wx.dispose()
-      host.removeEventListener('pointerdown', onDown); window.removeEventListener('pointermove', onDrag); window.removeEventListener('pointerup', onUp)
-      tag.remove()
       scene.traverse((o) => { o.geometry?.dispose(); o.material?.dispose?.() })
       tex.dispose(); renderer.dispose(); renderer.domElement.remove()
     },

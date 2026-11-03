@@ -90,30 +90,28 @@ function Slide2() {
     <div className="slide slide-s2n">
       <p className="slide-kicker s-item" style={{ '--i': 0 }}>기획 배경</p>
       <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(1.8rem, 2.9vw, 2.8rem)' }}>구름만 가득하면 <i>어떡하죠?</i></h2>
-      <div className="s2n-grid s-item" style={{ '--i': 2 }}>
-        <div className="s2n-probs">
-          {PROBLEM.map((p, i) => (
-            <div key={p.title} className="s2n-prob">
-              <span className="num">PROBLEM {String(i + 1).padStart(2, '0')}</span>
-              <strong>{p.icon} {p.title}</strong>
-              <p>{p.body}</p>
-            </div>
-          ))}
-        </div>
-        <div className="s2n-solution">
-          {SOLUTION.map((s, i) => (
-            <div key={s.no} className="glass s2n-card s-item" style={{ '--i': 3 + i }}>
-              <div>
-                <span className="num">{s.no}</span>
+      <div className="s2n-rows">
+        {PROBLEM.map((p, i) => {
+          const s = SOLUTION[i]
+          return (
+            <div key={s.no} className="s2n-row s-item" style={{ '--i': 2 + i }}>
+              <div className="s2n-prob">
+                <span className="num">PROBLEM {String(i + 1).padStart(2, '0')}</span>
+                <strong>{p.icon} {p.title}</strong>
+                <p>{p.body}</p>
+              </div>
+              <span className="s2n-arrow" aria-hidden="true">→</span>
+              <div className="s2n-card">
+                <span className="num" aria-hidden="true">{s.no}</span>
                 <h3>{s.title}</h3>
                 <p>{s.body}</p>
-              </div>
-              <div className="pills">
-                {s.tags.map((t) => <span key={t} className="pill cyan">{t}</span>)}
+                <div className="pills">
+                  {s.tags.map((t) => <span key={t} className="pill cyan">{t}</span>)}
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          )
+        })}
       </div>
     </div>
   )

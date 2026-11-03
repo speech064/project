@@ -41,7 +41,7 @@ export function createDipper(group) {
   line.renderOrder = -8; line.visible = false
   group.add(line)
 
-  const CYCLE = 9, STEP = 0.55, FLASH = 1.6
+  const CYCLE = 4.5, STEP = 0.3, FLASH = 1.0 // 한 바퀴가 짧아 자주 반짝임
   return {
     update(time, night) { // night: 별이 보이는 정도(0~1)
       const on = night > 0.01

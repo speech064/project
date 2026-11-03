@@ -341,3 +341,6 @@
 .side-col .live-step strong { font-size: 22px; }
 .side-col .live-step em { font-size: 16px; }
 .side-col .live-check { font-size: 15px; }
+
+/* ── 6차 조정 ── */
+.side-col .live-head .slide-kicker { font-size: clamp(1.1rem, 1.5vw, 1.5rem); letter-spacing: .12em; }

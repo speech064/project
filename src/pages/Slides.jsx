@@ -89,7 +89,7 @@ function Slide2() {
   return (
     <div className="slide slide-s2n">
       <p className="slide-kicker s-item" style={{ '--i': 0 }}>기획 배경</p>
-      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(2.2rem, 3.6vw, 3.4rem)' }}>구름만 가득하면 <i>어떡하죠?</i></h2>
+      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(1.8rem, 2.9vw, 2.8rem)' }}>구름만 가득하면 <i>어떡하죠?</i></h2>
       <div className="s2n-grid s-item" style={{ '--i': 2 }}>
         <div className="s2n-probs">
           {PROBLEM.map((p, i) => (
@@ -148,7 +148,7 @@ function Slide3() {
         <div className="side-col">
           <div className="live-head">
             <p className="slide-kicker">라이브 시연</p>
-            <h2 className="slide-title" style={{ fontSize: 'clamp(36px, 4.4vw, 64px)' }}>이렇게 <i>동작합니다</i></h2>
+            <h2 className="slide-title" style={{ fontSize: 'clamp(30px, 3.2vw, 48px)' }}>이렇게 <i>동작합니다</i></h2>
           </div>
           <div className="steps-col">
             {LIVE_STEPS.map((st, i) => (

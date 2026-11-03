@@ -162,7 +162,6 @@ function Slide3() {
                   <em>{st.desc}</em>
                   <span className="live-meta">
                     <small className="live-check">확인 포인트 · {st.check}</small>
-                    <i className="live-hint">Click to jump ↗</i>
                   </span>
                 </span>
               </button>

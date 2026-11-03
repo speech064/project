@@ -7,10 +7,10 @@
 
 .deck-stage { position: absolute; inset: 0; display: grid; place-items: center; padding: clamp(24px, 5vw, 72px); }
 .slide { width: min(1120px, 100%); display: grid; gap: clamp(16px, 2.4vw, 28px); }
-.slide-title { margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: clamp(40px, 6.4vw, 92px); line-height: 1.02; letter-spacing: .06em; text-shadow: 0 4px 30px rgba(0, 0, 0, .45); }
+.slide-title { margin: 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; font-weight: 500; font-size: clamp(40px, 6.4vw, 92px); line-height: 1.02; letter-spacing: .06em; text-shadow: 0 4px 30px rgba(0, 0, 0, .45); }
 .slide-title i { font-style: italic; color: #FBBF24; }
 .slide-kicker { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: .28em; color: #FBBF24; text-transform: uppercase; }
-.slide-sub { margin: 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(20px, 2.4vw, 30px); color: rgba(255, 255, 255, .85); }
+.slide-sub { margin: 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; font-style: italic; font-size: clamp(20px, 2.4vw, 30px); color: rgba(255, 255, 255, .85); }
 .slide-ko { margin: 0; font-size: clamp(16px, 1.8vw, 21px); line-height: 1.6; color: rgba(255, 255, 255, .92); }
 
 /* 글래스 카드 */
@@ -21,8 +21,8 @@
 .bento .tall { grid-row: span 2; }
 .glass h3 { margin: 0; font-size: 18px; font-weight: 700; }
 .glass p { margin: 0; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, .85); }
-.glass .big { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 500; color: #FBBF24; line-height: 1; }
-.num { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #34D399; font-weight: 600; }
+.glass .big { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 44px; font-weight: 500; color: #FBBF24; line-height: 1; }
+.num { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 22px; color: #34D399; font-weight: 600; }
 
 /* 알약 배지 */
 .pills { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -40,10 +40,10 @@
 /* 시연 타임라인 */
 .steps { display: grid; gap: 10px; }
 .step { display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: center; }
-.step b { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: #FB7185; }
+.step b { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 26px; color: #FB7185; }
 
 /* 대사 */
-.quote { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(34px, 5vw, 70px); line-height: 1.15; text-align: center; text-shadow: 0 4px 30px rgba(0, 0, 0, .5); }
+.quote { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-style: italic; font-size: clamp(34px, 5vw, 70px); line-height: 1.15; text-align: center; text-shadow: 0 4px 30px rgba(0, 0, 0, .5); }
 .cta { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 999px; background: #FBBF24; color: #1f1400; font-weight: 700; text-decoration: none; }
 .cta.ghost { background: rgba(255, 255, 255, .12); color: #fff; border: 1px solid rgba(255, 255, 255, .3); }
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
@@ -102,7 +102,7 @@
 .steps-col { display: grid; gap: 8px; align-content: end; padding-top: 8vh; overflow: auto; }
 .live-step { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: center; text-align: left; padding: 12px 14px; border-radius: 16px; background: rgba(15, 23, 42, .45); border: 1px solid rgba(255, 255, 255, .14); color: #fff; cursor: pointer; transition: background .2s, border-color .2s, box-shadow .2s; }
 .live-step:hover { background: rgba(255, 255, 255, .1); }
-.live-step b { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #FB7185; }
+.live-step b { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 24px; color: #FB7185; }
 .live-step strong { display: block; font-size: 14px; }
 .live-step em { display: block; font-style: normal; font-size: 12px; color: rgba(255, 255, 255, .7); margin-top: 2px; }
 .live-step.on { border-color: #FBBF24; box-shadow: 0 0 24px -6px rgba(251, 191, 36, .7); }
@@ -137,7 +137,7 @@
 .cover-ko { font-size: clamp(1.05rem, 1.4vw, 1.3rem); }
 .kpi-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; width: 100%; margin-top: 8px; }
 .kpi-card { display: flex; flex-direction: column; gap: 8px; text-align: left; }
-.kpi-card b { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 2.8vw, 2.7rem); font-weight: 500; line-height: 1; color: #FBBF24; }
+.kpi-card b { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: clamp(2rem, 2.8vw, 2.7rem); font-weight: 500; line-height: 1; color: #FBBF24; }
 .kpi-card h3 { font-size: clamp(1.05rem, 1.25vw, 1.2rem); }
 .kpi-card p { font-size: clamp(.9rem, .98vw, .98rem); line-height: 1.55; }
 
@@ -155,7 +155,7 @@
 .ai-grid > .glass { display: grid; gap: 12px; align-content: start; }
 .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .tool-card { padding: 12px 14px; border-radius: 16px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .14); display: grid; gap: 6px; }
-.tool-card code { font-size: .86rem; color: #FBBF24; font-family: ui-monospace, Consolas, monospace; }
+.tool-card code { font-size: .86rem; color: #FBBF24; font-family: 'Pretendard Variable', Pretendard, sans-serif; }
 .tool-card p { font-size: .92rem; line-height: 1.5; }
 .case { display: grid; gap: 8px; padding: 12px 14px; border-radius: 16px; background: rgba(15, 23, 42, .4); border: 1px solid rgba(255, 255, 255, .12); }
 .case-tag { margin: 0; font-size: .82rem; font-weight: 700; color: #34D399; }
@@ -215,3 +215,47 @@
 .ai-grid .tool-card { padding: 9px 12px; }
 .ai-grid > .glass { gap: 10px; }
 .ai-grid .case-ans { font-size: .9rem; }
+
+/* ── 2차 조정 ── */
+/* 영문도 전부 Pretendard 로 통일하고, 제목 강조(<i>)는 기울임 없이 */
+.slide-title i, .quote, .slide-sub { font-style: normal; }
+
+/* 프로젝트 한눈에 */
+.slide-overview { width: min(1380px, 88vw); }
+.ov-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.ov-card { display: flex; flex-direction: column; gap: 10px; }
+.ov-card b { font-size: clamp(2rem, 2.8vw, 2.6rem); font-weight: 800; line-height: 1; color: #FBBF24; }
+.ov-card h3 { font-size: clamp(1.1rem, 1.35vw, 1.25rem); }
+.ov-card p { font-size: clamp(.95rem, 1.02vw, 1.02rem); line-height: 1.55; }
+.ov-card ul { margin: 4px 0 0; padding: 0 0 0 1.1em; display: grid; gap: 6px; font-size: clamp(.9rem, .98vw, .98rem); line-height: 1.5; color: rgba(255, 255, 255, .85); }
+@media (max-width: 760px) { .ov-grid { grid-template-columns: 1fr 1fr; } }
+
+/* 기획 배경 PROBLEM: 항목 간격을 일정하게, 글자 키움 */
+.s2n-problem h3 { font-size: clamp(1.3rem, 1.7vw, 1.55rem); }
+.s2n-list { justify-content: start; align-content: start; gap: 22px; }
+.s2n-list b { font-size: 2rem; }
+.s2n-list strong { font-size: clamp(1.1rem, 1.35vw, 1.3rem); }
+.s2n-list p { font-size: clamp(1rem, 1.1vw, 1.1rem); }
+
+/* 라이브 시연 단계 카드: 간격 일정하게, 글자 키움 */
+.side-col .steps-col { align-content: start; gap: 10px; }
+.side-col .live-step { padding: 9px 12px; }
+.side-col .live-step strong { font-size: 15px; }
+.side-col .live-step em, .side-col .live-check { font-size: 12.5px; }
+.side-col .live-hint { font-size: 12px; }
+.side-col .live-head .slide-title { font-size: clamp(26px, 3vw, 44px); }
+
+/* AI 복합 질문: 함수 한 줄씩, 진하게 */
+.chain { display: grid; gap: 4px; }
+.chain-row { margin: 0; display: flex; align-items: center; gap: 8px; font-size: .95rem; }
+.chain-row code, .tool-card code { font-weight: 800; color: #FBBF24; }
+.chain-row span { color: rgba(255, 255, 255, .7); }
+
+/* IP 벤토: 태그 줄을 카드 아래쪽에 맞춰 한 줄로 정렬 */
+.bento3 > .bento-card { display: flex; flex-direction: column; justify-content: space-between; }
+.slide.slide-live .live-row { height: 80vh; }
+.side-col .steps-col { gap: 8px; }
+.side-col .live-step { padding: 8px 12px; }
+.slide-ai-fit { gap: 14px; }
+.ai-grid { margin-top: 0; }
+.ai-grid .glass { padding: 16px 18px; }

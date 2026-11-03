@@ -863,3 +863,7 @@ body:has(.halla-hero) { background: #030407; }
 /* 모든 화면에서 스크롤바를 숨김 (휠·터치·키보드 스크롤은 그대로 동작) */
 html { scrollbar-width: none; }
 html::-webkit-scrollbar { display: none; }
+
+/* 상단 좌측 문구: 긴 한 줄 문장이라 글자를 작게, 공간이 모자라면 줄바꿈 */
+.brand { font: 500 13px var(--serif); letter-spacing: .08em; white-space: normal; max-width: 260px; line-height: 1.35; }
+@media (max-width: 720px) { .brand { font-size: 12px; letter-spacing: .04em; max-width: 170px; } }

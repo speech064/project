@@ -429,7 +429,7 @@ body.plain { background: var(--bg); }
 /* ── 푸터·토스트 ── */
 /* 모든 탭 공통 푸터: 한 톤 진한 모래색 면 위에 로고·링크 열·맨 아래 한 줄 */
 .foot { background: var(--sur); color: var(--t); padding: clamp(40px, 6vw, 64px) var(--gut) 22px; font-size: 14px; }
-.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1.6fr; gap: 36px clamp(24px, 5vw, 72px); max-width: 1100px; margin: 0 auto; }
+.foot-grid { display: grid; grid-template-columns: 1fr 2.2fr; gap: 36px clamp(24px, 5vw, 72px); max-width: 1100px; margin: 0 auto; }
 .foot-brand b { font: 500 22px/1 'Cormorant Garamond', serif; letter-spacing: .26em; color: var(--ink); }
 .foot-brand p { margin: 14px 0 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: var(--t); }
 .foot-brand .foot-sub { margin-top: 8px; font: 400 14px/1.6 var(--sans); font-style: normal; color: var(--muted); }
@@ -850,4 +850,12 @@ body:has(.halla-hero) { background: #030407; }
   .timebar .clock, .timebar .slider, .timebar .ticks { display: none; }
   .timebar-top { margin-bottom: 0; justify-content: center; }
   .timebar .presets { flex: 1; justify-content: center; }
+}
+
+/* 푸터 데이터 출처: 성격별로 나눠서 세 묶음 (데스크톱 3열, 모바일 1열) */
+.foot-sources { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px clamp(16px, 3vw, 40px); }
+.foot-sources .foot-col a { font-size: 14px; line-height: 1.5; }
+@media (max-width: 720px) {
+  .foot-grid { grid-template-columns: 1fr; }
+  .foot-sources { grid-template-columns: 1fr; gap: 22px; }
 }

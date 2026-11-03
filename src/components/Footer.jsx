@@ -1,13 +1,25 @@
-import { NavLink } from 'react-router-dom'
-import { NAV_ITEMS } from '../router'
-
-// 모든 탭이 같은 푸터로 끝남 (아만·애플·식스센시스처럼: 로고 + 링크 열 + 맨 아래 한 줄)
-const SOURCES = [
-  { label: '일출·일몰 sunrise-sunset.org', href: 'https://sunrise-sunset.org/api' },
-  { label: '구름·파도 Open-Meteo', href: 'https://open-meteo.com' },
-  { label: '단기예보 기상청 (공공데이터포털)', href: 'https://www.data.go.kr' },
-  { label: '사진·주소 한국관광공사 TourAPI', href: 'https://api.visitkorea.or.kr' },
-  { label: '주변 장소 비짓제주', href: 'https://www.visitjeju.net/kr/visitjejuapi' },
+// 모든 탭이 같은 푸터로 끝남: 로고 + 데이터 출처(성격별로 나눠 적음) + 맨 아래 한 줄
+// 상단 탭이 고정되어 있어서 푸터에는 탭 링크를 두지 않음
+const SOURCE_GROUPS = [
+  {
+    title: '날씨·일출·일몰',
+    items: [
+      { label: '기상청 단기예보 (공공데이터포털)', href: 'https://www.data.go.kr' },
+      { label: 'sunrise-sunset.org', href: 'https://sunrise-sunset.org/api' },
+      { label: 'Open-Meteo', href: 'https://open-meteo.com' },
+    ],
+  },
+  {
+    title: '관광·사진·주변',
+    items: [
+      { label: '한국관광공사 TourAPI', href: 'https://api.visitkorea.or.kr' },
+      { label: '제주관광공사 비짓제주', href: 'https://www.visitjeju.net/kr/visitjejuapi' },
+    ],
+  },
+  {
+    title: '지도',
+    items: [{ label: '통계청 행정구역 경계 (단순화)', href: 'https://kosis.kr' }],
+  },
 ]
 
 export default function Footer() {
@@ -20,14 +32,13 @@ export default function Footer() {
           <p className="foot-sub">제주의 일출·일몰 명소를 실제 날씨로 비교하는 사진 가이드</p>
         </div>
 
-        <nav className="foot-col" aria-label="페이지">
-          <h4>둘러보기</h4>
-          {NAV_ITEMS.map((n) => <NavLink key={n.to} to={n.to} end={n.to === '/'}>{n.label}</NavLink>)}
-        </nav>
-
-        <div className="foot-col">
-          <h4>데이터 출처</h4>
-          {SOURCES.map((s) => <a key={s.href} href={s.href} target="_blank" rel="noreferrer">{s.label}</a>)}
+        <div className="foot-sources">
+          {SOURCE_GROUPS.map((g) => (
+            <div key={g.title} className="foot-col">
+              <h4>{g.title}</h4>
+              {g.items.map((s) => <a key={s.href} href={s.href} target="_blank" rel="noreferrer">{s.label}</a>)}
+            </div>
+          ))}
         </div>
       </div>
 

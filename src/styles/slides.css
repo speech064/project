@@ -314,3 +314,30 @@
 .side-col .live-step em { font-size: 14px; }
 .side-col .live-check, .side-col .live-hint { font-size: 13px; }
 .side-col .live-step strong { font-size: 19px; }
+
+/* ── 5차 조정 ── */
+/* 기획 배경: 문제점 3개를 우측 카드 3개와 같은 행에 맞춤 */
+.s2n-probs { display: grid; grid-template-rows: repeat(3, 1fr); gap: 16px; }
+.s2n-solution { grid-template-rows: repeat(3, 1fr); gap: 16px; }
+.s2n-prob { display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 0 8px 0 20px; border-left: 3px solid #34D399; }
+.s2n-prob .num { font-size: 14px; }
+.s2n-prob strong { font-size: clamp(1.2rem, 1.6vw, 1.45rem); line-height: 1.35; }
+.s2n-prob p { font-size: clamp(1.02rem, 1.2vw, 1.2rem); line-height: 1.5; color: rgba(255, 255, 255, .85); }
+
+/* 마무리: Thank you 를 인용문 바로 위로 */
+.slide:has(> .quote) > .slide-kicker { margin-bottom: -24px; }
+
+/* 라이브 시연: 제목과 단계 카드 사이 여백 제거, 글자 키움 */
+.side-col .steps-col { padding-top: 0; }
+.side-col .live-head .slide-kicker { font-size: 1rem; }
+.side-col .live-step b { font-size: 34px; }
+.side-col .live-step strong { font-size: 24px; }
+.side-col .live-step em { font-size: 18px; }
+.side-col .live-check { font-size: 16px; }
+.side-col .live-step { padding: 8px 14px; }
+.side-col .steps-col { gap: 6px; }
+.side-col .live-step { padding: 6px 14px; }
+.side-col .live-step b { font-size: 30px; }
+.side-col .live-step strong { font-size: 22px; }
+.side-col .live-step em { font-size: 16px; }
+.side-col .live-check { font-size: 15px; }

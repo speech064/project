@@ -90,18 +90,15 @@ function Slide2() {
     <div className="slide slide-s2n">
       <p className="slide-kicker s-item" style={{ '--i': 0 }}>기획 배경</p>
       <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(2.2rem, 3.6vw, 3.4rem)' }}>구름만 가득하면 <i>어떡하죠?</i></h2>
-      <div className="s2n-grid">
-        <div className="glass s2n-problem s-item" style={{ '--i': 2 }}>
-          <span className="num">PROBLEM</span>
-          <h3>제주 출사와 산행, 왜 늘 허탕을 칠까요?</h3>
-          <ul className="s2n-list">
-            {PROBLEM.map((p) => (
-              <li key={p.title}>
-                <b aria-hidden="true">{p.icon}</b>
-                <div><strong>{p.title}</strong><p>{p.body}</p></div>
-              </li>
-            ))}
-          </ul>
+      <div className="s2n-grid s-item" style={{ '--i': 2 }}>
+        <div className="s2n-probs">
+          {PROBLEM.map((p, i) => (
+            <div key={p.title} className="s2n-prob">
+              <span className="num">PROBLEM {String(i + 1).padStart(2, '0')}</span>
+              <strong>{p.icon} {p.title}</strong>
+              <p>{p.body}</p>
+            </div>
+          ))}
         </div>
         <div className="s2n-solution">
           {SOLUTION.map((s, i) => (
@@ -151,7 +148,7 @@ function Slide3() {
         <div className="side-col">
           <div className="live-head">
             <p className="slide-kicker">라이브 시연</p>
-            <h2 className="slide-title" style={{ fontSize: 'clamp(28px, 3.4vw, 46px)' }}>이렇게 <i>동작합니다</i></h2>
+            <h2 className="slide-title" style={{ fontSize: 'clamp(36px, 4.4vw, 64px)' }}>이렇게 <i>동작합니다</i></h2>
           </div>
           <div className="steps-col">
             {LIVE_STEPS.map((st, i) => (

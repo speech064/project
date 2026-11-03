@@ -432,3 +432,35 @@
 
 /* 마무리 Thank you: 인용문과 같은 세리프·그림자 (기울임 없음) */
 .end-title .slide-kicker { font-family: 'Cormorant Garamond', serif; font-style: normal; font-weight: 500; font-size: clamp(2rem, 3.4vw, 3.2rem); letter-spacing: .06em; color: #FBBF24; text-shadow: 0 4px 30px rgba(0, 0, 0, .5); }
+
+/* ── 13차: 전체 디자인 정돈 (CSS만) ── */
+/* 1. 콘텐츠 폭 5~8% 확대 */
+.deck .slide { width: min(1450px, 93vw); }
+.deck .slide.slide-s2n, .deck .slide.slide-overview { width: min(1560px, 94vw); }
+.deck .slide.slide-live { width: min(1480px, 93vw); }
+/* 본문·태그 글자 키움 */
+.deck .s2n-card p, .deck .bento-card p { font-size: clamp(1.05rem, 1.2vw, 1.22rem); }
+.deck .s2n-prob p { font-size: clamp(1.08rem, 1.25vw, 1.25rem); }
+.deck .ov-card p, .deck .ov-card ul { font-size: clamp(1.02rem, 1.15vw, 1.15rem); }
+.deck .s2n-card .pill.cyan, .deck .bento-card .pill, .deck .ai-badges .pill { font-size: .9rem; }
+/* 2. 카드 배경 어둡게, 블러 강화 (밝은 노을 위 대비) */
+.deck .glass:not(.live), .deck .s2n-prob, .deck .s2n-card { background: rgba(15, 18, 28, .78); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+/* 3. 포인트 컬러: 골드 옐로우 + 민트 */
+.deck .slide-title i { color: #F5B82E; }
+.deck .live-step b { color: #F5B82E; }
+.deck .live-check, .deck .live-hint { color: #A7F3D0; }
+
+/* 슬라이드별 */
+/* 01 표지: 블록 약 10% 확대 */
+.deck .slide:has(> .pills) .slide-title { font-size: clamp(44px, 7vw, 101px); }
+.deck .slide:has(> .pills) .slide-sub { font-size: clamp(22px, 2.6vw, 33px); }
+/* 03 기획 배경: 해녀 오브젝트와 겹치지 않게 위로, 워터마크 숫자 조정 */
+.deck .slide.slide-s2n { transform: translateY(-26px); }
+.deck .s2n-card .num { top: 8px; right: 14px; opacity: .6; }
+/* 04 라이브 시연: 세로 높이 축소, 카드 여백 축소 */
+.deck .slide.slide-live .live-row { height: 64vh; }
+.deck .slide.slide-live .steps-col { gap: 8px; }
+.deck .slide.slide-live .steps-col .live-step { padding: 8px 14px; }
+/* 05 AI: 6 TOOLS 카드 여백 조밀하게, 세로 간격 균형 */
+.deck .tool-grid { gap: 10px; align-content: space-evenly; grid-auto-rows: auto; }
+.deck .tool-card { padding: 10px 12px; gap: 4px; }

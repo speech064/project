@@ -844,3 +844,10 @@ body:has(.halla-hero) { background: #030407; }
   .place-act { gap: 4px; flex-wrap: wrap; }
   .place-act a { flex: 0 1 auto; max-width: 100%; height: 26px; padding: 0 8px; font-size: 10.5px; line-height: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 }
+
+/* 모바일 홈: 재생 버튼과 일출·한낮·일몰·밤만 남기고, 시간 글씨와 아래 슬라이더·눈금은 숨김 */
+@media (max-width: 640px) {
+  .timebar .clock, .timebar .slider, .timebar .ticks { display: none; }
+  .timebar-top { margin-bottom: 0; justify-content: center; }
+  .timebar .presets { flex: 1; justify-content: center; }
+}

@@ -420,3 +420,12 @@
   .slide.slide-live .live-row { grid-template-columns: 1fr; height: auto; }
   .slide.slide-live .live { height: 52vh; }
 }
+
+/* ── 12차: 마무리 슬라이드 정돈 ── */
+.slide.slide-end { justify-items: center; text-align: center; gap: 22px; }
+.end-title { display: grid; justify-items: center; gap: 0; }
+.end-title .slide-kicker { margin: 0 !important; padding: 0 !important; font-size: clamp(1.3rem, 2vw, 1.8rem); letter-spacing: .16em; }
+.end-title .quote { margin: -6px 0 0 !important; padding: 0 !important; line-height: 1.15; }
+.deck .glass.end-panel { display: grid; justify-items: center; gap: 16px; padding: 22px 28px; border-radius: 24px; }
+.end-panel .cta-row { margin: 0; gap: 12px; }
+.end-qr { display: grid; justify-items: center; gap: 8px; }

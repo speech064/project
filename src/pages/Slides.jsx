@@ -271,16 +271,17 @@ function Slide5() {
 // 6. 마무리 (원래 디자인: 가운데 정렬 + QR 카드)
 function Slide6() {
   return (
-    <div className="slide" style={{ justifyItems: 'center', textAlign: 'center', gap: 'clamp(10px, 1.6vw, 18px)' }}>
-      <p className="slide-kicker s-item" style={{ '--i': 0 }}>Thank you</p>
-      <p className="quote s-item" style={{ '--i': 1 }}>Beyond the clouds,<br />chasing the light in Jeju.</p>
-      <div className="cta-row s-item" style={{ '--i': 2 }}>
-        <a className="cta" href="https://jeju-golden-hour.vercel.app/" target="_blank" rel="noreferrer">배포 주소 ↗</a>
-        <a className="cta ghost" href="https://github.com/speech064/project" target="_blank" rel="noreferrer">GitHub ↗</a>
+    <div className="slide slide-end">
+      <div className="end-title s-item" style={{ '--i': 0 }}>
+        <p className="slide-kicker">THANK YOU · Q&amp;A</p>
+        <p className="quote">Beyond the clouds,<br />chasing the light in Jeju.</p>
       </div>
-      <p className="slide-ko s-item" style={{ '--i': 3 }}>Q&amp;A</p>
-      <div className="qr-wrap s-item" style={{ '--i': 4 }}>
-        <div className="qr-card glass">
+      <div className="end-panel glass s-item" style={{ '--i': 2 }}>
+        <div className="cta-row">
+          <a className="cta" href="https://jeju-golden-hour.vercel.app/" target="_blank" rel="noreferrer">배포 주소 ↗</a>
+          <a className="cta ghost" href="https://github.com/speech064/project" target="_blank" rel="noreferrer">GitHub ↗</a>
+        </div>
+        <div className="end-qr">
           <img style={{ width: 170, height: 170, borderRadius: 12, background: '#fff', padding: 6, display: 'block' }} src="/images/qr.png" alt="배포 주소 QR 코드" />
           <p className="qr-caption">📱 모바일로 바로 체험하기</p>
         </div>

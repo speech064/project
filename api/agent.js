@@ -140,11 +140,15 @@ export function createHandler(getClient) {
       const client = getClient()
       // 에이전트 루프: 생각 → 도구 호출(여러 개 동시) → 결과 확인 → (반복) → 최종 답
       for (let turn = 0; turn < MAX_TURNS; turn++) {
-        const r = await client.messages.create({ model: MODEL, max_tokens: 1500, system: systemPrompt(), tools: TOOLS, messages })
+        const r = await client.messages.create({ model: MODEL, max_tokens: 2500, system: systemPrompt(), tools: TOOLS, messages })
 
         if (r.stop_reason !== 'tool_use') {
           const hz = parseHallasan(r.content.filter((b) => b.type === 'text').map((b) => b.text).join('\n'))
           const { answer, focus } = parseFocus(hz.answer)
+          if (!polish(answer)) { // 답변 글이 비어 오면 빈 화면 대신 안내를 보여 줌
+            console.error(`[agent] 빈 답변 (stop_reason: ${r.stop_reason})`)
+            return res.status(200).json({ answer: '답변이 길어져서 끝까지 만들지 못했어요. 날짜를 하나씩 나눠서 다시 물어봐 주세요.', steps, focus: null, hallasan: null })
+          }
           return res.status(200).json({ answer: polish(answer), steps, focus, hallasan: hz.hallasan })
         }
 

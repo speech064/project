@@ -777,3 +777,7 @@ body:has(.halla-hero) { background: #030407; }
   .picked .halla-title h1 { font-size: clamp(40px, 12vw, 56px); }
   .picked .halla-title p { font-size: 15px; }
 }
+
+/* 호출한 도구 목록 접기·펼치기 버튼 */
+.steps .steps-toggle { border: 0; background: none; padding: 0; margin: 0 0 6px; color: var(--peach); font: 600 12px var(--sans); letter-spacing: .04em; text-align: left; }
+.steps .steps-toggle:hover { text-decoration: underline; text-underline-offset: 3px; }

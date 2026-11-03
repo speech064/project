@@ -102,7 +102,7 @@ export default function InfoPanel({ compact = false, dates = null }) {
           <p className="kma-note retry-row"><button type="button" className="retry" onClick={() => loadData()}>다시 불러오기</button></p>
         )}
 
-        <div {...rv}><ScoreCard weather={weather} sun={sun} weatherErr={weatherErr} sunErr={sunErr} loading={sunLoading || weatherLoading} /></div>
+        <div {...rv}><ScoreCard weather={weather} sun={sun} weatherErr={weatherErr} sunErr={sunErr} loading={sunLoading || weatherLoading} ev={pick} /></div>
       </div>
     </div>
   )

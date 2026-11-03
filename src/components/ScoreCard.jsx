@@ -4,7 +4,7 @@ import { shootingTip } from '../lib/tips'
 import Lines from './Lines'
 
 // 일출·일몰 시각의 구름·날씨로 계산한 자체 추천 점수 + 계산 기준 공개
-export default function ScoreCard({ weather, sun, weatherErr, sunErr, loading }) {
+export default function ScoreCard({ weather, sun, weatherErr, sunErr, loading, ev = null }) {
   const at = (min) => weather?.hours?.[Math.min(23, Math.max(0, Math.round(min / 60)))]
   const make = (kind, min) => {
     const r = at(min)
@@ -15,10 +15,13 @@ export default function ScoreCard({ weather, sun, weatherErr, sunErr, loading })
   }
   const rows = sun ? [make('일출', sun.sunriseMin), make('일몰', sun.sunsetMin)] : []
   const best = rows.filter((r) => r.result).sort((a, b) => b.result.score - a.result.score)[0]
-  const bestRow = best && at(best.min)
-  const kma = bestRow?.kma
-  const tip = best && shootingTip({
-    evKo: best.kind, time: best.time, cloud: Math.round(bestRow.cloud), wind: bestRow.wind,
+  // 사용자가 일출·일몰을 고르면 그 시각의 점수·문구·팁을 보여 주고, 고르지 않으면 명소의 추천 시각을 씀
+  const picked = ev ? rows.find((r) => r.kind === (ev === 'sunrise' ? '일출' : '일몰')) : null
+  const focus = picked ?? best
+  const focusRow = focus && at(focus.min)
+  const kma = focusRow?.kma
+  const tip = focus?.result && shootingTip({
+    evKo: focus.kind, time: focus.time, cloud: Math.round(focusRow.cloud), wind: focusRow.wind,
     rain: !!kma && ((kma.ptyLabel && kma.ptyLabel !== '없음') || (kma.pop ?? 0) >= 60),
   })
 
@@ -26,11 +29,11 @@ export default function ScoreCard({ weather, sun, weatherErr, sunErr, loading })
     <div className="score">
       <div className="score-head">
         <p className="eyebrow">사진 지수</p>
-        {best ? (
+        {focus?.result ? (
           <>
-            <div className="score-big" style={{ '--p': best.result.score }}><b>{best.result.score}</b></div>
-            <p className="score-msg">{best.kind} 기준 · {best.result.verdict.ko}</p>
-            <p className="score-en">{best.result.verdict.en}</p>
+            <div className="score-big" style={{ '--p': focus.result.score }}><b>{focus.result.score}</b></div>
+            <p className="score-msg">{focus.kind} 기준 · {focus.result.verdict.ko}</p>
+            <p className="score-en">{focus.result.verdict.en}</p>
           </>
         ) : (
           <>
@@ -44,7 +47,7 @@ export default function ScoreCard({ weather, sun, weatherErr, sunErr, loading })
       {rows.length > 0 && (
         <div className="score-rows">
           {rows.map((r) => (
-            <div key={r.kind} className={`score-row${r === best ? ' top' : ''}`}>
+            <div key={r.kind} className={`score-row${r === focus ? ' top' : ''}`}>
               <small>{r.kind} · {r.time}</small>
               <b>{r.result ? r.result.score : '—'}</b>
               <span className="bar"><i style={{ width: `${r.result ? r.result.score : 0}%` }} /></span>

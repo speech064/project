@@ -81,7 +81,10 @@ export default function Hallasan({ embed = null }) {
             </div>
             <div className="hz-date">
               <button type="button" aria-label="전날" disabled={date <= today} onClick={() => go({ date: addDays(date, -1) })}>◀</button>
-              <label>
+              <label onClick={(e) => { // 날짜 글씨를 누르면 달력이 바로 열리도록 (모바일 포함)
+                const input = e.currentTarget.querySelector('input')
+                try { input?.showPicker ? input.showPicker() : input?.click() } catch { input?.click() }
+              }}>
                 <span>{dateLabel(date)}</span>
                 <input type="date" value={date} min={today} max={maxDate} onChange={(e) => e.target.value && go({ date: e.target.value })} aria-label="날짜" />
               </label>

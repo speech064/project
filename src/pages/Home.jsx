@@ -11,11 +11,8 @@ export default function Home() {
   const spotId = useAppStore((s) => s.spotId)
   const selectSpot = useAppStore((s) => s.selectSpot)
 
-  // 카드를 고르면 맨 위로 올라가 3D 장면의 변화를 바로 보여줌
-  const onSelect = (id) => {
-    selectSpot(id)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  // 카드를 골라도 화면은 그 자리에 머묾 (위로 스크롤하지 않음)
+  const onSelect = (id) => selectSpot(id)
 
   return (
     <>

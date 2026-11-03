@@ -20,7 +20,7 @@ export default function Home() {
         <div className="hero-inner">
           <p className="eyebrow rise" style={{ '--d': '0.1s' }}>오늘 어디서, 언제 찍을지 날씨 데이터로 골라 주는 제주 일출·일몰 사진 가이드</p>
           <h1 className="rise" style={{ '--d': '0.25s' }}>GOLDEN HOUR</h1>
-          <p className="tagline rise" style={{ '--d': '0.45s' }}>Chasing the light in Jeju.</p>
+          <p className="tagline rise" style={{ '--d': '0.45s' }}>Beyond the clouds, chasing the light in Jeju.</p>
         </div>
         <TimeControl />
       </section>

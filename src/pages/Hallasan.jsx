@@ -196,7 +196,7 @@ export default function Hallasan({ embed = null }) {
           )}
 
           <p className="muted hz-foot">
-            날씨 판정은 예보를 바탕으로 한 참고 정보입니다. 실제 탐방 가능 여부와 통제 상황은 <a href="https://hallasan.go.kr" target="_blank" rel="noreferrer">한라산국립공원 공식 안내</a>를 확인해 주세요.
+            날씨 판정은 예보를 바탕으로 한 참고 정보입니다. 실제 탐방 가능 여부와 통제 상황은 <a href="https://www.jeju.go.kr/hallasan/index.htm" target="_blank" rel="noreferrer">한라산국립공원 공식 안내</a>를 확인해 주세요.
           </p>
           <p className="muted hz-foot">
             판정은 날씨 데이터(Open-Meteo 예보에 산 높이를 지정해 보정)로 계산한 참고용 자체 기준이에요. 코스 고도·시간은 어림값이에요.

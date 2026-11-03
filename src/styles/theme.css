@@ -723,7 +723,7 @@ body:has(.halla-hero) { background: #030407; }
 .rm-pt.on .rm-dot { fill: var(--turq); }
 .rm-pt:focus-visible .rm-dot { stroke: var(--turq); stroke-width: 2; }
 .rm-hit { fill: transparent; }
-.rm-goal { fill: #fff; }
+.rm-goal { fill: var(--mimosa); }
 .rm-lbl { font: 500 9.5px var(--sans); fill: rgba(255, 255, 255, .72); paint-order: stroke; stroke: rgba(8, 11, 18, .85); stroke-width: 3px; stroke-linejoin: round; }
 .rm-pt.on .rm-lbl { fill: var(--turq); font-weight: 700; }
 .rm-north path { fill: var(--turq); }
@@ -737,7 +737,7 @@ body:has(.halla-hero) { background: #030407; }
 .rm-jeju-line { stroke: rgba(255, 255, 255, .45); stroke-width: 1.5px; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
 .rm-jeju-line.on { stroke: var(--turq); stroke-width: 2.5px; stroke-dasharray: 6 3; }
 .rm-jeju-dot.on { fill: var(--turq); }
-.rm-jeju-summit { fill: #fff; }
+.rm-jeju-summit { fill: var(--mimosa); }
 .rm-island { fill: rgba(255, 255, 255, .12); stroke: rgba(255, 255, 255, .22); stroke-width: 6; }
 .rm-jeju-dot { fill: rgba(255, 255, 255, .6); }
 
@@ -751,3 +751,9 @@ body:has(.halla-hero) { background: #030407; }
 /* 에이전트 위 한라산 리포트 창: 제목 없이 판정기 본문만 깔끔하게 */
 .halla-report .band { padding: 0; background: none; }
 .halla-report .wrap.hz { padding: 0; }
+
+/* 상단 탭·로그인 버튼: 영문 대문자로 통일 */
+.head nav a, .auth-btn { text-transform: uppercase; }
+
+/* 답변 속 공식 누리집 링크: 본문과 같은 글씨색에 밑줄 */
+.msg .ln a { color: inherit; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }

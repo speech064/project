@@ -32,8 +32,8 @@ export default function HallaRouteMap({ trails, trailId, onPick, className = '' 
   const [open, setOpen] = useState(false)
   const { at } = frame(trails)
   const sel = trails.find((t) => t.id === trailId)
-  // 같은 정상(목적지)은 한 번만 그림
-  const goals = [...new Map(trails.map((t) => [t.goal.name, t.goal])).values()]
+  // 목적지 표시: 백록담과 윗세오름은 같은 자리라 겹치므로, 고른 코스의 목적지 이름만 쓴다
+  const goal = sel?.goal ?? null
   const press = (e, id) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick(id) } }
 
   return (
@@ -63,15 +63,15 @@ export default function HallaRouteMap({ trails, trailId, onPick, className = '' 
         })}
 
         {/* 정상·목적지 */}
-        {goals.map((g) => {
-          const [x, y] = at(g)
+        {(() => {
+          const [x, y] = at(goal ?? trails[0].goal)
           return (
-            <g key={g.name} transform={`translate(${x} ${y})`}>
+            <g transform={`translate(${x} ${y})`}>
               <rect x="-4" y="-4" width="8" height="8" transform="rotate(45)" className="rm-goal" />
-              <text x="8" y="-6" className="rm-lbl">{g.name}{g.approx ? ' (대략)' : ''}</text>
+              {goal && <text x="8" y="-6" className="rm-lbl">{goal.name}{goal.approx ? ' (대략)' : ''}</text>}
             </g>
           )
-        })}
+        })()}
 
         {/* 출발점 (누르면 선택) */}
         {trails.map((t) => {

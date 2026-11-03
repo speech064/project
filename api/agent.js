@@ -5,7 +5,7 @@ import { todayKst, addDays, FORECAST_RANGE } from '../shared/date.js'
 import { RUN, TOOLS, summarize } from '../server/tools.js'
 import { trailById } from '../shared/trails.js'
 
-const MODEL = 'claude-sonnet-5-5'
+const MODEL = 'claude-haiku-5-5'
 const MAX_TURNS = 8
 
 // 답변 끝 태그: [[FOCUS spot=<id> date=YYYY-MM-DD event=sunrise|sunset dates=YYYY-MM-DD,YYYY-MM-DD]]  (dates 는 비교한 날짜들, 선택)

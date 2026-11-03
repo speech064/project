@@ -9,7 +9,7 @@ import NotFound from './pages/NotFound'
 
 // 페이지 추가: ① pages/ 에 파일 만들기 ② NAV_ITEMS 에 한 줄 ③ routes 에 한 줄
 export const NAV_ITEMS = [
-  { to: '/', label: 'HOME' },
+  { to: '/', label: 'GOLDEN HOUR' },
   { to: '/halla', label: 'HALLA 1947' },
   { to: '/agent', label: 'AI GUIDE' },
   { to: '/nearby', label: 'NEARBY' },

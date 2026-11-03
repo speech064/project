@@ -244,6 +244,7 @@ export const useAppStore = create(
         const tools = (r.steps ?? []).map((s) => ({ tool: s.tool, ok: s.ok }))
         const { error } = await supabase.from('chat_logs').insert({ ...get().ownerCols(), question, answer: r.answer, tools })
         if (error) get().toast(`대화 저장 실패: ${needSql(error.message)}`, 'bad')
+        else get().loadChatLogs() // 저장한 대화를 바로 목록에 반영
       },
       loadChatLogs: async () => {
         if (!supabase) return

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BEST, readySpots } from '../../shared/spots'
 import InfoPanel from '../components/InfoPanel'
 import SpotCard from '../components/SpotCard'
@@ -8,6 +9,11 @@ import { useAppStore } from '../store/useAppStore'
 const GROUPS = ['sunrise', 'sunset'].map((key) => ({ key, items: readySpots.filter((s) => s.best === key) }))
 
 export default function Home() {
+  // 첫 화면에서는 스크롤바를 숨김 (스크롤은 그대로 됨). 다른 탭으로 가면 원래대로 돌아감
+  useEffect(() => {
+    document.documentElement.classList.add('no-scrollbar')
+    return () => document.documentElement.classList.remove('no-scrollbar')
+  }, [])
   const spotId = useAppStore((s) => s.spotId)
   const selectSpot = useAppStore((s) => s.selectSpot)
 

@@ -152,7 +152,7 @@ function pill(slide, x, y, text, color = PILL_TEXT, w) {
   sectionLabel(s, '라이브 시연')
   title(s, [{ text: '이렇게 ' }, { text: '동작합니다', color: GOLD }])
   // 브라우저 목업
-  const bx = LEFT, by = 2.05, bw = 7.3, bh = 4.75
+  const bx = LEFT, by = 2.05, bw = 7.7, bh = 4.75
   card(s, bx, by, bw, bh, { fill: '0B0E17', transparency: 0, line: '2A3350' })
   s.addShape(pres.shapes.RECTANGLE, { x: bx, y: by, w: bw, h: 0.45, fill: { color: '1A2033' }, line: { type: 'none' } })
   ;['FB7185', GOLD, MINT].forEach((c, i) => s.addShape(pres.shapes.OVAL, { x: bx + 0.2 + i * 0.22, y: by + 0.16, w: 0.13, h: 0.13, fill: { color: c }, line: { type: 'none' } }))
@@ -178,11 +178,11 @@ function pill(slide, x, y, text, color = PILL_TEXT, w) {
   ]
   STEPS.forEach((st, i) => {
     const y = 2.05 + i * 0.97
-    card(s, 8.7, y, 3.65, 0.86, { transparency: 15 })
-    s.addText(st.n, { x: 8.85, y: y + 0.1, w: 0.7, h: 0.66, valign: 'middle', fontFace: SERIF, fontSize: 22, bold: true, color: GOLD, margin: 0, isTextBox: true })
-    s.addText(st.t, { x: 9.55, y: y + 0.06, w: 2.7, h: 0.28, fontFace: SANS, fontSize: 12, bold: true, color: WHITE, margin: 0, isTextBox: true })
-    s.addText(st.d, { x: 9.55, y: y + 0.33, w: 2.7, h: 0.22, fontFace: SANS, fontSize: 9, color: BODY, margin: 0, isTextBox: true })
-    s.addText(`확인 포인트 · ${st.c}`, { x: 9.55, y: y + 0.56, w: 2.7, h: 0.22, fontFace: SANS, fontSize: 9, bold: true, color: MINT, margin: 0, isTextBox: true })
+    card(s, 8.95, y, 3.4, 0.86, { transparency: 15 })
+    s.addText(st.n, { x: 9.05, y: y + 0.1, w: 0.7, h: 0.66, valign: 'middle', fontFace: SERIF, fontSize: 22, bold: true, color: GOLD, margin: 0, isTextBox: true })
+    s.addText(st.t, { x: 9.7, y: y + 0.06, w: 2.55, h: 0.28, fontFace: SANS, fontSize: 12, bold: true, color: WHITE, margin: 0, isTextBox: true })
+    s.addText(st.d, { x: 9.7, y: y + 0.33, w: 2.55, h: 0.22, fontFace: SANS, fontSize: 9, color: BODY, margin: 0, isTextBox: true })
+    s.addText(`확인 포인트 · ${st.c}`, { x: 9.7, y: y + 0.56, w: 2.55, h: 0.22, fontFace: SANS, fontSize: 9, bold: true, color: MINT, margin: 0, isTextBox: true })
   })
   pagination(s, 4, '라이브 시연')
 }
@@ -221,7 +221,7 @@ function pill(slide, x, y, text, color = PILL_TEXT, w) {
     const x = LEFT + 0.25 + (i % 2) * 2.7
     const y = 3.85 + Math.floor(i / 2) * 0.93
     card(s, x, y, 2.55, 0.82, { transparency: 30 })
-    s.addText(n, { x: x + 0.12, y: y + 0.07, w: 2.3, h: 0.28, fontFace: SANS, fontSize: 11, bold: true, color: GOLD, margin: 0, isTextBox: true })
+    s.addText(n, { x: x + 0.12, y: y + 0.07, w: 2.3, h: 0.28, fontFace: 'Consolas', fontSize: 11, bold: true, color: GOLD, margin: 0, isTextBox: true })
     s.addText(d, { x: x + 0.12, y: y + 0.36, w: 2.3, h: 0.42, fontFace: SANS, fontSize: 9, color: BODY, margin: 0, valign: 'top', isTextBox: true })
   })
   // HALLUCINATION ZERO

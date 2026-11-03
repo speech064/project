@@ -273,7 +273,7 @@ function Slide6() {
   return (
     <div className="slide slide-end">
       <div className="end-title s-item" style={{ '--i': 0 }}>
-        <p className="slide-kicker">THANK YOU · Q&amp;A</p>
+        <p className="slide-kicker">THANK YOU</p>
         <p className="quote">Beyond the clouds,<br />chasing the light in Jeju.</p>
       </div>
       <div className="end-panel glass s-item" style={{ '--i': 2 }}>

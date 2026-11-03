@@ -429,3 +429,6 @@
 .deck .glass.end-panel { display: grid; justify-items: center; gap: 16px; padding: 22px 28px; border-radius: 24px; }
 .end-panel .cta-row { margin: 0; gap: 12px; }
 .end-qr { display: grid; justify-items: center; gap: 8px; }
+
+/* 마무리 Thank you: 인용문과 같은 세리프·그림자 (기울임 없음) */
+.end-title .slide-kicker { font-family: 'Cormorant Garamond', serif; font-style: normal; font-weight: 500; font-size: clamp(2rem, 3.4vw, 3.2rem); letter-spacing: .06em; color: #fff; text-shadow: 0 4px 30px rgba(0, 0, 0, .5); }

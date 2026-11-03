@@ -288,3 +288,6 @@
 .slide:has(> .quote) > .slide-kicker { font-size: clamp(1.5rem, 2.6vw, 2.3rem); letter-spacing: .14em; text-transform: none; }
 .slide.slide-live .live-row { height: 80vh; }
 .side-col .steps-col { gap: 6px; }
+
+/* 마무리 인용문만 기존 세리프 이탤릭 유지 */
+.deck .quote { font-family: 'Cormorant Garamond', serif; font-style: italic; }

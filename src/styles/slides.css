@@ -72,3 +72,29 @@
 .deck h1, .deck h2, .deck h3 { color: #fff; }
 .deck .glass h3 { color: #fff; }
 .deck .glass .num { color: #34D399; }
+
+/* 3번 슬라이드: 라이브 시연 (실제 웹앱 축소 표시) */
+.slide-live { width: 92vw; max-width: none; gap: 14px; }
+.live-head { display: grid; gap: 4px; }
+.live-head .slide-kicker { margin: 0; }
+.live-row { display: grid; grid-template-columns: 72fr 28fr; gap: 16px; height: min(72vh, 620px); }
+.live { display: flex; flex-direction: column; padding: 0; overflow: hidden; min-height: 0; }
+.live.max { position: fixed; inset: 4vh 4vw; z-index: 60; height: auto; }
+.live-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(15, 23, 42, .6); border-bottom: 1px solid rgba(255, 255, 255, .12); }
+.live-bar .dots { display: inline-flex; gap: 6px; }
+.live-bar .dots i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; background: #FB7185; }
+.live-bar .dots i:nth-child(2) { background: #FBBF24; }
+.live-bar .dots i:nth-child(3) { background: #34D399; }
+.live-url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #94A3B8; background: rgba(255, 255, 255, .06); padding: 5px 12px; border-radius: 999px; }
+.live-btns { display: flex; gap: 8px; }
+.live-btns button, .live-btns a { height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .25); background: rgba(255, 255, 255, .08); color: #fff; font: 600 12px 'Pretendard Variable', Pretendard, sans-serif; text-decoration: none; display: inline-flex; align-items: center; cursor: pointer; white-space: nowrap; }
+.live-btns button:hover, .live-btns a:hover { background: rgba(255, 255, 255, .18); }
+.live-frame { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #0F172A; }
+.live-frame iframe { position: absolute; left: 0; top: 0; width: calc(100% / .75); height: calc(100% / .75); border: 0; transform: scale(.75); transform-origin: 0 0; background: #0F172A; }
+.steps-col { display: grid; gap: 10px; align-content: start; overflow: auto; }
+.live-step { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: center; text-align: left; padding: 12px 14px; border-radius: 16px; background: rgba(15, 23, 42, .45); border: 1px solid rgba(255, 255, 255, .14); color: #fff; cursor: pointer; transition: background .2s, border-color .2s, box-shadow .2s; }
+.live-step:hover { background: rgba(255, 255, 255, .1); }
+.live-step b { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #FB7185; }
+.live-step strong { display: block; font-size: 14px; }
+.live-step em { display: block; font-style: normal; font-size: 12px; color: rgba(255, 255, 255, .7); margin-top: 2px; }
+.live-step.on { border-color: #FBBF24; box-shadow: 0 0 24px -6px rgba(251, 191, 36, .7); }

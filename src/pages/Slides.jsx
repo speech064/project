@@ -70,30 +70,50 @@ function Slide2() {
   )
 }
 
+const LIVE_STEPS = [
+  { no: '01', title: '회원가입 · 로그인', desc: '계정을 만들고 로그인합니다', path: '/' },
+  { no: '02', title: 'HOME · 골든아워 3D', desc: '날씨 효과, 명소 비교, 빛 리포트', path: '/' },
+  { no: '03', title: 'HALLA 1947', desc: '코스 선택, 등반 날씨 판정, 공식 안내', path: '/halla' },
+  { no: '04', title: 'AI GUIDE', desc: '질문하면 도구를 골라 호출하고 답합니다', path: '/agent' },
+  { no: '05', title: 'NEARBY · SAVED', desc: '저장 후 새로고침해도 남아 있는지 확인', path: '/nearby' },
+]
+
+// 3번 슬라이드: 실제 웹앱이 축소되어 도는 라이브 시연 창 + 단계 체크리스트 (양방향 연동)
 function Slide3() {
-  const steps = [
-    ['01', '회원가입 · 로그인', 'Supabase 계정별로 데이터가 나뉘는지 확인'],
-    ['02', 'HOME', '3D 날씨 효과, 며칠 뒤 예보, 명소 비교와 빛 리포트'],
-    ['03', 'HALLA 1947', '3D 한라산 회전, 코스별 등반 판정, 공식 안내 링크'],
-    ['04', 'AI GUIDE', '도구 연속 호출 내역 표시, 범위 밖 날짜는 지어내지 않음'],
-    ['05', 'NEARBY · SAVED', '주변 장소 저장 후 새로고침해도 남아 있는지 확인'],
-  ]
+  const [active, setActive] = useState(0)
+  const [path, setPath] = useState('/')
+  const [max, setMax] = useState(false)
+  const frame = useRef(null)
+  const pick = (i) => { setActive(i); setPath(LIVE_STEPS[i].path) }
+  // 새로고침: 슬라이드가 아니라 iframe 안의 페이지만 다시 불러옴 (즐겨찾기·대화 기록이 남는지 확인용)
+  const reload = () => { try { frame.current?.contentWindow?.location.reload() } catch { if (frame.current) frame.current.src = path } }
   return (
-    <div className="slide">
-      <p className="slide-kicker s-item" style={{ '--i': 0 }}>라이브 시연</p>
-      <h2 className="slide-title s-item" style={{ '--i': 1, fontSize: 'clamp(36px, 5.2vw, 72px)' }}>이렇게 <i>동작합니다</i></h2>
-      <div className="bento">
-        <div className="glass wide s-item" style={{ '--i': 2, minHeight: 300, display: 'grid', placeItems: 'center', textAlign: 'center' }}>
-          <p style={{ fontSize: 16 }}>시연 영상 또는 라이브 화면이 들어가는 자리</p>
-          <p style={{ fontSize: 13, opacity: .7 }}>public/demo.mp4 를 넣으면 video 로 바꿔 쓸 수 있습니다</p>
-          <div className="cta-row"><a className="cta" href="/" target="_blank" rel="noreferrer">사이트 열기 ↗</a></div>
-        </div>
-        <div className="glass s-item" style={{ '--i': 3, display: 'grid', gap: 12, alignContent: 'center' }}>
-          {steps.map(([no, t, d]) => (
-            <div key={no} className="step">
-              <b>{no}</b>
-              <div><h3 style={{ fontSize: 15 }}>{t}</h3><p style={{ fontSize: 13 }}>{d}</p></div>
+    <div className="slide slide-live">
+      <div className="live-head s-item" style={{ '--i': 0 }}>
+        <p className="slide-kicker">라이브 시연</p>
+        <h2 className="slide-title" style={{ fontSize: 'clamp(28px, 3.6vw, 48px)' }}>이렇게 <i>동작합니다</i></h2>
+      </div>
+      <div className="live-row s-item" style={{ '--i': 1 }}>
+        <div className={`live glass${max ? ' max' : ''}`}>
+          <div className="live-bar">
+            <span className="dots"><i /><i /><i /></span>
+            <span className="live-url">GOLDEN HOUR{path === '/' ? '' : path}</span>
+            <div className="live-btns">
+              <button type="button" onClick={reload} aria-label="이 화면 새로고침">⟳ 새로고침</button>
+              <button type="button" onClick={() => setMax((m) => !m)}>{max ? '⤡ 축소' : '⤢ 크게 보기'}</button>
+              <a href={path} target="_blank" rel="noreferrer">사이트 열기 ↗</a>
             </div>
+          </div>
+          <div className="live-frame">
+            <iframe ref={frame} src={path} title="라이브 시연 화면" />
+          </div>
+        </div>
+        <div className="steps-col">
+          {LIVE_STEPS.map((st, i) => (
+            <button key={st.no} type="button" className={`live-step${active === i ? ' on' : ''}`} onClick={() => pick(i)}>
+              <b>{st.no}</b>
+              <span><strong>{st.title}</strong><em>{st.desc}</em></span>
+            </button>
           ))}
         </div>
       </div>
@@ -172,6 +192,7 @@ function Slide6() {
         <a className="cta ghost" href="https://github.com/speech064/project" target="_blank" rel="noreferrer">GitHub ↗</a>
       </div>
       <p className="slide-ko s-item" style={{ '--i': 3 }}>Q&amp;A</p>
+      <img className="s-item" style={{ '--i': 4, width: 124, height: 124, borderRadius: 14, background: '#fff', padding: 6 }} src="/images/qr.png" alt="배포 주소 QR 코드" />
     </div>
   )
 }
@@ -221,6 +242,7 @@ export default function Slides() {
   // 키보드: ← → (Space, PageUp/Down) 넘기기 · F 전체화면
   useEffect(() => {
     const onKey = (e) => {
+      if (e.target.closest?.('input, textarea, select, [contenteditable="true"]') || document.activeElement?.tagName === 'IFRAME') return
       if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); step(1) }
       else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); step(-1) }
       else if (e.key === 'f' || e.key === 'F') {
@@ -234,7 +256,7 @@ export default function Slides() {
 
   const Current = SLIDES[index]
   return (
-    <main className="deck" onClick={(e) => { if (!e.target.closest('a, button')) step(1) }}>
+    <main className="deck" onClick={(e) => { if (!e.target.closest('a, button, .live, .steps-col')) step(1) }}>
       <div className="deck-sky" ref={skyHost} />
       {index === 3 && <div className="deck-halla" ref={hallaHost} />}
       <div className="deck-vignette" />

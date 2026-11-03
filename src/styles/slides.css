@@ -20,7 +20,7 @@
 .bento .wide { grid-column: span 2; }
 .bento .tall { grid-row: span 2; }
 .glass h3 { margin: 0; font-size: 18px; font-weight: 700; }
-.glass p { margin: 0; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, .85); }
+.deck .glass p { margin: 0; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, .85); }
 .glass .big { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 44px; font-weight: 500; color: #FBBF24; line-height: 1; }
 .num { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 22px; color: #34D399; font-weight: 600; }
 

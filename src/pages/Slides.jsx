@@ -192,7 +192,7 @@ function Slide6() {
         <a className="cta ghost" href="https://github.com/speech064/project" target="_blank" rel="noreferrer">GitHub ↗</a>
       </div>
       <p className="slide-ko s-item" style={{ '--i': 3 }}>Q&amp;A</p>
-      <img className="s-item" style={{ '--i': 4, width: 124, height: 124, borderRadius: 14, background: '#fff', padding: 6 }} src="/images/qr.png" alt="배포 주소 QR 코드" />
+      <img className="s-item" style={{ '--i': 4, width: 170, height: 170, borderRadius: 14, background: '#fff', padding: 6 }} src="/images/qr.png" alt="배포 주소 QR 코드" />
     </div>
   )
 }

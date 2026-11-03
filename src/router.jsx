@@ -6,6 +6,7 @@ import Nearby from './pages/Nearby'
 import Halla from './pages/Halla'
 import Saved from './pages/Saved'
 import NotFound from './pages/NotFound'
+import Slides from './pages/Slides'
 
 // 페이지 추가: ① pages/ 에 파일 만들기 ② NAV_ITEMS 에 한 줄 ③ routes 에 한 줄
 export const NAV_ITEMS = [
@@ -17,6 +18,7 @@ export const NAV_ITEMS = [
 ]
 
 export const router = createBrowserRouter([
+  { path: '/slides', element: <Slides /> }, // 발표용 전체 화면 슬라이드 (사이트 머리글 없음)
   {
     path: '/',
     element: <RootLayout />,

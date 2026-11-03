@@ -133,35 +133,33 @@ function Slide3() {
   const pick = (i) => { setActive(i); setPath(LIVE_STEPS[i].path) }
   return (
     <div className="slide slide-live">
+      <div className="live-head s-item" style={{ '--i': 0 }}>
+        <p className="slide-kicker">라이브 시연</p>
+        <h2 className="slide-title" style={{ fontSize: 'clamp(30px, 3.2vw, 48px)' }}>이렇게 <i>동작합니다</i></h2>
+      </div>
       <div className="live-row s-item" style={{ '--i': 1 }}>
         <div className="live glass">
           <div className="live-bar">
             <span className="dots"><i /><i /><i /></span>
-            <span className="live-url">GOLDEN HOUR{path.split("?")[0] === "/" ? "" : path.split("?")[0]}</span>
+            <span className="live-url">GOLDEN HOUR{path.split('?')[0] === '/' ? '' : path.split('?')[0]}</span>
           </div>
           <div className="live-frame">
             <iframe ref={frame} src={path} title="라이브 시연 화면" onLoad={() => { try { frame.current?.contentWindow?.scrollTo(0, 0) } catch { /* 같은 사이트가 아니면 건너뜀 */ } }} />
           </div>
         </div>
-        <div className="side-col">
-          <div className="live-head">
-            <p className="slide-kicker">라이브 시연</p>
-            <h2 className="slide-title" style={{ fontSize: 'clamp(30px, 3.2vw, 48px)' }}>이렇게 <i>동작합니다</i></h2>
-          </div>
-          <div className="steps-col">
-            {LIVE_STEPS.map((st, i) => (
-              <button key={st.no} type="button" className={`live-step${active === i ? ' on' : ''}`} onClick={() => pick(i)}>
-                <b>{st.no}</b>
-                <span>
-                  <strong>{st.title}</strong>
-                  <em>{st.desc}</em>
-                  <span className="live-meta">
-                    <small className="live-check">{active === i ? `시연 · ${st.guide}` : `확인 포인트 · ${st.check}`}</small>
-                  </span>
+        <div className="steps-col">
+          {LIVE_STEPS.map((st, i) => (
+            <button key={st.no} type="button" className={`live-step${active === i ? ' on' : ''}`} onClick={() => pick(i)}>
+              <b>{st.no}</b>
+              <span>
+                <strong>{st.title}</strong>
+                <em>{st.desc}</em>
+                <span className="live-meta">
+                  <small className="live-check">{active === i ? `시연 · ${st.guide}` : `확인 포인트 · ${st.check}`}</small>
                 </span>
-              </button>
-            ))}
-          </div>
+              </span>
+            </button>
+          ))}
         </div>
       </div>
     </div>

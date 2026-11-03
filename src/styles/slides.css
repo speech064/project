@@ -403,3 +403,20 @@
   .s2n-row { grid-template-columns: 1fr; gap: 8px; }
   .s2n-arrow { transform: rotate(90deg); height: 28px; }
 }
+
+/* ── 11차: 라이브 시연 레이아웃 재구성 (제목 상단, 좌우 높이 일치) ── */
+.slide.slide-live { width: min(1400px, 92vw); align-self: center; margin-top: 0; gap: 16px; }
+.slide.slide-live .live-head { display: grid; gap: 4px; justify-items: start; text-align: left; }
+.slide.slide-live .live-head .slide-kicker { margin: 0; font-size: 1rem; }
+.slide.slide-live .live-row { display: grid; grid-template-columns: 68fr 32fr; gap: 18px; align-items: stretch; height: 70vh; }
+.slide.slide-live .live { height: 100%; min-height: 0; }
+.slide.slide-live .steps-col { display: flex; flex-direction: column; gap: 10px; min-height: 0; overflow: hidden; align-content: initial; grid-auto-rows: auto; padding-top: 0; }
+.slide.slide-live .steps-col .live-step { flex: 1; min-height: 0; padding: 10px 16px; }
+.slide.slide-live .steps-col .live-step b { font-size: 26px; }
+.slide.slide-live .steps-col .live-step strong { font-size: 19px; }
+.slide.slide-live .steps-col .live-step em { font-size: 15px; }
+.slide.slide-live .steps-col .live-check { font-size: 14px; }
+@media (max-width: 760px) {
+  .slide.slide-live .live-row { grid-template-columns: 1fr; height: auto; }
+  .slide.slide-live .live { height: 52vh; }
+}

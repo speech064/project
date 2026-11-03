@@ -15,7 +15,7 @@ const SCENES = [
   { minutes: 1090, total: 25, low: 10, mid: 15, high: 15, wave: 0.6, kind: 'clear' }, // 1 표지: 골든아워 노을
   { minutes: 1090, total: 25, low: 10, mid: 15, high: 15, wave: 0.6, kind: 'clear' }, // 개요: 표지와 같은 노을
   { minutes: 430, total: 55, low: 25, mid: 35, high: 30, wave: 0.8, kind: 'cloudy' }, // 2 기획 배경: 구름 낀 아침
-  { minutes: 1050, total: 15, low: 5, mid: 10, high: 10, wave: 0.5, kind: 'clear' }, // 3 시연
+  { minutes: 1050, total: 15, low: 5, mid: 10, high: 10, wave: 0.5, kind: 'rain' }, // 3 시연 (비)
   { minutes: 1230, total: 60, low: 40, mid: 40, high: 40, wave: 0.6, kind: 'fog' }, // 4 AI · 한라산 운해
   { minutes: 1380, total: 10, low: 5, mid: 5, high: 5, wave: 0.5, kind: 'snow' }, // 5 밤하늘 (눈)
   { minutes: 375, total: 20, low: 10, mid: 10, high: 10, wave: 0.6, kind: 'clear' }, // 6 여명

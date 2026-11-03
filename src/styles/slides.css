@@ -364,3 +364,7 @@
 .ai-badges .pill { font-size: .78rem; padding: 4px 10px; }
 /* 04 라이브 시연: 활성 카드의 시연 가이드 */
 .side-col .live-step.on .live-check { color: #FBBF24; }
+
+/* ── 9차: 시연 우측 묶음(제목+01~05)을 세로 가운데로 ── */
+.side-col { justify-content: center; gap: 18px; }
+.side-col .steps-col { flex: 0 0 auto; }

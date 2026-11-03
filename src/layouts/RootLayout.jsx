@@ -64,7 +64,7 @@ export default function RootLayout() {
       {!plain && !halla && <SkyScene />}
       <div className="page">
         <header className={`head${plain ? ' glass-light' : glass ? ` glass-${glass}` : ''}`}>
-          <NavLink to="/" className="brand">Beyond the clouds, chasing the light in Jeju.</NavLink>
+          <NavLink to="/" className="brand">GOLDEN HOUR</NavLink>
           <nav>
             {NAV_ITEMS.map((n) => (
               <NavLink key={n.to} to={n.to} end={n.to === '/'}>{n.label}</NavLink>

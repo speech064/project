@@ -764,3 +764,14 @@ body:has(.halla-hero) { background: #030407; }
 .wx-preview button { border: 0; background: transparent; color: #fff; font: inherit; padding: 4px 8px; border-radius: 50px; opacity: .72; }
 .wx-preview button:hover { opacity: 1; background: rgba(255, 255, 255, .14); }
 .wx-preview button.on { opacity: 1; background: #fff; color: #0b2a47; }
+
+/* 3D 조작 안내 배지 (드래그 한 번 하면 사라짐) */
+.drag-hint { position: fixed; top: 66px; z-index: 40; padding: 6px 12px; border-radius: 50px; background: rgba(12, 18, 30, .42); backdrop-filter: blur(10px); color: #fff; font: 500 11.5px var(--sans); pointer-events: none; white-space: nowrap; }
+.drag-hint.left { left: 14px; }
+.drag-hint.right { right: 14px; }
+/* 3D 위 라벨: 3D 좌표를 화면에 투영해서 따라다니는 글씨 */
+.sky-labels { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+.sky-tag, .halla-tag { position: absolute; left: 0; top: 0; padding: 5px 11px; border-radius: 50px; background: rgba(12, 18, 30, .5); backdrop-filter: blur(8px); color: #fff; font: 500 12px var(--sans); white-space: nowrap; pointer-events: none; transition: opacity .3s; }
+.halla-tag { z-index: 2; }
+
+@media (pointer: coarse) { .drag-hint.left { display: none; } }

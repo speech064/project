@@ -138,7 +138,7 @@ export default function Hallasan({ embed = null }) {
                 <Tile label="정상부 기온" value={`${num(v.stats.tempMin)}~${num(v.stats.tempMax)}°C`} sub={`체감 최저 ${num(v.stats.feelsMin)}°C`} />
                 <Tile label="돌풍" value={`${num(v.stats.gustMax)}m/s`} sub={v.stats.gustHour != null ? `가장 센 때 ${v.stats.gustHour}시` : ''} />
                 <Tile label="비·눈" value={`${v.stats.popMax ?? '—'}%`} sub={`시간당 최대 ${num(v.stats.rainMax, 1)}mm${v.stats.snowMax > 0 ? ` · 눈 ${num(v.stats.snowMax, 1)}cm` : ''}`} />
-                <Tile label="시정·구름" value={km(v.stats.visMin)} sub={`구름 평균 ${num(v.stats.cloudAvg)}%`} />
+                <Tile label="가시거리·구름" value={km(v.stats.visMin)} sub={`구름 평균 ${num(v.stats.cloudAvg)}%`} />
               </div>
 
               {plan && (
@@ -169,7 +169,7 @@ export default function Hallasan({ embed = null }) {
                 <div className="hz-legend">
                   <p><b>칸 색</b>
                     <i className="lg caution" aria-hidden="true" />주의 <i className="lg danger" aria-hidden="true" />위험
-                    <span>돌풍 {RULES.gust.caution}m/s 이상(위험 {RULES.gust.danger}) · 체감 {RULES.feels.caution}°C 이하(위험 {RULES.feels.danger}) · 비 시간당 {RULES.rain.caution}mm 또는 강수확률 {RULES.pop.caution}% 이상(위험 {RULES.rain.danger}mm) · 시정 {RULES.vis.caution}m 이하(위험 {RULES.vis.danger}m)</span>
+                    <span>돌풍 {RULES.gust.caution}m/s 이상(위험 {RULES.gust.danger}) · 체감 {RULES.feels.caution}°C 이하(위험 {RULES.feels.danger}) · 비 시간당 {RULES.rain.caution}mm 또는 강수확률 {RULES.pop.caution}% 이상(위험 {RULES.rain.danger}mm) · 가시거리 {RULES.vis.caution}m 이하(위험 {RULES.vis.danger}m)</span>
                   </p>
                   <p><b>왼쪽 세로 줄</b> 등반 시간대 판정
                     <i className="lg good" aria-hidden="true" />무난 <i className="lg caution" aria-hidden="true" />주의 <i className="lg danger" aria-hidden="true" />위험(돌풍·비가 심함)
@@ -177,7 +177,7 @@ export default function Hallasan({ embed = null }) {
                 </div>
                 <div className="hz-scroll">
                   <table>
-                    <thead><tr><th>시각</th><th>하늘</th><th>기온 / 체감</th><th>돌풍</th><th>비</th><th>시정</th><th>구름</th></tr></thead>
+                    <thead><tr><th>시각</th><th>하늘</th><th>기온 / 체감</th><th>돌풍</th><th>비</th><th>가시거리</th><th>구름</th></tr></thead>
                     <tbody>
                       {d.goalHours.map((r) => (
                         <tr key={r.hour} className={rowClass(r, v.window)}>

@@ -4,6 +4,7 @@ import { httpError, parseGeo } from './http.js'
 import { getSunTimes } from './sun.js'
 import { getWeather } from './weather.js'
 import { getElevation, getMountainWeatherJudged, listTrails } from './hallasan.js'
+import { getNearby } from './visitjeju.js'
 
 // ① 도구 설명서: Claude 는 이 설명만 보고 "어떤 도구를 언제 쓸지" 결정합니다
 export const TOOLS = [
@@ -65,6 +66,21 @@ export const TOOLS = [
       required: ['lat', 'lng', 'elevation', 'date'],
     },
   },
+  // ── 주변 장소 (니어바이 탭과 같은 비짓제주 데이터) ──
+  {
+    name: 'list_nearby_places',
+    description: '명소 주변 장소(관광지·음식점·행사 등)를 비짓제주 데이터로 찾는다. 이름, 분류, 거리, 주소, 전화번호, 태그를 돌려준다. 음식점·카페·관광지·행사 추천 질문이면 명소 좌표(list_photo_spots 의 lat, lng)를 넣어 호출한다. 영업시간·평점·메뉴는 데이터에 없다.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        lat: { type: 'number', description: '기준 위도 (명소 좌표)' },
+        lng: { type: 'number', description: '기준 경도 (명소 좌표)' },
+        radius: { type: 'number', description: '반경(km). 생략하면 5' },
+        category: { type: 'string', description: '분류 이름에 들어가는 말 (예: 음식점, 카페, 관광지, 행사). 생략하면 전부' },
+      },
+      required: ['lat', 'lng'],
+    },
+  },
 ]
 
 // ② 도구 이름 → 실제로 실행할 함수
@@ -96,6 +112,19 @@ export const RUN = {
   async list_trails() { return listTrails() },
   get_elevation: (input) => getElevation(input),
   get_mountain_weather: (input) => getMountainWeatherJudged(input),
+
+  async list_nearby_places(input) {
+    const lat = Number(input.lat), lng = Number(input.lng)
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) throw httpError(400, '기준 좌표가 없어요')
+    const r = await getNearby({ lat, lng, radius: input.radius ?? 5 })
+    if (r.disabled) return { disabled: r.disabled, places: [] }
+    const want = String(input.category ?? '').trim()
+    const places = r.items
+      .filter((p) => !want || p.category.includes(want))
+      .slice(0, 12)
+      .map((p) => ({ name: p.title, category: p.category, distance_km: p.distanceKm, address: p.address, phone: p.phone || null, tags: (p.tags ?? []).slice(0, 3) }))
+    return { radius_km: r.radiusKm, total_in_radius: r.total, places }
+  },
 }
 
 // 화면의 "호출한 도구" 목록에 보여줄 한 줄 요약
@@ -104,6 +133,7 @@ export function summarize(name, result) {
   if (name === 'get_sun_times') return `일출 ${result.sunrise} · 일몰 ${result.sunset}${result.approx ? ' (계산값)' : ''}`
   if (name === 'get_cloud_cover') return result.hours.map((h) => `${h.hour}시 ${h.cloud_total}%`).slice(0, 3).join(' · ')
   if (name === 'list_trails') return `코스 ${result.length}개`
+  if (name === 'list_nearby_places') return result.disabled ? '주변 장소 정보 없음' : `주변 장소 ${result.places.length}곳`
   if (name === 'get_elevation') return `${result.elevation}m`
   if (name === 'get_mountain_weather') return result.judgement ? `판정 ${result.judgement.level}` : `${result.hours.length}시간`
   return 'OK'
